@@ -499,8 +499,222 @@
       text-transform: uppercase;
     }
 
+    .quote-section {
+      background: #15120f;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .quote-section .section-kicker { color: var(--gold); }
+    .quote-section .section-text { color: rgba(255,255,255,.64); }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1.18fr .82fr 1fr;
+      grid-auto-rows: minmax(230px, 23vw);
+      gap: 18px;
+    }
+
+    .quote-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 300px;
+      padding: clamp(22px, 4vw, 42px);
+      display: flex;
+      align-items: end;
+      background: #2f2a24;
+      border: 1px solid rgba(255,255,255,.14);
+      isolation: isolate;
+      transition: transform .42s var(--ease), border-color .3s ease, box-shadow .42s var(--ease);
+      will-change: transform;
+    }
+
+    .quote-card.feature {
+      grid-column: span 2;
+      grid-row: span 2;
+      min-height: 520px;
+    }
+
+    .quote-card.tall {
+      grid-row: span 2;
+    }
+
+    .quote-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.92) contrast(1.02);
+      transition: transform .8s var(--ease), filter .35s ease;
+    }
+
+    .quote-card::before {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      content: "";
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.82), rgba(0,0,0,.2) 58%, rgba(0,0,0,.08)),
+        linear-gradient(90deg, rgba(0,0,0,.48), rgba(0,0,0,0));
+      pointer-events: none;
+    }
+
+    .quote-card::after {
+      position: absolute;
+      inset: 18px;
+      z-index: 1;
+      content: "";
+      border: 1px solid rgba(255,255,255,.22);
+      opacity: .58;
+      pointer-events: none;
+      transition: opacity .3s ease, transform .42s var(--ease);
+    }
+
+    .quote-card:hover,
+    .quote-card.is-touching {
+      transform: translateY(-6px);
+      border-color: rgba(199,154,61,.5);
+      box-shadow: 0 28px 86px rgba(0,0,0,.34);
+    }
+
+    .quote-card:hover img,
+    .quote-card.is-touching img {
+      transform: scale(1.06);
+      filter: saturate(1.06) contrast(1.04);
+    }
+
+    .quote-card:hover::after,
+    .quote-card.is-touching::after {
+      opacity: .9;
+      transform: scale(.985);
+    }
+
+    .quote-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+    }
+
+    .quote-copy span {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .quote-copy blockquote {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(28px, 4.2vw, 68px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .quote-card:not(.feature) .quote-copy blockquote {
+      font-size: clamp(24px, 2.7vw, 40px);
+      line-height: 1.04;
+    }
+
+    .quote-copy p {
+      margin: 16px 0 0;
+      color: rgba(255,255,255,.66);
+      font-size: 13px;
+      max-width: 460px;
+    }
+
     .gallery-section {
-      background: linear-gradient(180deg, var(--linen) 0%, #f6efe5 100%);
+      background:
+        linear-gradient(90deg, rgba(21,18,15,.06) 1px, transparent 1px),
+        linear-gradient(180deg, #f5ede2 0%, #efe2d3 100%);
+      background-size: 74px 100%, auto;
+    }
+
+    .gallery-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, .42fr) minmax(0, 1fr);
+      gap: clamp(20px, 4vw, 46px);
+      align-items: start;
+    }
+
+    .gallery-panel {
+      position: sticky;
+      top: 110px;
+      min-height: 520px;
+      padding: clamp(24px, 4vw, 42px);
+      display: flex;
+      flex-direction: column;
+      background: #171411;
+      color: #fff;
+      border: 1px solid rgba(199,154,61,.34);
+      box-shadow: 0 30px 90px rgba(21,18,15,.2);
+    }
+
+    .gallery-panel .section-kicker { color: var(--gold); }
+    .gallery-panel h2 { color: #fff; }
+    .gallery-panel .section-text { color: rgba(255,255,255,.64); }
+
+    .gallery-panel::before {
+      position: absolute;
+      inset: 18px;
+      content: "";
+      border: 1px solid rgba(255,255,255,.14);
+      pointer-events: none;
+    }
+
+    .gallery-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .gallery-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 28px;
+    }
+
+    .gallery-filter button {
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.78);
+      font: inherit;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s var(--ease);
+    }
+
+    .gallery-filter button:hover,
+    .gallery-filter button.is-active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .gallery-count {
+      margin: auto 0 0;
+      padding-top: 26px;
+      color: rgba(255,255,255,.56);
+      border-top: 1px solid rgba(255,255,255,.14);
+      font-size: 13px;
+    }
+
+    .gallery-count strong {
+      display: block;
+      margin-bottom: 7px;
+      color: #fff;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: .9;
     }
 
     .image-grid {
@@ -508,14 +722,18 @@
       grid-template-columns: repeat(12, minmax(0, 1fr));
       grid-auto-rows: 96px;
       grid-auto-flow: dense;
-      gap: 18px;
+      gap: 14px;
+      padding: 14px;
+      background: rgba(21,18,15,.08);
+      border: 1px solid rgba(21,18,15,.12);
     }
 
     .image-tile {
       position: relative;
       overflow: hidden;
       background: var(--sand);
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255,255,255,.54);
+      box-shadow: 0 18px 48px rgba(21,18,15,.14);
       isolation: isolate;
       grid-column: span 3;
       grid-row: span 3;
@@ -523,6 +741,10 @@
       transform-style: preserve-3d;
       transition: transform .42s var(--ease), box-shadow .42s var(--ease), border-color .3s ease;
       will-change: transform;
+    }
+
+    .image-tile.is-hidden {
+      display: none;
     }
 
     .image-tile.large {
@@ -657,7 +879,7 @@
       content: "";
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/wardrobe.png");
+        url("assets/images/generated-wardrobe-modern.png");
       background-size: cover;
       background-position: center;
       transition: transform .6s var(--ease), filter .35s ease;
@@ -674,7 +896,7 @@
     .collection-card.closet::before {
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/closet.png");
+        url("assets/images/generated-closet-display-modern.png");
       background-size: cover;
       background-position: center;
     }
@@ -963,9 +1185,9 @@
       filter: saturate(1) contrast(1.04);
     }
 
-    #wardrobes .photo-asset { background-image: url("assets/images/wardrobe.png"); }
+    #wardrobes .photo-asset { background-image: url("assets/images/generated-wardrobe-modern.png"); }
     #kitchens .photo-asset { background-image: url("assets/images/kitchen-hero.png"); }
-    #closets .photo-asset { background-image: url("assets/images/closet.png"); }
+    #closets .photo-asset { background-image: url("assets/images/generated-closet-display-modern.png"); }
     #tv-units .photo-asset { background-image: url("assets/images/tv-unit.png"); }
 
     .photo-asset::after {
@@ -1082,6 +1304,46 @@
       align-items: center;
     }
 
+    .materials-showcase {
+      display: grid;
+      gap: 18px;
+    }
+
+    .material-photo {
+      position: relative;
+      margin: 0;
+      overflow: hidden;
+      min-height: 320px;
+      aspect-ratio: 16 / 9;
+      background: var(--sand);
+      border: 1px solid var(--line);
+      isolation: isolate;
+    }
+
+    .material-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .6s var(--ease), filter .35s ease;
+    }
+
+    .material-photo::after {
+      position: absolute;
+      inset: auto 0 0;
+      z-index: 1;
+      height: 52%;
+      content: "";
+      background: linear-gradient(0deg, rgba(0,0,0,.66), rgba(0,0,0,0));
+      pointer-events: none;
+    }
+
+    .material-photo:hover img,
+    .material-photo.is-touching img {
+      transform: scale(1.035);
+      filter: saturate(1.05) contrast(1.03);
+    }
+
     .swatches {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1095,7 +1357,10 @@
       flex-direction: column;
       justify-content: end;
       color: #fff;
-      background: #5a5851;
+      background-color: #5a5851;
+      background-image: var(--swatch-image);
+      background-size: cover;
+      background-position: center;
       position: relative;
       overflow: hidden;
       transition: transform .3s var(--ease), box-shadow .3s ease, filter .3s ease;
@@ -1113,17 +1378,18 @@
       position: absolute;
       inset: 0;
       content: "";
-      opacity: .32;
+      opacity: .88;
       background:
-        repeating-linear-gradient(92deg, transparent 0 12px, rgba(255,255,255,.18) 13px, transparent 14px),
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,.45), transparent 28%);
+        linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,.08) 62%, rgba(0,0,0,.02)),
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.22), transparent 28%);
     }
 
-    .swatch:nth-child(2) { background: var(--walnut); }
-    .swatch:nth-child(3) { background: #e6ded1; color: var(--ink); }
-    .swatch:nth-child(4) { background: var(--forest); }
-    .swatch:nth-child(5) { background: var(--ember); }
-    .swatch:nth-child(6) { background: #d7d3c8; color: var(--ink); }
+    .swatch:nth-child(1) { --swatch-image: url("assets/images/materials/nobilia-easytouch-961-graphite-black-ultramatt.jpg"); }
+    .swatch:nth-child(2) { --swatch-image: url("assets/images/materials/nobilia-easytouch-969-sand-ultramatt.jpg"); }
+    .swatch:nth-child(3) { --swatch-image: url("assets/images/materials/nobilia-easytouch-970-taupe-grey-ultramatt.jpg"); }
+    .swatch:nth-child(4) { --swatch-image: url("assets/images/materials/nobilia-easytouch-968-white-ultramatt.jpg"); }
+    .swatch:nth-child(5) { --swatch-image: url("assets/images/materials/nobilia-senso-495-premium-honed-olive.jpg"); }
+    .swatch:nth-child(6) { --swatch-image: url("assets/images/materials/nobilia-touch-340-black-supermatt.jpg"); }
 
     .swatch strong,
     .swatch span {
@@ -1342,13 +1608,38 @@
       .hero-stats,
       .process-grid,
       .collection-grid,
+      .quote-grid,
       .image-grid,
       .systems-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .quote-grid {
+        grid-auto-rows: 280px;
+      }
+
+      .quote-card.feature,
+      .quote-card.tall {
+        grid-column: span 2;
+        grid-row: auto;
+      }
+
+      .quote-card.feature {
+        min-height: 460px;
+      }
+
       .image-grid {
         grid-auto-rows: 220px;
+      }
+
+      .gallery-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-panel {
+        position: relative;
+        top: auto;
+        min-height: auto;
       }
 
       .image-tile {
@@ -1397,6 +1688,7 @@
       .hero-stats,
       .process-grid,
       .collection-grid,
+      .quote-grid,
       .image-grid,
       .systems-grid,
       .spec-badge,
@@ -1404,6 +1696,18 @@
       .form-grid,
       .footer-inner {
         grid-template-columns: 1fr;
+      }
+
+      .quote-grid {
+        grid-auto-rows: auto;
+      }
+
+      .quote-card,
+      .quote-card.feature,
+      .quote-card.tall {
+        grid-column: auto;
+        grid-row: auto;
+        min-height: 380px;
       }
 
       .stat,
@@ -1417,6 +1721,13 @@
       .collection-card.large { grid-column: auto; }
       .collection-card { min-height: 360px; }
       .image-grid { grid-auto-rows: 240px; }
+      .image-grid {
+        padding: 8px;
+        gap: 8px;
+      }
+      .gallery-panel {
+        padding: 28px 20px;
+      }
       .image-tile:nth-child(n) { grid-column: auto; grid-row: auto; }
       .image-tile.large,
       .image-tile.wide { grid-column: auto; grid-row: auto; }
@@ -1442,12 +1753,14 @@
       .image-tile,
       .system-card,
       .collection-card,
+      .quote-card,
       .split-visual,
       .process-step,
       .swatch,
       .btn,
       .image-tile img,
       .system-card img,
+      .quote-card img,
       .photo-asset {
         transform: none !important;
       }
@@ -1464,6 +1777,7 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="#collections">Collections</a></li>
         <li><a href="#systems">Systems</a></li>
+        <li><a href="#image-quotes">Quotes</a></li>
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#wardrobes">Wardrobes</a></li>
         <li><a href="#kitchens">Kitchens</a></li>
@@ -1495,7 +1809,7 @@
           </div>
         </div>
         <div class="hero-stats reveal" aria-label="Klever Kuche highlights">
-          <div class="stat"><strong>15yr</strong><span>Warranty</span></div>
+          <div class="stat"><strong>Custom</strong><span>Made To Measure</span></div>
           <div class="stat"><strong>UV</strong><span>Super Matt MDF</span></div>
           <div class="stat"><strong>4</strong><span>Design Categories</span></div>
           <div class="stat"><strong>AA</strong><span>Addis Ababa</span></div>
@@ -1643,17 +1957,72 @@
         </div>
       </section>
 
-      <section class="gallery-section" id="gallery">
+      <section class="quote-section" id="image-quotes">
         <div class="inner">
           <div class="section-head">
             <div>
-              <p class="section-kicker reveal">Gallery</p>
-              <h2 class="reveal">More ideas for Addis Ababa homes.</h2>
+              <p class="section-kicker reveal">Image Quotes</p>
+              <h2 class="reveal">Rooms that speak before the details do.</h2>
             </div>
-            <p class="section-text reveal">A larger visual library for Addis Ababa homes: kitchens, wardrobes, closets, TV units, coffee corners, family dining, material details, consultation, and installation service.</p>
+            <p class="section-text reveal">Short design lines paired with the strongest visuals, built for a more memorable first impression before the full gallery.</p>
           </div>
 
-          <div class="image-grid">
+          <div class="quote-grid">
+            <article class="quote-card feature reveal">
+              <img src="assets/images/generated-closet-display-modern.png" alt="Modern walk-in closet with walnut shelves, display lighting, and Super Matt UV MDF cabinetry">
+              <div class="quote-copy">
+                <span>Walk-in Closet</span>
+                <blockquote>A calm morning starts with a closet that knows where everything belongs.</blockquote>
+                <p>Open display, lit shelves, drawer islands, and warm wood interiors planned as one system.</p>
+              </div>
+            </article>
+
+            <article class="quote-card tall reveal">
+              <img src="assets/images/generated-wardrobe-modern.png" alt="Modern bedroom wardrobe with matte cabinet fronts and warm integrated lighting">
+              <div class="quote-copy">
+                <span>Wardrobe</span>
+                <blockquote>Storage should feel quiet, even when the room is full.</blockquote>
+              </div>
+            </article>
+
+            <article class="quote-card reveal">
+              <img src="assets/images/kitchen-wide-02.png" alt="Modern Super Matt UV MDF kitchen with island and warm cabinet finishes">
+              <div class="quote-copy">
+                <span>Kitchen</span>
+                <blockquote>The best kitchen works hard and still looks effortless.</blockquote>
+              </div>
+            </article>
+
+            <article class="quote-card reveal">
+              <img src="assets/images/generated-materials-modern.png" alt="Modern flat-panel Super Matt UV MDF samples with walnut, stone, and metal hardware">
+              <div class="quote-copy">
+                <span>Materials</span>
+                <blockquote>Great finishes are felt first, then noticed.</blockquote>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="gallery">
+        <div class="inner">
+          <div class="gallery-layout">
+            <aside class="gallery-panel reveal">
+              <p class="section-kicker">Gallery Wall</p>
+              <h2>More ideas for Addis Ababa homes.</h2>
+              <p class="section-text">A curated visual wall for kitchens, wardrobes, closets, TV units, material details, consultation, and installation service.</p>
+              <div class="gallery-filter" aria-label="Gallery categories">
+                <button type="button" class="is-active" data-gallery-filter="all" aria-pressed="true">All</button>
+                <button type="button" data-gallery-filter="kitchens" aria-pressed="false">Kitchens</button>
+                <button type="button" data-gallery-filter="wardrobes" aria-pressed="false">Wardrobes</button>
+                <button type="button" data-gallery-filter="closets" aria-pressed="false">Closets</button>
+                <button type="button" data-gallery-filter="living" aria-pressed="false">Living</button>
+                <button type="button" data-gallery-filter="materials" aria-pressed="false">Materials</button>
+              </div>
+              <p class="gallery-count"><strong id="galleryCount">0</strong><span>Visuals in view</span></p>
+            </aside>
+            <div class="gallery-wall">
+              <div class="image-grid" id="galleryGrid">
             <figure class="image-tile large reveal">
               <img src="assets/images/kitchen-wide-02.png" alt="Modern luxury kitchen with Super Matt UV MDF cabinets and Ethiopian customers">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Warm matte luxury kitchen</strong></figcaption>
@@ -1661,6 +2030,18 @@
             <figure class="image-tile reveal">
               <img src="assets/images/kitchen-detail-handleless.png" alt="Close-up of handleless Super Matt UV MDF kitchen cabinetry">
               <figcaption class="image-caption"><span>Detail</span><strong>Handleless cabinet finish</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/generated-wardrobe-modern.png" alt="Modern full-height bedroom wardrobe with Super Matt UV MDF doors and warm LED lighting">
+              <figcaption class="image-caption"><span>Wardrobe</span><strong>New matte wardrobe concept</strong></figcaption>
+            </figure>
+            <figure class="image-tile large reveal">
+              <img src="assets/images/generated-closet-display-modern.png" alt="Modern walk-in closet with walnut interiors, glass display shelves, and warm LED lighting">
+              <figcaption class="image-caption"><span>Closet</span><strong>New walk-in display concept</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/generated-materials-modern.png" alt="Modern flat-panel Super Matt UV MDF material samples with stone, walnut, and metal hardware">
+              <figcaption class="image-caption"><span>Materials</span><strong>Modern flat-panel sample set</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
               <img src="assets/images/wardrobe-bedroom.png" alt="Modern bedroom wardrobe with Super Matt UV MDF sliding doors">
@@ -1671,8 +2052,8 @@
               <figcaption class="image-caption"><span>Closet</span><strong>Display shelves and lighting</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/wardrobe-detail-drawer.png" alt="Close-up of wardrobe drawer, smoked glass shelf, and walnut interior">
-              <figcaption class="image-caption"><span>Detail</span><strong>Drawer and shelf system</strong></figcaption>
+              <img src="assets/images/bedroom-wardrobe-vanity.png" alt="Modern wardrobe cabinet fronts with slim vertical handles and matte panels">
+              <figcaption class="image-caption"><span>Wardrobe</span><strong>Handled cabinet finish</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
               <img src="assets/images/kitchen-compact.png" alt="Compact modern apartment kitchen in Addis Ababa">
@@ -1735,57 +2116,59 @@
               <figcaption class="image-caption"><span>Kids Room</span><strong>Wardrobe and study storage</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-soft-modern-stage.webp" alt="Clean modern kitchen reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Soft modern kitchen reference</strong></figcaption>
+              <img src="assets/images/generated-realistic-soft-modern-kitchen.png" alt="Generated realistic soft modern kitchen concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Soft modern kitchen concept</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-modern-coffee.webp" alt="Modern kitchen reference with coffee niche and no people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Coffee niche layout</strong></figcaption>
+              <img src="assets/images/generated-realistic-coffee-niche-kitchen.png" alt="Generated realistic kitchen concept with coffee niche and no people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Coffee niche layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-natural-wood.webp" alt="Natural wood kitchen reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Natural wood finish</strong></figcaption>
+              <img src="assets/images/generated-realistic-natural-wood-kitchen.png" alt="Generated realistic natural wood kitchen concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Natural wood finish</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-open-plan.jpg" alt="Open plan kitchen and living reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Open-plan living idea</strong></figcaption>
+              <img src="assets/images/generated-realistic-open-plan-kitchen.png" alt="Generated realistic open-plan kitchen and living concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Open-plan living idea</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-wide-dining.webp" alt="Wide kitchen and dining reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Kitchen with dining zone</strong></figcaption>
+              <img src="assets/images/generated-realistic-wide-dining-kitchen.png" alt="Generated realistic wide kitchen and dining concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Kitchen with dining zone</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-neutral-tall-units.webp" alt="Neutral tall kitchen units without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Neutral tall units</strong></figcaption>
+              <img src="assets/images/generated-realistic-neutral-tall-units.png" alt="Generated realistic neutral tall kitchen units concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Neutral tall units</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-white-breakfast.webp" alt="White breakfast kitchen reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>White breakfast kitchen</strong></figcaption>
+              <img src="assets/images/generated-realistic-white-breakfast-kitchen.png" alt="Generated realistic white breakfast kitchen concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>White breakfast kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-grey-corner.webp" alt="Grey corner kitchen reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Grey corner layout</strong></figcaption>
+              <img src="assets/images/generated-realistic-grey-corner-kitchen.png" alt="Generated realistic grey corner kitchen concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Grey corner layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-white-pattern.webp" alt="White kitchen with patterned backsplash without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Pattern backsplash</strong></figcaption>
+              <img src="assets/images/generated-realistic-pattern-backsplash-kitchen.png" alt="Generated realistic white kitchen concept with patterned backsplash without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Pattern backsplash</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-open-living.webp" alt="Open living kitchen reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Open living kitchen</strong></figcaption>
+              <img src="assets/images/generated-realistic-open-living-kitchen.png" alt="Generated realistic open living kitchen concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Open living kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-stone-wall.webp" alt="Kitchen reference with stone feature wall and no people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Stone wall finish</strong></figcaption>
+              <img src="assets/images/generated-realistic-stone-wall-kitchen.png" alt="Generated realistic kitchen concept with stone feature wall and no people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Stone wall finish</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-glass-island.webp" alt="Kitchen reference with glass island storage and no people">
-              <figcaption class="image-caption"><span>Reference</span><strong>Glass island storage</strong></figcaption>
+              <img src="assets/images/generated-realistic-island-storage-kitchen.png" alt="Generated realistic kitchen island storage concept with closed handled drawers and no people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Handled island storage</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-white-corner.webp" alt="White corner kitchen reference without people">
-              <figcaption class="image-caption"><span>Reference</span><strong>White corner kitchen</strong></figcaption>
+              <img src="assets/images/generated-realistic-white-corner-kitchen.png" alt="Generated realistic white corner kitchen concept without people">
+              <figcaption class="image-caption"><span>Generated Realistic</span><strong>White corner kitchen</strong></figcaption>
             </figure>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1827,7 +2210,7 @@
           <div class="photo-asset" aria-hidden="true"></div>
           <div class="visual-grid" aria-hidden="true"></div>
           <div class="spec-badge">
-            <div><strong>6-12</strong><span>Week Lead Time</span></div>
+            <div><strong>Fast</strong><span>Project Timeline</span></div>
             <div><strong>3D</strong><span>Design Approval</span></div>
             <div><strong>Full</strong><span>Installation</span></div>
           </div>
@@ -1928,13 +2311,19 @@
             <h2 class="reveal">Finishes with depth, not decoration.</h2>
             <p class="section-text reveal">The palette is built around Super Matt UV MDF, warm wood textures, stone, glass, and soft neutral panels that support modern luxury homes in Addis Ababa.</p>
           </div>
-          <div class="swatches reveal" aria-label="Material finish examples">
-            <div class="swatch"><strong>Super Matt UV MDF</strong><span>Main finish</span></div>
-            <div class="swatch"><strong>Walnut Texture</strong><span>Warm accent</span></div>
-            <div class="swatch"><strong>Light Neutral MDF</strong><span>Clean finish</span></div>
-            <div class="swatch"><strong>Sage Lacquer</strong><span>Matte front</span></div>
-            <div class="swatch"><strong>Clay Laminate</strong><span>Soft color</span></div>
-            <div class="swatch"><strong>Quartz Stone</strong><span>Countertop</span></div>
+          <div class="materials-showcase">
+            <figure class="material-photo reveal">
+              <img src="assets/images/generated-materials-modern.png" alt="Modern flat-panel Super Matt UV MDF samples with walnut, stone, and metal hardware">
+              <figcaption class="image-caption"><span>Modern Materials</span><strong>Flat-panel sample palette</strong></figcaption>
+            </figure>
+            <div class="swatches reveal" aria-label="Material finish examples">
+              <div class="swatch"><strong>Graphite Black</strong><span>Ultra-matt UV MDF</span></div>
+              <div class="swatch"><strong>Sand Ultra-Matt</strong><span>Warm cabinet front</span></div>
+              <div class="swatch"><strong>Taupe Grey</strong><span>Soft modern neutral</span></div>
+              <div class="swatch"><strong>Alpine White</strong><span>Clean bright front</span></div>
+              <div class="swatch"><strong>Honed Olive</strong><span>Modern accent tone</span></div>
+              <div class="swatch"><strong>Black Supermatt</strong><span>Deep matte option</span></div>
+            </div>
           </div>
         </div>
       </section>
@@ -2050,6 +2439,9 @@
     const toggle = document.querySelector(".mobile-toggle");
     const form = document.getElementById("consultationForm");
     const formStatus = document.getElementById("formStatus");
+    const galleryButtons = document.querySelectorAll("[data-gallery-filter]");
+    const galleryTiles = document.querySelectorAll("#galleryGrid .image-tile");
+    const galleryCount = document.getElementById("galleryCount");
 
     const syncNav = () => {
       nav.classList.toggle("is-solid", window.scrollY > 20);
@@ -2081,6 +2473,46 @@
     }, { threshold: .12 });
 
     document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+    const getGalleryText = (tile) => {
+      const image = tile.querySelector("img");
+      const caption = tile.querySelector(".image-caption");
+      return `${caption?.textContent || ""} ${image?.alt || ""}`.toLowerCase();
+    };
+
+    const galleryRules = {
+      all: () => true,
+      kitchens: (text) => /kitchen|pantry|coffee|breakfast|backsplash|island|open-plan|open living|corner layout|tall units|wide dining|natural wood/.test(text),
+      wardrobes: (text) => /wardrobe|bedroom|dressing|kids room/.test(text),
+      closets: (text) => /closet|walk-in|display shelves/.test(text),
+      living: (text) => /tv|living|media/.test(text),
+      materials: (text) => /material|sample|detail|showroom|consultation|installation|finish|hardware|drawer|stone|glass/.test(text)
+    };
+
+    const applyGalleryFilter = (filter) => {
+      const matcher = galleryRules[filter] || galleryRules.all;
+      let visibleCount = 0;
+
+      galleryTiles.forEach((tile) => {
+        const isVisible = matcher(getGalleryText(tile));
+        tile.classList.toggle("is-hidden", !isVisible);
+        if (isVisible) visibleCount += 1;
+      });
+
+      galleryButtons.forEach((button) => {
+        const isActive = button.dataset.galleryFilter === filter;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+
+      if (galleryCount) galleryCount.textContent = String(visibleCount);
+    };
+
+    galleryButtons.forEach((button) => {
+      button.addEventListener("click", () => applyGalleryFilter(button.dataset.galleryFilter));
+    });
+
+    applyGalleryFilter("all");
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const interactiveCards = document.querySelectorAll(".image-tile, .system-card, .collection-card");
