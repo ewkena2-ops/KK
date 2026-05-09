@@ -1,0 +1,2137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Klever Kuche creates modern luxury kitchens, wardrobes, closets, and TV units in Addis Ababa, Ethiopia using Super Matt UV MDF finishes and premium installation.">
+  <title>Klever K&uuml;che | Modern Luxury Interiors in Addis Ababa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #15120f;
+      --espresso: #241812;
+      --graphite: #232927;
+      --forest: #214c3f;
+      --paper: #f8f3e9;
+      --linen: #ede3d5;
+      --sand: #d9c9b3;
+      --walnut: #725039;
+      --brass: #c79a3d;
+      --gold: #dfb84d;
+      --sage: #667a70;
+      --ember: #a6382f;
+      --mist: #dde4dc;
+      --line: rgba(21, 18, 15, .14);
+      --shadow: 0 24px 70px rgba(21, 18, 15, .18);
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, var(--paper) 0%, #efe6d8 100%);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button, input, textarea, select { font: inherit; }
+
+    .site-shell {
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+      padding: 0 clamp(18px, 5vw, 72px);
+      color: #fff;
+      transition: background .25s ease, color .25s ease, border-color .25s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .nav.is-solid {
+      background: rgba(248, 243, 233, .96);
+      color: var(--ink);
+      border-bottom-color: var(--line);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      background: rgba(255, 250, 241, .97);
+      color: var(--ink);
+      padding: 5px 10px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.12);
+      border-left: 4px solid var(--ember);
+    }
+
+    .brand-logo {
+      display: block;
+      width: 174px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border: 1px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 2px;
+      color: currentColor;
+      opacity: .62;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .23em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: clamp(18px, 3vw, 38px);
+      align-items: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .78;
+      transition: opacity .2s ease;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .phone {
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      opacity: .82;
+      white-space: nowrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .25s var(--ease), background .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease;
+      will-change: transform;
+    }
+
+    .btn:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 14px 30px rgba(21,18,15,.18); }
+    .btn:active,
+    .btn.is-touching { transform: translateY(0) scale(.98); }
+    .btn-primary { background: linear-gradient(135deg, var(--brass), var(--gold)); color: var(--ink); }
+    .btn-primary:hover { background: linear-gradient(135deg, #d2a548, #e7c35e); }
+    .btn-dark { background: var(--forest); color: #fff; }
+    .btn-dark:hover { background: #17392f; }
+    .btn-light { background: var(--paper); color: var(--ink); border-color: rgba(21,18,15,.16); }
+    .btn-ghost { color: inherit; border-color: currentColor; background: transparent; }
+    .btn-ghost:hover { background: rgba(255, 255, 255, .1); }
+
+    .mobile-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid currentColor;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .mobile-toggle span,
+    .mobile-toggle span::before,
+    .mobile-toggle span::after {
+      display: block;
+      width: 18px;
+      height: 2px;
+      margin: auto;
+      background: currentColor;
+      content: "";
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .mobile-toggle span::before { transform: translateY(-7px); }
+    .mobile-toggle span::after { transform: translateY(5px); }
+    .mobile-toggle[aria-expanded="true"] span { transform: rotate(45deg); }
+    .mobile-toggle[aria-expanded="true"] span::before { opacity: 0; }
+    .mobile-toggle[aria-expanded="true"] span::after { transform: translateY(-2px) rotate(90deg); }
+
+    .hero {
+      min-height: 100svh;
+      position: relative;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      color: #fff;
+      background: var(--espresso);
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/images/kitchen-hero.png");
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+      animation: slow-pan 22s ease-in-out infinite alternate;
+    }
+
+    .hero::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(20, 14, 10, .86) 0%, rgba(33, 76, 63, .44) 52%, rgba(36, 24, 18, .2) 100%),
+        linear-gradient(0deg, rgba(20, 14, 10, .9) 0%, rgba(20, 14, 10, 0) 44%);
+      z-index: 1;
+    }
+
+    .hero::after {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      content: "";
+      opacity: .2;
+      background-image:
+        linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(90deg, #000, transparent 75%);
+    }
+
+    @keyframes slow-pan {
+      from { transform: scale(1.02) translateX(0); }
+      to { transform: scale(1.08) translateX(-18px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 158px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, .75);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 38px;
+      height: 1px;
+      background: currentColor;
+      opacity: .7;
+    }
+
+    .hero h1 {
+      max-width: 820px;
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(52px, 8vw, 112px);
+      line-height: .92;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    .hero h1 em {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .hero-row {
+      display: grid;
+      grid-template-columns: minmax(0, 560px) auto;
+      align-items: end;
+      gap: 36px;
+      margin-top: 28px;
+    }
+
+    .hero-copy {
+      margin: 0;
+      color: rgba(255, 255, 255, .74);
+      max-width: 520px;
+      font-size: 17px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      width: min(1180px, calc(100% - 36px));
+      margin: 42px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      background: rgba(248, 243, 233, .97);
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--brass);
+    }
+
+    .stat {
+      padding: 22px clamp(16px, 2.4vw, 32px);
+      border-right: 1px solid var(--line);
+    }
+
+    .stat:last-child { border-right: 0; }
+    .stat strong {
+      display: block;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .stat span {
+      display: block;
+      margin-top: 7px;
+      color: rgba(21, 18, 15, .62);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    section,
+    .band {
+      padding: clamp(70px, 9vw, 128px) clamp(18px, 5vw, 72px);
+    }
+
+    .inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: clamp(30px, 5vw, 58px);
+    }
+
+    .section-kicker {
+      margin: 0 0 12px;
+      color: var(--ember);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .section-text {
+      max-width: 430px;
+      margin: 0;
+      color: rgba(21, 18, 15, .68);
+    }
+
+    .collections {
+      background: linear-gradient(180deg, var(--paper) 0%, #fff9ef 100%);
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .systems-section {
+      background: linear-gradient(180deg, #fff9ef 0%, var(--paper) 100%);
+    }
+
+    .systems-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .system-card {
+      display: grid;
+      grid-template-rows: 220px 1fr;
+      min-height: 430px;
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 46px rgba(21, 18, 15, .08);
+      overflow: hidden;
+      transform: perspective(900px) rotateX(0) rotateY(0) translateY(0);
+      transform-style: preserve-3d;
+      transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .4s ease;
+      will-change: transform;
+    }
+
+    .system-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .55s var(--ease);
+    }
+
+    .system-card:hover,
+    .system-card.is-touching {
+      border-color: rgba(199,154,61,.45);
+      box-shadow: 0 28px 76px rgba(21,18,15,.18);
+    }
+
+    .system-card:hover img,
+    .system-card.is-touching img {
+      transform: scale(1.04);
+    }
+
+    .system-copy {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .system-copy span {
+      color: var(--ember);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .system-copy h3 {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 28px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .system-copy p {
+      margin: 0;
+      color: rgba(21,18,15,.66);
+      font-size: 14px;
+    }
+
+    .system-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .system-tags b {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      background: rgba(33,76,63,.08);
+      color: var(--forest);
+      border: 1px solid rgba(33,76,63,.16);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .gallery-section {
+      background: linear-gradient(180deg, var(--linen) 0%, #f6efe5 100%);
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: 96px;
+      grid-auto-flow: dense;
+      gap: 18px;
+    }
+
+    .image-tile {
+      position: relative;
+      overflow: hidden;
+      background: var(--sand);
+      border: 1px solid var(--line);
+      isolation: isolate;
+      grid-column: span 3;
+      grid-row: span 3;
+      transform: perspective(900px) rotateX(0) rotateY(0) translateY(0);
+      transform-style: preserve-3d;
+      transition: transform .42s var(--ease), box-shadow .42s var(--ease), border-color .3s ease;
+      will-change: transform;
+    }
+
+    .image-tile.large {
+      grid-column: span 6;
+      grid-row: span 5;
+    }
+
+    .image-tile.wide {
+      grid-column: span 6;
+      grid-row: span 3;
+    }
+
+    .image-tile:nth-child(5n + 2) {
+      grid-row: span 4;
+    }
+
+    .image-tile:nth-child(7n + 3) {
+      grid-column: span 4;
+    }
+
+    .image-tile:nth-child(9n + 5) {
+      grid-column: span 5;
+    }
+
+    .image-tile:nth-child(11n + 8) {
+      grid-row: span 4;
+    }
+
+    .image-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s var(--ease), filter .35s ease;
+    }
+
+    .image-tile:hover img {
+      transform: scale(1.055);
+      filter: saturate(1.06) contrast(1.03);
+    }
+
+    .image-tile:hover,
+    .image-tile.is-touching {
+      border-color: rgba(199,154,61,.48);
+      box-shadow: 0 24px 70px rgba(21,18,15,.2);
+    }
+
+    .image-tile::before {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      content: "";
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.26), rgba(255,255,255,.08) 18%, transparent 42%);
+      opacity: 0;
+      transition: opacity .25s ease;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .image-tile:hover::before,
+    .image-tile.is-touching::before {
+      opacity: 1;
+    }
+
+    .image-tile::after {
+      position: absolute;
+      inset: auto 0 0;
+      z-index: 1;
+      height: 55%;
+      content: "";
+      background: linear-gradient(0deg, rgba(0,0,0,.74), rgba(0,0,0,0));
+      pointer-events: none;
+    }
+
+    .image-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      z-index: 3;
+      color: #fff;
+      transform: translateY(0);
+      transition: transform .3s var(--ease);
+    }
+
+    .image-tile:hover .image-caption,
+    .image-tile.is-touching .image-caption {
+      transform: translateY(-4px);
+    }
+
+    .image-caption span {
+      display: block;
+      margin-bottom: 4px;
+      color: rgba(255,255,255,.7);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .image-caption strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .collection-card {
+      position: relative;
+      min-height: 410px;
+      overflow: hidden;
+      background: var(--linen);
+      color: #fff;
+      isolation: isolate;
+      border: 1px solid var(--line);
+      grid-column: span 3;
+      transform: perspective(900px) rotateX(0) rotateY(0) translateY(0);
+      transform-style: preserve-3d;
+      transition: transform .42s var(--ease), box-shadow .42s var(--ease), border-color .3s ease;
+      will-change: transform;
+    }
+
+    .collection-card.large {
+      grid-column: span 6;
+    }
+
+    .collection-card.media {
+      grid-column: span 6;
+    }
+
+    .collection-card::before {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      content: "";
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
+        url("assets/images/wardrobe.png");
+      background-size: cover;
+      background-position: center;
+      transition: transform .6s var(--ease), filter .35s ease;
+    }
+
+    .collection-card.kitchen::before {
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
+        url("assets/images/kitchen-hero.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .collection-card.closet::before {
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
+        url("assets/images/closet.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .collection-card.media::before {
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
+        url("assets/images/tv-unit.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .collection-card::after {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      background: linear-gradient(0deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.16) 62%, rgba(0,0,0,.1) 100%);
+      transition: background .3s ease;
+    }
+
+    .collection-card:hover,
+    .collection-card.is-touching {
+      border-color: rgba(199,154,61,.52);
+      box-shadow: 0 28px 80px rgba(21,18,15,.22);
+    }
+
+    .collection-card:hover::before,
+    .collection-card.is-touching::before {
+      transform: scale(1.045);
+      filter: saturate(1.04) contrast(1.04);
+    }
+
+    .collection-card:hover::after,
+    .collection-card.is-touching::after {
+      background: linear-gradient(0deg, rgba(0,0,0,.68) 0%, rgba(0,0,0,.08) 62%, rgba(0,0,0,.06) 100%);
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: none;
+      opacity: .9;
+    }
+
+    .scene-floor {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 34%;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.2));
+      transform: skewY(-5deg);
+      transform-origin: bottom right;
+    }
+
+    .wardrobe-scene .cabinet {
+      position: absolute;
+      right: 8%;
+      bottom: 14%;
+      width: 58%;
+      height: 68%;
+      background: linear-gradient(90deg, #3f2c1f, #8a6040 48%, #4b3324);
+      box-shadow: -28px 32px 48px rgba(0,0,0,.34);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .wardrobe-scene .cabinet::before,
+    .wardrobe-scene .cabinet::after {
+      position: absolute;
+      top: 8%;
+      bottom: 8%;
+      width: 1px;
+      background: rgba(255,255,255,.22);
+      content: "";
+    }
+
+    .wardrobe-scene .cabinet::before { left: 33%; }
+    .wardrobe-scene .cabinet::after { right: 33%; }
+
+    .wardrobe-scene .handle {
+      position: absolute;
+      top: 44%;
+      left: 49%;
+      width: 4px;
+      height: 54px;
+      background: var(--brass);
+    }
+
+    .kitchen-scene .base {
+      position: absolute;
+      left: 8%;
+      right: 6%;
+      bottom: 16%;
+      height: 25%;
+      background: linear-gradient(90deg, #eef0ed, #cfd7cf);
+      border-top: 12px solid #2d2f2d;
+      box-shadow: 0 25px 50px rgba(0,0,0,.26);
+    }
+
+    .kitchen-scene .uppers {
+      position: absolute;
+      left: 12%;
+      top: 18%;
+      width: 56%;
+      height: 25%;
+      background: linear-gradient(90deg, #ecece7, #abb7aa);
+      box-shadow: 18px 20px 40px rgba(0,0,0,.18);
+    }
+
+    .kitchen-scene .island {
+      position: absolute;
+      right: 7%;
+      bottom: 9%;
+      width: 44%;
+      height: 18%;
+      background: linear-gradient(90deg, #2e302e, #111);
+      border-top: 8px solid #f6f4ed;
+    }
+
+    .closet-scene .rack {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      bottom: 13%;
+      height: 70%;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.06);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .closet-scene .rack span {
+      display: block;
+      border-right: 1px solid rgba(255,255,255,.18);
+      background:
+        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.18)) 18% 35% / 55% 1px no-repeat,
+        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.18)) 18% 62% / 68% 1px no-repeat;
+    }
+
+    .media-scene .wall {
+      position: absolute;
+      left: 7%;
+      right: 7%;
+      bottom: 12%;
+      height: 66%;
+      background: linear-gradient(90deg, #2e2520, #4b3429);
+      box-shadow: 0 25px 50px rgba(0,0,0,.35);
+    }
+
+    .media-scene .screen {
+      position: absolute;
+      left: 24%;
+      right: 24%;
+      top: 26%;
+      bottom: 34%;
+      background: radial-gradient(circle at 50% 50%, #333a4c, #090b10 70%);
+      border: 7px solid #141414;
+    }
+
+    .media-scene .low {
+      position: absolute;
+      left: 14%;
+      right: 14%;
+      bottom: 18%;
+      height: 15%;
+      background: #15120f;
+      border-top: 2px solid rgba(185,141,67,.68);
+    }
+
+    .card-copy {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+    }
+
+    .card-copy span {
+      display: block;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,.64);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .card-copy h3 {
+      margin: 0 0 8px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 31px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .card-copy p {
+      margin: 0;
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 760px;
+      padding: 0;
+      background: linear-gradient(180deg, var(--linen) 0%, #f6efe5 100%);
+    }
+
+    .split:nth-of-type(even) {
+      background: var(--paper);
+    }
+
+    .split-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(46px, 7vw, 92px);
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 18px;
+      margin: 36px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .feature-list li {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 16px;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .feature-list li:last-child { border-bottom: 1px solid var(--line); }
+
+    .feature-list strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 15px;
+    }
+
+    .feature-list p {
+      margin: 0;
+      color: rgba(21, 18, 15, .66);
+      font-size: 14px;
+    }
+
+    .num {
+      font-family: "Playfair Display", Georgia, serif;
+      color: var(--brass);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .split-visual {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      isolation: isolate;
+      transform: translateZ(0);
+      transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+      will-change: transform;
+    }
+
+    .split-visual:hover,
+    .split-visual.is-touching {
+      transform: translateY(-4px);
+      box-shadow: 0 28px 80px rgba(21,18,15,.18);
+    }
+
+    .photo-asset {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(.92) contrast(1.02);
+      transition: transform .7s var(--ease), filter .35s ease;
+    }
+
+    .split-visual:hover .photo-asset,
+    .split-visual.is-touching .photo-asset {
+      transform: scale(1.035);
+      filter: saturate(1) contrast(1.04);
+    }
+
+    #wardrobes .photo-asset { background-image: url("assets/images/wardrobe.png"); }
+    #kitchens .photo-asset { background-image: url("assets/images/kitchen-hero.png"); }
+    #closets .photo-asset { background-image: url("assets/images/closet.png"); }
+    #tv-units .photo-asset { background-image: url("assets/images/tv-unit.png"); }
+
+    .photo-asset::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background: linear-gradient(0deg, rgba(0,0,0,.38), rgba(0,0,0,.04));
+    }
+
+    .visual-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      opacity: .2;
+      background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size: 1px 62px;
+    }
+
+    .spec-badge {
+      position: absolute;
+      z-index: 2;
+      left: clamp(18px, 4vw, 44px);
+      right: clamp(18px, 4vw, 44px);
+      bottom: clamp(18px, 4vw, 44px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      background: rgba(248, 243, 233, .96);
+      color: var(--ink);
+      box-shadow: 0 18px 50px rgba(0,0,0,.2);
+    }
+
+    .spec-badge div {
+      padding: 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .spec-badge div:last-child { border-right: 0; }
+    .spec-badge strong {
+      display: block;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 27px;
+      line-height: 1;
+    }
+    .spec-badge span {
+      display: block;
+      margin-top: 7px;
+      color: rgba(21,18,15,.62);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .process {
+      background: linear-gradient(135deg, var(--espresso) 0%, var(--graphite) 48%, var(--forest) 100%);
+      color: #fff;
+    }
+
+    .process .section-kicker { color: var(--gold); }
+    .process .section-text { color: rgba(255,255,255,.64); }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .process-step {
+      background: rgba(21, 18, 15, .68);
+      padding: clamp(24px, 4vw, 38px);
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .35s var(--ease), background .35s ease, box-shadow .35s ease;
+      will-change: transform;
+    }
+
+    .process-step:hover,
+    .process-step.is-touching {
+      transform: translateY(-6px);
+      background: rgba(21,18,15,.86);
+      box-shadow: inset 0 3px 0 var(--brass), 0 20px 50px rgba(0,0,0,.2);
+    }
+
+    .process-step span {
+      color: var(--brass);
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    .process-step h3 {
+      margin: 30px 0 12px;
+      font-size: 18px;
+    }
+
+    .process-step p {
+      margin: 0;
+      color: rgba(255,255,255,.66);
+      font-size: 14px;
+    }
+
+    .materials {
+      background: linear-gradient(180deg, var(--paper), #f2eadf);
+    }
+
+    .materials-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: clamp(24px, 5vw, 70px);
+      align-items: center;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .swatch {
+      min-height: 240px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      color: #fff;
+      background: #5a5851;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s var(--ease), box-shadow .3s ease, filter .3s ease;
+      will-change: transform;
+    }
+
+    .swatch:hover,
+    .swatch.is-touching {
+      transform: translateY(-5px);
+      box-shadow: 0 22px 50px rgba(21,18,15,.18);
+      filter: saturate(1.05);
+    }
+
+    .swatch::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .32;
+      background:
+        repeating-linear-gradient(92deg, transparent 0 12px, rgba(255,255,255,.18) 13px, transparent 14px),
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.45), transparent 28%);
+    }
+
+    .swatch:nth-child(2) { background: var(--walnut); }
+    .swatch:nth-child(3) { background: #e6ded1; color: var(--ink); }
+    .swatch:nth-child(4) { background: var(--forest); }
+    .swatch:nth-child(5) { background: var(--ember); }
+    .swatch:nth-child(6) { background: #d7d3c8; color: var(--ink); }
+
+    .swatch strong,
+    .swatch span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .swatch strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .swatch span {
+      font-size: 12px;
+      opacity: .78;
+    }
+
+    .contact-section {
+      background: linear-gradient(180deg, #efe5d8 0%, var(--linen) 100%);
+      padding-bottom: 0;
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .contact-copy,
+    .contact-form {
+      background: #fffaf2;
+      padding: clamp(28px, 5vw, 56px);
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 22px;
+      margin-top: 36px;
+    }
+
+    .contact-item {
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .contact-item span {
+      display: block;
+      color: rgba(23,22,20,.55);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .contact-item a,
+    .contact-item strong {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(23,22,20,.62);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      min-height: 48px;
+      padding: 12px 13px;
+      background: #fffdf8;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--brass);
+      box-shadow: 0 0 0 3px rgba(199, 154, 61, .16);
+    }
+
+    .form-status {
+      margin: 14px 0 0;
+      min-height: 24px;
+      color: var(--forest);
+      font-weight: 700;
+    }
+
+    footer {
+      background: var(--espresso);
+      color: #fff;
+      padding: 46px clamp(18px, 5vw, 72px);
+    }
+
+    .footer-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      gap: 36px;
+    }
+
+    footer p {
+      color: rgba(255,255,255,.62);
+      margin: 16px 0 0;
+      max-width: 360px;
+    }
+
+    footer h3 {
+      margin: 0 0 14px;
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    footer ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    footer a {
+      color: rgba(255,255,255,.66);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: #fff; }
+
+    .footer-bottom {
+      width: min(1180px, 100%);
+      margin: 36px auto 0;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      color: rgba(255,255,255,.48);
+      font-size: 12px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 1060px) {
+      .nav-links,
+      .phone,
+      .nav-actions .btn { display: none; }
+
+      .mobile-toggle { display: grid; place-items: center; }
+
+      .nav-links {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        top: 88px;
+        display: none;
+        padding: 20px;
+        background: var(--paper);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.is-open {
+        display: grid;
+        gap: 14px;
+      }
+
+      .hero-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        justify-content: flex-start;
+      }
+
+      .hero-stats,
+      .process-grid,
+      .collection-grid,
+      .image-grid,
+      .systems-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .image-grid {
+        grid-auto-rows: 220px;
+      }
+
+      .image-tile {
+        grid-column: auto;
+        grid-row: auto;
+      }
+
+      .image-tile:nth-child(n) {
+        grid-column: auto;
+        grid-row: auto;
+      }
+
+      .collection-card.large {
+        grid-column: span 2;
+      }
+
+      .collection-card,
+      .collection-card.media {
+        grid-column: auto;
+      }
+
+      .image-tile.large,
+      .image-tile.wide {
+        grid-column: span 2;
+        grid-row: auto;
+      }
+
+      .split,
+      .materials-grid,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .split-visual { order: -1; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .nav { height: 68px; }
+      .brand small { display: none; }
+      .brand-logo { width: 138px; height: 42px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .hero-content { padding-top: 126px; }
+      .hero h1 { font-size: clamp(48px, 16vw, 76px); }
+      .eyebrow { font-size: 10px; }
+      .hero-stats,
+      .process-grid,
+      .collection-grid,
+      .image-grid,
+      .systems-grid,
+      .spec-badge,
+      .swatches,
+      .form-grid,
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .stat,
+      .spec-badge div {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .stat:last-child,
+      .spec-badge div:last-child { border-bottom: 0; }
+      .collection-card.large { grid-column: auto; }
+      .collection-card { min-height: 360px; }
+      .image-grid { grid-auto-rows: 240px; }
+      .image-tile:nth-child(n) { grid-column: auto; grid-row: auto; }
+      .image-tile.large,
+      .image-tile.wide { grid-column: auto; grid-row: auto; }
+      .section-head { display: block; }
+      .section-text { margin-top: 18px; }
+      .split-copy { padding: 48px 18px; }
+      .split-visual { min-height: 460px; }
+      .contact-copy,
+      .contact-form { padding: 30px 18px; }
+      .footer-bottom { display: block; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .image-tile,
+      .system-card,
+      .collection-card,
+      .split-visual,
+      .process-step,
+      .swatch,
+      .btn,
+      .image-tile img,
+      .system-card img,
+      .photo-asset {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <nav class="nav" id="nav">
+      <a class="brand" href="#top" aria-label="Klever Kuche home">
+        <img class="brand-logo" src="assets/images/klever-logo.png" alt="Klever Küche">
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#systems">Systems</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#wardrobes">Wardrobes</a></li>
+        <li><a href="#kitchens">Kitchens</a></li>
+        <li><a href="#closets">Closets</a></li>
+        <li><a href="#tv-units">TV Units</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="phone" href="tel:0963999992">0963999992 / 94 / 96</a>
+        <a class="btn btn-light" href="#contact">Free Consultation</a>
+        <button class="mobile-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="hero-img" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow reveal">Modern luxury interiors | Addis Ababa, Ethiopia</p>
+        <h1 class="reveal">Kitchens, wardrobes and TV units for <em>modern homes.</em></h1>
+        <div class="hero-row reveal">
+          <p class="hero-copy">Klever K&uuml;che designs and installs kitchens, wardrobes, closets, and TV units with Super Matt UV MDF finishes, premium fittings, and a measured process from first sketch to final fit.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#collections">Explore Collections</a>
+            <a class="btn btn-ghost" href="#process">See Process</a>
+          </div>
+        </div>
+        <div class="hero-stats reveal" aria-label="Klever Kuche highlights">
+          <div class="stat"><strong>15yr</strong><span>Warranty</span></div>
+          <div class="stat"><strong>UV</strong><span>Super Matt MDF</span></div>
+          <div class="stat"><strong>4</strong><span>Design Categories</span></div>
+          <div class="stat"><strong>AA</strong><span>Addis Ababa</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="collections" id="collections">
+        <div class="inner">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker reveal">Collections</p>
+              <h2 class="reveal">Every room, finished with quiet luxury.</h2>
+            </div>
+            <p class="section-text reveal">Choose a complete interior system or commission a single statement piece. Each collection is measured, rendered, built, and installed for Ethiopian homes.</p>
+          </div>
+
+          <div class="collection-grid">
+            <article class="collection-card large reveal">
+              <div class="scene wardrobe-scene" aria-hidden="true">
+                <div class="scene-floor"></div>
+                <div class="cabinet"><span class="handle"></span></div>
+              </div>
+              <div class="card-copy">
+                <span>Wardrobes</span>
+                <h3>Schwarzwald Suite</h3>
+                <p>Super Matt UV MDF fronts, warm wood accents, glass details, and custom interiors.</p>
+              </div>
+            </article>
+
+            <article class="collection-card kitchen reveal">
+              <div class="scene kitchen-scene" aria-hidden="true">
+                <div class="scene-floor"></div>
+                <div class="uppers"></div>
+                <div class="base"></div>
+                <div class="island"></div>
+              </div>
+              <div class="card-copy">
+                <span>Kitchens</span>
+                <h3>Berlin Line</h3>
+                <p>Handleless Super Matt UV MDF fronts, integrated appliances, quartz surfaces, and hidden storage.</p>
+              </div>
+            </article>
+
+            <article class="collection-card closet reveal">
+              <div class="scene closet-scene" aria-hidden="true">
+                <div class="scene-floor"></div>
+                <div class="rack"><span></span><span></span><span></span></div>
+              </div>
+              <div class="card-copy">
+                <span>Closets</span>
+                <h3>Heidelberg System</h3>
+                <p>Walk-in layouts with rails, drawers, shoe storage, lighting, and open display shelves.</p>
+              </div>
+            </article>
+
+            <article class="collection-card media reveal">
+              <div class="scene media-scene" aria-hidden="true">
+                <div class="wall"></div>
+                <div class="screen"></div>
+                <div class="low"></div>
+              </div>
+              <div class="card-copy">
+                <span>Media Walls</span>
+                <h3>Living Suite</h3>
+                <p>TV walls with cable concealment, paneling, display shelving, and LED ambience.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="systems-section" id="systems">
+        <div class="inner">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker reveal">Design Systems</p>
+              <h2 class="reveal">The details that make the project work.</h2>
+            </div>
+            <p class="section-text reveal">A clear product-planning section for Klever's own practical systems: finishes, storage, worktops, profiles, appliances, and living units.</p>
+          </div>
+
+          <div class="systems-grid">
+            <article class="system-card reveal">
+              <img src="assets/images/material-samples.png" alt="Super Matt UV MDF and material samples">
+              <div class="system-copy">
+                <span>Front Finishes</span>
+                <h3>Super Matt UV MDF</h3>
+                <p>Matte cabinet fronts in charcoal, greige, champagne, white, and warm neutral tones for kitchens, wardrobes, closets, and TV units.</p>
+                <div class="system-tags"><b>UV MDF</b><b>Matte</b><b>Easy Clean</b></div>
+              </div>
+            </article>
+
+            <article class="system-card reveal">
+              <img src="assets/images/kitchen-detail-handleless.png" alt="Handleless kitchen cabinet detail">
+              <div class="system-copy">
+                <span>Profiles</span>
+                <h3>Handleless or minimal</h3>
+                <p>Choose handleless finger-pull profiles, slim black handles, or warm metal accents depending on the room and budget.</p>
+                <div class="system-tags"><b>Handleless</b><b>Black</b><b>Brass</b></div>
+              </div>
+            </article>
+
+            <article class="system-card reveal">
+              <img src="assets/images/ethiopia-pantry-storage.png" alt="Modern pantry storage system">
+              <div class="system-copy">
+                <span>Interior Storage</span>
+                <h3>Everything has a place</h3>
+                <p>Pantry units, drawer organizers, shoe shelves, hanging rails, display niches, and appliance zones are planned before production.</p>
+                <div class="system-tags"><b>Pantry</b><b>Drawers</b><b>Closet</b></div>
+              </div>
+            </article>
+
+            <article class="system-card reveal">
+              <img src="assets/images/kitchen-wide-02.png" alt="Modern kitchen worktop and island">
+              <div class="system-copy">
+                <span>Worktops</span>
+                <h3>Quartz and durable surfaces</h3>
+                <p>Kitchen counters, waterfall islands, backsplash panels, and vanity tops are selected to handle daily use and match the finish palette.</p>
+                <div class="system-tags"><b>Quartz</b><b>Island</b><b>Backsplash</b></div>
+              </div>
+            </article>
+
+            <article class="system-card reveal">
+              <img src="assets/images/ethiopia-showroom-samples.png" alt="Showroom consultation with finish samples">
+              <div class="system-copy">
+                <span>Planning</span>
+                <h3>Sample-led consultation</h3>
+                <p>Customers can compare finishes, hardware, and layouts before approving the design, so the final installation is clear from the start.</p>
+                <div class="system-tags"><b>Samples</b><b>3D Plan</b><b>Budget</b></div>
+              </div>
+            </article>
+
+            <article class="system-card reveal">
+              <img src="assets/images/ethiopia-tv-wall-family.png" alt="Modern TV unit with family living room">
+              <div class="system-copy">
+                <span>Living Units</span>
+                <h3>TV walls and storage</h3>
+                <p>Media walls use floating cabinets, cable concealment, shelving, LED light, and paneling to keep living rooms clean and premium.</p>
+                <div class="system-tags"><b>TV Unit</b><b>LED</b><b>Storage</b></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="gallery">
+        <div class="inner">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker reveal">Gallery</p>
+              <h2 class="reveal">More ideas for Addis Ababa homes.</h2>
+            </div>
+            <p class="section-text reveal">A larger visual library for Addis Ababa homes: kitchens, wardrobes, closets, TV units, coffee corners, family dining, material details, consultation, and installation service.</p>
+          </div>
+
+          <div class="image-grid">
+            <figure class="image-tile large reveal">
+              <img src="assets/images/kitchen-wide-02.png" alt="Modern luxury kitchen with Super Matt UV MDF cabinets and Ethiopian customers">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Warm matte luxury kitchen</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/kitchen-detail-handleless.png" alt="Close-up of handleless Super Matt UV MDF kitchen cabinetry">
+              <figcaption class="image-caption"><span>Detail</span><strong>Handleless cabinet finish</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/wardrobe-bedroom.png" alt="Modern bedroom wardrobe with Super Matt UV MDF sliding doors">
+              <figcaption class="image-caption"><span>Wardrobe</span><strong>Bedroom storage wall</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/closet-display-detail.png" alt="Luxury closet shoe and handbag display with LED lighting">
+              <figcaption class="image-caption"><span>Closet</span><strong>Display shelves and lighting</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/wardrobe-detail-drawer.png" alt="Close-up of wardrobe drawer, smoked glass shelf, and walnut interior">
+              <figcaption class="image-caption"><span>Detail</span><strong>Drawer and shelf system</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/kitchen-compact.png" alt="Compact modern apartment kitchen in Addis Ababa">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Compact apartment layout</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/tv-detail.png" alt="Modern TV wall detail with walnut slat panels and LED lighting">
+              <figcaption class="image-caption"><span>TV Unit</span><strong>Concealed cable media wall</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/consultation-showroom.png" alt="Klever Kuche showroom consultation with material samples">
+              <figcaption class="image-caption"><span>Consultation</span><strong>Material selection meeting</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/installation-service.png" alt="Professional wardrobe installation service in a luxury home">
+              <figcaption class="image-caption"><span>Service</span><strong>Clean installation process</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/material-samples.png" alt="Super Matt UV MDF, walnut, quartz, and cabinet hardware material samples">
+              <figcaption class="image-caption"><span>Materials</span><strong>Super Matt UV MDF samples</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/home-office-storage.png" alt="Modern home office storage wall with Super Matt UV MDF cabinets">
+              <figcaption class="image-caption"><span>Storage</span><strong>Home office wall system</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/bedroom-wardrobe-vanity.png" alt="Bedroom wardrobe and vanity with mirror and warm LED lighting">
+              <figcaption class="image-caption"><span>Bedroom</span><strong>Wardrobe and vanity</strong></figcaption>
+            </figure>
+            <figure class="image-tile large reveal">
+              <img src="assets/images/ethiopia-coffee-kitchen.png" alt="Modern Addis Ababa kitchen with Ethiopian coffee corner and Super Matt UV MDF cabinetry">
+              <figcaption class="image-caption"><span>Ethiopia</span><strong>Coffee corner kitchen</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/ethiopia-family-dining-kitchen.png" alt="Open-plan kitchen and dining room for an Ethiopian family home">
+              <figcaption class="image-caption"><span>Family Home</span><strong>Kitchen and dining layout</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/ethiopia-pantry-storage.png" alt="Modern pantry storage wall with Ethiopian home storage details">
+              <figcaption class="image-caption"><span>Pantry</span><strong>Pull-out storage wall</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/ethiopia-tv-wall-family.png" alt="Modern TV wall for an Ethiopian family living room">
+              <figcaption class="image-caption"><span>Living Room</span><strong>Family TV wall</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/ethiopia-wardrobe-dressing.png" alt="Modern wardrobe and dressing area with Ethiopian textile accent">
+              <figcaption class="image-caption"><span>Wardrobe</span><strong>Dressing area with local warmth</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/ethiopia-showroom-samples.png" alt="Addis Ababa showroom material samples for Super Matt UV MDF interiors">
+              <figcaption class="image-caption"><span>Showroom</span><strong>Addis sample meeting</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/ethiopia-entry-storage.png" alt="Modern Addis Ababa apartment entry shoe cabinet and storage unit">
+              <figcaption class="image-caption"><span>Entry</span><strong>Shoe and coat storage</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/ethiopia-kids-storage.png" alt="Kids bedroom wardrobe and study storage for an Ethiopian family home">
+              <figcaption class="image-caption"><span>Kids Room</span><strong>Wardrobe and study storage</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/nobilia-ref-soft-modern-stage.webp" alt="Clean modern kitchen reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Soft modern kitchen reference</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-modern-coffee.webp" alt="Modern kitchen reference with coffee niche and no people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Coffee niche layout</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-natural-wood.webp" alt="Natural wood kitchen reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Natural wood finish</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-open-plan.jpg" alt="Open plan kitchen and living reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Open-plan living idea</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/nobilia-ref-wide-dining.webp" alt="Wide kitchen and dining reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Kitchen with dining zone</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-neutral-tall-units.webp" alt="Neutral tall kitchen units without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Neutral tall units</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-white-breakfast.webp" alt="White breakfast kitchen reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>White breakfast kitchen</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-grey-corner.webp" alt="Grey corner kitchen reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Grey corner layout</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-white-pattern.webp" alt="White kitchen with patterned backsplash without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Pattern backsplash</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/nobilia-ref-open-living.webp" alt="Open living kitchen reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Open living kitchen</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-stone-wall.webp" alt="Kitchen reference with stone feature wall and no people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Stone wall finish</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-glass-island.webp" alt="Kitchen reference with glass island storage and no people">
+              <figcaption class="image-caption"><span>Reference</span><strong>Glass island storage</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/nobilia-ref-white-corner.webp" alt="White corner kitchen reference without people">
+              <figcaption class="image-caption"><span>Reference</span><strong>White corner kitchen</strong></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="split" id="wardrobes">
+        <div class="split-visual">
+          <div class="photo-asset" aria-hidden="true"></div>
+          <div class="visual-grid" aria-hidden="true"></div>
+          <div class="spec-badge">
+            <div><strong>14</strong><span>Finish Options</span></div>
+            <div><strong>Blum</strong><span>Premium Fittings</span></div>
+            <div><strong>Made</strong><span>To Measure</span></div>
+          </div>
+        </div>
+        <div class="split-copy">
+          <p class="section-kicker reveal">01 | Wardrobes</p>
+          <h2 class="reveal">Wardrobes that fit the room, not the other way around.</h2>
+          <p class="section-text reveal">From wall-to-wall bedroom wardrobes to quiet modern storage systems, every cabinet is planned around your room proportions, clothing habits, and finish palette.</p>
+          <ul class="feature-list reveal">
+            <li><span class="num">01</span><div><strong>Measured interiors</strong><p>Hanging space, shelves, shoe storage, safe zones, and accessory drawers planned before production starts.</p></div></li>
+            <li><span class="num">02</span><div><strong>Premium hardware</strong><p>Soft-close hinges, precision slides, and durable fittings for daily use.</p></div></li>
+            <li><span class="num">03</span><div><strong>Super Matt UV MDF</strong><p>Durable matte fronts with walnut accents, fluted panels, mirrors, and glass accents.</p></div></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="split" id="kitchens">
+        <div class="split-copy">
+          <p class="section-kicker reveal">02 | Kitchens</p>
+          <h2 class="reveal">A working kitchen with showroom discipline.</h2>
+          <p class="section-text reveal">Klever K&uuml;che balances practical cooking flow with high-end finishes: tall pantry walls, appliance garages, quartz counters, efficient corners, and careful light planning.</p>
+          <ul class="feature-list reveal">
+            <li><span class="num">01</span><div><strong>Modern luxury finish</strong><p>Choose handleless Super Matt UV MDF fronts, warm wood accents, glass display, or a calm hybrid style.</p></div></li>
+            <li><span class="num">02</span><div><strong>Workflow first</strong><p>Prep, cooking, cleanup, pantry, and serving zones are mapped before materials are selected.</p></div></li>
+            <li><span class="num">03</span><div><strong>Installed as a system</strong><p>Cabinets, counters, hardware, lighting, and finishing details are coordinated through one team.</p></div></li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="photo-asset" aria-hidden="true"></div>
+          <div class="visual-grid" aria-hidden="true"></div>
+          <div class="spec-badge">
+            <div><strong>6-12</strong><span>Week Lead Time</span></div>
+            <div><strong>3D</strong><span>Design Approval</span></div>
+            <div><strong>Full</strong><span>Installation</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="split" id="closets">
+        <div class="split-visual">
+          <div class="photo-asset" aria-hidden="true"></div>
+          <div class="visual-grid" aria-hidden="true"></div>
+          <div class="spec-badge">
+            <div><strong>LED</strong><span>Display Lighting</span></div>
+            <div><strong>Glass</strong><span>Drawer Options</span></div>
+            <div><strong>Custom</strong><span>Storage Layout</span></div>
+          </div>
+        </div>
+        <div class="split-copy">
+          <p class="section-kicker reveal">03 | Closets</p>
+          <h2 class="reveal">Walk-in closets planned like a boutique.</h2>
+          <p class="section-text reveal">Closets are built around visibility and access: open hanging zones, drawer islands, shoe shelves, handbag display, and warm lighting that makes everyday dressing easier.</p>
+          <ul class="feature-list reveal">
+            <li><span class="num">01</span><div><strong>Organized zones</strong><p>Clothes, shoes, accessories, bags, watches, and seasonal items each get a practical place.</p></div></li>
+            <li><span class="num">02</span><div><strong>Display details</strong><p>Glass drawers, lit shelves, and open sections make premium storage feel calm and easy to use.</p></div></li>
+            <li><span class="num">03</span><div><strong>Super Matt UV MDF</strong><p>Modern matte surfaces pair with warm wood textures for a luxury closet finish.</p></div></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="split" id="tv-units">
+        <div class="split-copy">
+          <p class="section-kicker reveal">04 | TV Units</p>
+          <h2 class="reveal">Media walls that hide the clutter.</h2>
+          <p class="section-text reveal">Custom TV units combine wall paneling, floating cabinets, shelving, warm LED light, and concealed cable paths so the living room stays clean.</p>
+          <ul class="feature-list reveal">
+            <li><span class="num">01</span><div><strong>Concealed wiring</strong><p>Power, speakers, internet, and device cables are planned before installation.</p></div></li>
+            <li><span class="num">02</span><div><strong>Floating storage</strong><p>Low cabinets and shelves keep remotes, consoles, books, and decor organized.</p></div></li>
+            <li><span class="num">03</span><div><strong>Warm LED ambience</strong><p>Integrated lighting highlights the wall without making the room feel busy.</p></div></li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="photo-asset" aria-hidden="true"></div>
+          <div class="visual-grid" aria-hidden="true"></div>
+          <div class="spec-badge">
+            <div><strong>TV</strong><span>Wall Unit</span></div>
+            <div><strong>LED</strong><span>Back Lighting</span></div>
+            <div><strong>Full</strong><span>Cable Concealment</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="process" id="process">
+        <div class="inner">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker reveal">Process</p>
+              <h2 class="reveal">Clear stages. No guesswork.</h2>
+            </div>
+            <p class="section-text reveal">The work is handled as one controlled project, from site survey and render approval to fabrication, delivery, fitting, and final inspection.</p>
+          </div>
+
+          <div class="process-grid">
+            <article class="process-step reveal">
+              <span>01</span>
+              <div>
+                <h3>Home Consultation</h3>
+                <p>We visit, measure, photograph, and understand how the space needs to work.</p>
+              </div>
+            </article>
+            <article class="process-step reveal">
+              <span>02</span>
+              <div>
+                <h3>3D Design</h3>
+                <p>You review layout, materials, storage, lighting, and pricing before production.</p>
+              </div>
+            </article>
+            <article class="process-step reveal">
+              <span>03</span>
+              <div>
+                <h3>Workshop Build</h3>
+                <p>Panels, carcasses, joinery, and hardware are produced to the approved plan.</p>
+              </div>
+            </article>
+            <article class="process-step reveal">
+              <span>04</span>
+              <div>
+                <h3>White-Glove Install</h3>
+                <p>The team installs, levels, adjusts, cleans, and checks every moving part.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="materials">
+        <div class="inner materials-grid">
+          <div>
+            <p class="section-kicker reveal">Materials</p>
+            <h2 class="reveal">Finishes with depth, not decoration.</h2>
+            <p class="section-text reveal">The palette is built around Super Matt UV MDF, warm wood textures, stone, glass, and soft neutral panels that support modern luxury homes in Addis Ababa.</p>
+          </div>
+          <div class="swatches reveal" aria-label="Material finish examples">
+            <div class="swatch"><strong>Super Matt UV MDF</strong><span>Main finish</span></div>
+            <div class="swatch"><strong>Walnut Texture</strong><span>Warm accent</span></div>
+            <div class="swatch"><strong>Light Neutral MDF</strong><span>Clean finish</span></div>
+            <div class="swatch"><strong>Sage Lacquer</strong><span>Matte front</span></div>
+            <div class="swatch"><strong>Clay Laminate</strong><span>Soft color</span></div>
+            <div class="swatch"><strong>Quartz Stone</strong><span>Countertop</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact">
+        <div class="inner">
+          <div class="contact-panel">
+            <div class="contact-copy">
+              <p class="section-kicker reveal">Contact</p>
+              <h2 class="reveal">Start with a measured home visit.</h2>
+              <p class="section-text reveal">Share the room, the scope, and the timeline. The Klever K&uuml;che team will follow up with a consultation slot in Addis Ababa and the next steps for measurement.</p>
+              <div class="contact-list reveal">
+                <div class="contact-item">
+                  <span>Call</span>
+                  <a href="tel:0963999992">0963999992 / 94 / 96</a>
+                </div>
+                <div class="contact-item">
+                  <span>Email</span>
+                  <a href="mailto:kleverkitchen29@gmail.com">kleverkitchen29@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                  <span>Location</span>
+                  <strong>Addis Ababa, Ethiopia</strong>
+                </div>
+              </div>
+            </div>
+
+            <form class="contact-form reveal" id="consultationForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" autocomplete="name" required>
+                </div>
+                <div class="field">
+                  <label for="phone">Phone</label>
+                  <input id="phone" name="phone" autocomplete="tel" required>
+                </div>
+                <div class="field">
+                  <label for="city">City</label>
+                  <select id="city" name="city" required>
+                    <option value="">Select city</option>
+                    <option>Addis Ababa</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="project">Project</label>
+                  <select id="project" name="project" required>
+                    <option value="">Select project</option>
+                    <option>Kitchen</option>
+                    <option>Wardrobe</option>
+                    <option>Walk-in closet</option>
+                    <option>TV unit</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" placeholder="Tell us about the room size, timeline, and style you want."></textarea>
+                </div>
+              </div>
+              <button class="btn btn-dark" type="submit">Request Consultation</button>
+              <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>
+          <a class="brand" href="#top">
+            <img class="brand-logo" src="assets/images/klever-logo.png" alt="Klever Küche">
+          </a>
+          <p>Modern luxury kitchens, wardrobes, closets, and TV units in Addis Ababa, finished with Super Matt UV MDF and built for daily use.</p>
+        </div>
+        <div>
+          <h3>Collections</h3>
+          <ul>
+            <li><a href="#wardrobes">Wardrobes</a></li>
+            <li><a href="#kitchens">Kitchens</a></li>
+            <li><a href="#closets">Closets</a></li>
+            <li><a href="#tv-units">TV Units</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <ul>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#contact">Book Visit</a></li>
+            <li><a href="mailto:kleverkitchen29@gmail.com">Email Studio</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Visit</h3>
+          <ul>
+            <li>Addis Ababa</li>
+            <li>0963999992 / 94 / 96</li>
+            <li>kleverkitchen29@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Klever K&uuml;che. All rights reserved.</span>
+        <span>Crafted with precision | Delivered with care</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const nav = document.getElementById("nav");
+    const navLinks = document.getElementById("navLinks");
+    const toggle = document.querySelector(".mobile-toggle");
+    const form = document.getElementById("consultationForm");
+    const formStatus = document.getElementById("formStatus");
+
+    const syncNav = () => {
+      nav.classList.toggle("is-solid", window.scrollY > 20);
+    };
+
+    syncNav();
+    window.addEventListener("scroll", syncNav, { passive: true });
+
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!isOpen));
+      navLinks.classList.toggle("is-open", !isOpen);
+    });
+
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.matches("a")) {
+        toggle.setAttribute("aria-expanded", "false");
+        navLinks.classList.remove("is-open");
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12 });
+
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const interactiveCards = document.querySelectorAll(".image-tile, .system-card, .collection-card");
+    const touchTargets = document.querySelectorAll(".image-tile, .system-card, .collection-card, .split-visual, .process-step, .swatch, .btn");
+
+    if (!reduceMotion) {
+      interactiveCards.forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+          if (event.pointerType !== "mouse") return;
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+          const rotateY = (x - .5) * 7;
+          const rotateX = (.5 - y) * 7;
+
+          card.style.setProperty("--mx", `${x * 100}%`);
+          card.style.setProperty("--my", `${y * 100}%`);
+          card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+        });
+
+        card.addEventListener("pointerleave", () => {
+          card.style.removeProperty("--mx");
+          card.style.removeProperty("--my");
+          card.style.transform = "";
+          card.classList.remove("is-touching");
+        });
+      });
+    }
+
+    touchTargets.forEach((target) => {
+      target.addEventListener("pointerdown", () => target.classList.add("is-touching"));
+      ["pointerup", "pointercancel", "pointerleave"].forEach((eventName) => {
+        target.addEventListener(eventName, () => target.classList.remove("is-touching"));
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const subject = encodeURIComponent("Klever Kuche consultation request");
+      const body = encodeURIComponent(
+        `Name: ${data.get("name")}\n` +
+        `Phone: ${data.get("phone")}\n` +
+        `City: ${data.get("city")}\n` +
+        `Project: ${data.get("project")}\n\n` +
+        `Message:\n${data.get("message") || ""}`
+      );
+
+      window.location.href = `mailto:kleverkitchen29@gmail.com?subject=${subject}&body=${body}`;
+      formStatus.textContent = "Opening your email app with the consultation details.";
+    });
+  </script>
+</body>
+</html>
