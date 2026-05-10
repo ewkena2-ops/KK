@@ -788,16 +788,16 @@
 
     .gallery-layout {
       display: grid;
-      grid-template-columns: minmax(260px, .42fr) minmax(0, 1fr);
-      gap: clamp(20px, 4vw, 46px);
+      grid-template-columns: 280px 1fr;
+      gap: clamp(16px, 3vw, 32px);
       align-items: start;
     }
 
     .gallery-panel {
       position: sticky;
-      top: 110px;
-      min-height: 520px;
-      padding: clamp(24px, 4vw, 42px);
+      top: 100px;
+      min-height: auto;
+      padding: 28px 24px;
       display: flex;
       flex-direction: column;
       background: #171411;
@@ -807,8 +807,8 @@
     }
 
     .gallery-panel .section-kicker { color: var(--gold); }
-    .gallery-panel h2 { color: #fff; }
-    .gallery-panel .section-text { color: rgba(255,255,255,.64); }
+    .gallery-panel h2 { color: #fff; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.1; }
+    .gallery-panel .section-text { color: rgba(255,255,255,.64); font-size: 13px; margin-top: 10px; }
 
     .gallery-panel::before {
       position: absolute;
@@ -826,13 +826,13 @@
     .gallery-filter {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
-      margin-top: 28px;
+      gap: 7px;
+      margin-top: 20px;
     }
 
     .gallery-filter button {
-      min-height: 36px;
-      padding: 0 12px;
+      min-height: 34px;
+      padding: 0 10px;
       border: 1px solid rgba(255,255,255,.2);
       background: rgba(255,255,255,.06);
       color: rgba(255,255,255,.78);
@@ -866,7 +866,7 @@
       margin-bottom: 7px;
       color: #fff;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(44px, 7vw, 82px);
+      font-size: clamp(32px, 4vw, 52px);
       line-height: .9;
     }
 
