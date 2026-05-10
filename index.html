@@ -30,6 +30,8 @@
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    html,
+    body { overflow-x: hidden; }
     body {
       margin: 0;
       background: linear-gradient(180deg, var(--paper) 0%, #efe6d8 100%);
@@ -57,6 +59,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 18px;
       height: 76px;
       padding: 0 clamp(18px, 5vw, 72px);
       color: #fff;
@@ -85,6 +88,7 @@
       padding: 5px 10px;
       box-shadow: 0 10px 28px rgba(0,0,0,.12);
       border-left: 4px solid var(--ember);
+      flex: 0 0 auto;
     }
 
     .brand-logo {
@@ -117,11 +121,14 @@
 
     .nav-links {
       display: flex;
-      gap: clamp(18px, 3vw, 38px);
+      gap: clamp(12px, 2vw, 28px);
       align-items: center;
+      justify-content: center;
       list-style: none;
       margin: 0;
       padding: 0;
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .nav-links a {
@@ -132,6 +139,7 @@
       text-transform: uppercase;
       opacity: .78;
       transition: opacity .2s ease;
+      white-space: nowrap;
     }
 
     .nav-links a:hover { opacity: 1; }
@@ -140,6 +148,8 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex: 0 0 auto;
+      margin-left: auto;
     }
 
     .phone {
@@ -187,6 +197,7 @@
       background: transparent;
       color: inherit;
       cursor: pointer;
+      flex: 0 0 44px;
     }
 
     .mobile-toggle span,
@@ -291,6 +302,7 @@
       line-height: .92;
       letter-spacing: 0;
       font-weight: 700;
+      overflow-wrap: break-word;
     }
 
     .hero h1 em {
@@ -1668,6 +1680,80 @@
       font-size: 12px;
     }
 
+    .social-float {
+      position: fixed;
+      right: 16px;
+      bottom: 88px;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-float a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: rgba(36, 24, 18, .92);
+      border: 1px solid rgba(199, 154, 61, .36);
+      color: #fff;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: background .22s ease, border-color .22s ease, transform .22s var(--ease);
+    }
+
+    .social-float a:hover {
+      background: var(--forest);
+      border-color: var(--brass);
+      transform: translateX(-4px);
+    }
+
+    .social-float svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      color: rgba(255, 255, 255, .7);
+      text-decoration: none;
+      transition: border-color .2s ease, color .2s ease;
+    }
+
+    .footer-social a:hover {
+      border-color: var(--brass);
+      color: var(--gold);
+    }
+
+    .footer-social svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 720px) {
+      .social-float {
+        right: 12px;
+        bottom: 18px;
+      }
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(20px);
@@ -1677,6 +1763,15 @@
     .reveal.is-visible {
       opacity: 1;
       transform: none;
+    }
+
+    @media (max-width: 1500px) {
+      .nav {
+        padding: 0 clamp(18px, 3vw, 42px);
+      }
+
+      .phone,
+      .nav-actions .btn { display: none; }
     }
 
     @media (max-width: 1060px) {
@@ -1795,15 +1890,53 @@
     }
 
     @media (max-width: 720px) {
-      .nav { height: 68px; }
+      .nav {
+        height: 68px;
+        padding: 0 18px;
+        gap: 12px;
+      }
+      .brand { padding: 4px 8px; }
       .brand small { display: none; }
       .brand-logo { width: 138px; height: 42px; }
       .brand-mark { width: 34px; height: 34px; }
-      .hero-content { padding-top: 126px; }
-      .hero h1 { font-size: clamp(48px, 16vw, 76px); }
-      .eyebrow { font-size: 10px; }
+      .hero-content {
+        width: min(100% - 36px, 1180px);
+        padding-top: 118px;
+      }
+      .hero h1 {
+        max-width: 100%;
+        font-size: clamp(32px, 8.6vw, 42px);
+        line-height: .98;
+      }
+      .hero-copy {
+        max-width: 100%;
+        font-size: 16px;
+      }
+      .hero-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+      }
+      .hero-actions .btn {
+        min-width: 0;
+        padding: 0 10px;
+        font-size: 11px;
+        letter-spacing: .08em;
+      }
+      h2 { font-size: clamp(26px, 6vw, 40px); }
+      .eyebrow {
+        max-width: 100%;
+        gap: 10px;
+        font-size: 10px;
+        letter-spacing: .18em;
+      }
+      .eyebrow::before {
+        width: 32px;
+        flex: 0 0 32px;
+      }
       .design-lab {
-        min-height: 760px;
+        min-height: 600px;
       }
       .design-lab-copy {
         padding-top: 84px;
@@ -1812,17 +1945,25 @@
         min-height: 40px;
       }
       .hero-stats,
-      .process-grid,
       .collection-grid,
-      .quote-grid,
-      .image-grid,
-      .systems-grid,
       .spec-badge,
-      .swatches,
       .form-grid,
       .footer-inner {
         grid-template-columns: 1fr;
       }
+
+      .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .swatch { min-height: 160px; }
+
+      .image-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 200px;
+        padding: 8px;
+        gap: 8px;
+      }
+
+      .process-step { min-height: 220px; }
+      .system-card { min-height: 360px; }
 
       .quote-grid {
         grid-auto-rows: auto;
@@ -1833,7 +1974,7 @@
       .quote-card.tall {
         grid-column: auto;
         grid-row: auto;
-        min-height: 380px;
+        min-height: 300px;
       }
 
       .stat,
@@ -1846,11 +1987,6 @@
       .spec-badge div:last-child { border-bottom: 0; }
       .collection-card.large { grid-column: auto; }
       .collection-card { min-height: 360px; }
-      .image-grid { grid-auto-rows: 240px; }
-      .image-grid {
-        padding: 8px;
-        gap: 8px;
-      }
       .gallery-panel {
         padding: 28px 20px;
       }
@@ -2542,6 +2678,17 @@
             <img class="brand-logo" src="assets/images/klever-logo.png" alt="Klever Küche">
           </a>
           <p>Modern luxury kitchens, wardrobes, closets, and TV units in Addis Ababa, finished with Super Matt UV MDF and built for daily use.</p>
+          <div class="footer-social" aria-label="Follow us">
+            <a href="https://www.instagram.com/klever.kuche?igsh=NGEybXp0ZTc1N2F4" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://t.me/Klever_Kuche" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@kleverkuche24?_r=1&amp;_t=ZS-96FSr4wcEFB" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          </div>
         </div>
         <div>
           <h3>Collections</h3>
@@ -2574,6 +2721,19 @@
         <span>Crafted with precision | Delivered with care</span>
       </div>
     </footer>
+  </div>
+
+  <!-- Floating social bar -->
+  <div class="social-float" aria-label="Follow us on social media">
+    <a href="https://www.instagram.com/klever.kuche?igsh=NGEybXp0ZTc1N2F4" target="_blank" rel="noopener noreferrer" aria-label="Instagram" id="link-instagram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://t.me/Klever_Kuche" target="_blank" rel="noopener noreferrer" aria-label="Telegram" id="link-telegram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@kleverkuche24?_r=1&amp;_t=ZS-96FSr4wcEFB" target="_blank" rel="noopener noreferrer" aria-label="TikTok" id="link-tiktok">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+    </a>
   </div>
 
   <script type="module">
