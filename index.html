@@ -397,6 +397,113 @@
       color: rgba(21, 18, 15, .68);
     }
 
+    .design-lab {
+      position: relative;
+      min-height: 92svh;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: end;
+      background:
+        radial-gradient(circle at 70% 28%, rgba(199,154,61,.22), transparent 34%),
+        linear-gradient(135deg, #15120f 0%, #242019 48%, #214c3f 100%);
+      color: #fff;
+      isolation: isolate;
+    }
+
+    .design-lab-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 0;
+      cursor: grab;
+    }
+
+    .design-lab-canvas:active {
+      cursor: grabbing;
+    }
+
+    .design-lab-shade {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(90deg, rgba(10,8,6,.9) 0%, rgba(10,8,6,.54) 36%, rgba(10,8,6,.08) 72%),
+        linear-gradient(0deg, rgba(10,8,6,.64), rgba(10,8,6,.08) 54%, rgba(10,8,6,.26));
+      pointer-events: none;
+    }
+
+    .design-lab-copy {
+      position: relative;
+      z-index: 2;
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: clamp(92px, 14vw, 180px) 0 clamp(56px, 8vw, 96px);
+    }
+
+    .design-lab-copy .section-kicker {
+      color: var(--gold);
+    }
+
+    .design-lab-copy h2 {
+      max-width: 700px;
+      color: #fff;
+    }
+
+    .design-lab-copy .section-text {
+      max-width: 540px;
+      margin-top: 18px;
+      color: rgba(255,255,255,.68);
+    }
+
+    .design-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .design-controls button {
+      min-height: 42px;
+      padding: 0 14px 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.82);
+      font: inherit;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s var(--ease);
+    }
+
+    .design-controls button:hover,
+    .design-controls button.is-active {
+      background: rgba(248,243,233,.96);
+      border-color: rgba(248,243,233,.96);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .finish-dot {
+      width: 18px;
+      height: 18px;
+      border: 1px solid rgba(255,255,255,.46);
+      background: var(--finish);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
+    }
+
+    .finish-dot.taupe { --finish: #8f8373; }
+    .finish-dot.graphite { --finish: #30302e; }
+    .finish-dot.ivory { --finish: #e8dfcf; }
+    .finish-dot.olive { --finish: #66705a; }
+
     .collections {
       background: linear-gradient(180deg, var(--paper) 0%, #fff9ef 100%);
     }
@@ -1605,6 +1712,16 @@
         justify-content: flex-start;
       }
 
+      .design-lab {
+        min-height: 820px;
+      }
+
+      .design-lab-shade {
+        background:
+          linear-gradient(0deg, rgba(10,8,6,.82), rgba(10,8,6,.14) 58%, rgba(10,8,6,.38)),
+          linear-gradient(90deg, rgba(10,8,6,.8), rgba(10,8,6,.18));
+      }
+
       .hero-stats,
       .process-grid,
       .collection-grid,
@@ -1685,6 +1802,15 @@
       .hero-content { padding-top: 126px; }
       .hero h1 { font-size: clamp(48px, 16vw, 76px); }
       .eyebrow { font-size: 10px; }
+      .design-lab {
+        min-height: 760px;
+      }
+      .design-lab-copy {
+        padding-top: 84px;
+      }
+      .design-controls button {
+        min-height: 40px;
+      }
       .hero-stats,
       .process-grid,
       .collection-grid,
@@ -1776,6 +1902,7 @@
 
       <ul class="nav-links" id="navLinks">
         <li><a href="#collections">Collections</a></li>
+        <li><a href="#design-lab">3D View</a></li>
         <li><a href="#systems">Systems</a></li>
         <li><a href="#image-quotes">Quotes</a></li>
         <li><a href="#gallery">Gallery</a></li>
@@ -1818,6 +1945,22 @@
     </header>
 
     <main>
+      <section class="design-lab" id="design-lab" aria-label="Animated 3D cabinetry preview">
+        <canvas class="design-lab-canvas" id="designLabCanvas" aria-label="Animated 3D model of handled cabinetry, kitchen island, and storage wall"></canvas>
+        <div class="design-lab-shade" aria-hidden="true"></div>
+        <div class="design-lab-copy">
+          <p class="section-kicker reveal">3D Preview</p>
+          <h2 class="reveal">See the room take shape before it is built.</h2>
+          <p class="section-text reveal">A moving cabinet, island, and storage wall preview with slim handled fronts, matte finishes, warm wood accents, and measured proportions.</p>
+          <div class="design-controls reveal" aria-label="3D finish options">
+            <button type="button" class="is-active" data-finish="taupe" aria-pressed="true"><span class="finish-dot taupe"></span>Taupe</button>
+            <button type="button" data-finish="graphite" aria-pressed="false"><span class="finish-dot graphite"></span>Graphite</button>
+            <button type="button" data-finish="ivory" aria-pressed="false"><span class="finish-dot ivory"></span>Ivory</button>
+            <button type="button" data-finish="olive" aria-pressed="false"><span class="finish-dot olive"></span>Olive</button>
+          </div>
+        </div>
+      </section>
+
       <section class="collections" id="collections">
         <div class="inner">
           <div class="section-head">
@@ -2432,6 +2575,173 @@
       </div>
     </footer>
   </div>
+
+  <script type="module">
+    import * as THREE from "./assets/vendor/three.module.min.js";
+
+    const canvas3d = document.getElementById("designLabCanvas");
+    const designLab = document.getElementById("design-lab");
+
+    if (canvas3d && designLab && window.WebGLRenderingContext) {
+      const reduce3dMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(36, 1, .1, 80);
+      camera.position.set(5.8, 3.8, 7.4);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas3d,
+        antialias: true,
+        alpha: true,
+        preserveDrawingBuffer: true,
+        powerPreference: "high-performance"
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.05;
+      renderer.setClearColor(0x000000, 0);
+
+      const model = new THREE.Group();
+      model.rotation.y = -.28;
+      scene.add(model);
+
+      const frontMaterial = new THREE.MeshStandardMaterial({ color: 0x8f8373, roughness: .72, metalness: .03 });
+      const accentMaterial = new THREE.MeshStandardMaterial({ color: 0x6b472e, roughness: .58, metalness: .02 });
+      const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0xd8cdbb, roughness: .48, metalness: .01 });
+      const metalMaterial = new THREE.MeshStandardMaterial({ color: 0x171615, roughness: .36, metalness: .72 });
+      const shadowMaterial = new THREE.MeshStandardMaterial({ color: 0x201b16, roughness: .86, metalness: 0 });
+      const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x3a332b, roughness: .9, metalness: 0 });
+      const lineMaterial = new THREE.MeshStandardMaterial({ color: 0x17120e, roughness: .52, metalness: .18 });
+
+      const frontMaterials = [frontMaterial];
+      const accentMaterials = [accentMaterial];
+      const metalMaterials = [metalMaterial];
+
+      const box = (width, height, depth, x, y, z, material, parent = model) => {
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
+        mesh.position.set(x, y, z);
+        parent.add(mesh);
+        return mesh;
+      };
+
+      box(9.2, .08, 6.2, 0, -.04, .5, shadowMaterial);
+      box(9.2, 3.2, .08, 0, 1.55, -2.15, wallMaterial);
+      box(.08, 3.2, 6.2, -4.62, 1.55, .5, wallMaterial);
+
+      for (let i = 0; i < 7; i += 1) {
+        const x = -2.76 + i * .92;
+        box(.82, 2.66, .36, x, 1.33, -1.92, frontMaterial);
+        box(.018, 1.72, .045, x + .31, 1.42, -1.71, metalMaterial);
+        box(.74, .018, .044, x, 2.13, -1.705, lineMaterial);
+        box(.74, .018, .044, x, .78, -1.705, lineMaterial);
+      }
+
+      box(.9, 2.66, .42, 3.18, 1.33, -1.9, accentMaterial);
+      for (let shelf = 0; shelf < 4; shelf += 1) {
+        box(.82, .045, .36, 3.18, .52 + shelf * .62, -1.64, stoneMaterial);
+      }
+
+      box(2.95, .82, 1.42, -.55, .41, .9, frontMaterial);
+      box(3.22, .18, 1.68, -.55, .9, .9, stoneMaterial);
+      box(2.72, .035, .045, -.55, .62, 1.63, lineMaterial);
+      box(2.72, .035, .045, -.55, .33, 1.63, lineMaterial);
+      for (let col = 0; col < 3; col += 1) {
+        const x = -1.45 + col * .9;
+        box(.62, .035, .052, x, .72, 1.66, metalMaterial);
+        box(.62, .035, .052, x, .43, 1.66, metalMaterial);
+      }
+
+      box(1.12, 1.04, .38, -3.75, .52, -.42, frontMaterial);
+      box(1.18, .12, .48, -3.75, 1.1, -.42, stoneMaterial);
+      box(.026, .68, .048, -3.29, .6, -.2, metalMaterial);
+      box(.026, .68, .048, -4.21, .6, -.2, metalMaterial);
+      box(.95, .05, .34, -3.75, 1.42, -.36, accentMaterial);
+      box(.95, .05, .34, -3.75, 1.8, -.36, accentMaterial);
+
+      const glowMaterial = new THREE.MeshBasicMaterial({ color: 0xf0c66a, transparent: true, opacity: .58 });
+      box(5.8, .025, .018, .05, 2.72, -1.66, glowMaterial);
+      box(2.9, .025, .018, -.55, 1.02, 1.72, glowMaterial);
+      box(.74, .018, .018, 3.18, 2.32, -1.42, glowMaterial);
+      box(.74, .018, .018, 3.18, 1.7, -1.42, glowMaterial);
+
+      const ambient = new THREE.HemisphereLight(0xfff7e8, 0x202821, 1.75);
+      scene.add(ambient);
+      const keyLight = new THREE.DirectionalLight(0xffefd0, 3.1);
+      keyLight.position.set(3.4, 6.2, 4.6);
+      scene.add(keyLight);
+      const warmLight = new THREE.PointLight(0xf0bd60, 15, 10);
+      warmLight.position.set(-1.8, 2.8, 1.8);
+      scene.add(warmLight);
+
+      const finishes = {
+        taupe: { front: 0x8f8373, accent: 0x6b472e, metal: 0x171615 },
+        graphite: { front: 0x333433, accent: 0x7a5234, metal: 0xc49a3d },
+        ivory: { front: 0xe5dccb, accent: 0x6f4b31, metal: 0x171615 },
+        olive: { front: 0x66705a, accent: 0x704b32, metal: 0x151412 }
+      };
+
+      const applyFinish = (name) => {
+        const finish = finishes[name] || finishes.taupe;
+        frontMaterials.forEach((material) => material.color.setHex(finish.front));
+        accentMaterials.forEach((material) => material.color.setHex(finish.accent));
+        metalMaterials.forEach((material) => material.color.setHex(finish.metal));
+        document.querySelectorAll("[data-finish]").forEach((button) => {
+          const active = button.dataset.finish === name;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+      };
+
+      document.querySelectorAll("[data-finish]").forEach((button) => {
+        button.addEventListener("click", () => applyFinish(button.dataset.finish));
+      });
+
+      const pointer = { x: 0, y: 0 };
+      canvas3d.addEventListener("pointermove", (event) => {
+        const rect = canvas3d.getBoundingClientRect();
+        pointer.x = ((event.clientX - rect.left) / rect.width - .5) * 2;
+        pointer.y = ((event.clientY - rect.top) / rect.height - .5) * 2;
+      });
+      canvas3d.addEventListener("pointerleave", () => {
+        pointer.x = 0;
+        pointer.y = 0;
+      });
+
+      const resize = () => {
+        const rect = designLab.getBoundingClientRect();
+        const width = Math.max(320, Math.floor(rect.width));
+        const height = Math.max(420, Math.floor(rect.height));
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+
+      const resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(designLab);
+      resize();
+      applyFinish("taupe");
+
+      const clock = new THREE.Clock();
+      const renderScene = () => {
+        const elapsed = clock.getElapsedTime();
+        model.rotation.y = -.28 + Math.sin(elapsed * .34) * .08 + pointer.x * .12;
+        model.rotation.x = pointer.y * .035;
+        model.position.y = reduce3dMotion ? 0 : Math.sin(elapsed * .82) * .035;
+        warmLight.position.x = -1.8 + Math.sin(elapsed * .7) * .9;
+        camera.lookAt(.1, 1.12, -.28);
+        renderer.render(scene, camera);
+        window.__klever3dReady = true;
+      };
+
+      if (reduce3dMotion) {
+        renderScene();
+      } else {
+        renderer.setAnimationLoop(renderScene);
+      }
+    } else if (designLab) {
+      designLab.classList.add("is-static");
+    }
+  </script>
 
   <script>
     const nav = document.getElementById("nav");
