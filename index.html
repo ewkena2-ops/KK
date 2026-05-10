@@ -3640,26 +3640,20 @@
       });
     });
 
-    /* ── Supabase lead storage (replace with your project credentials) ── */
-    const SUPABASE_URL  = "https://YOUR_PROJECT.supabase.co";
-    const SUPABASE_KEY  = "YOUR_ANON_KEY";
+    const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyJ5Twc9xYOtDOdfBPf3c3jwdcAk2h5EMlfr8VYDFJKrByXblOTN3cq7JIKVEpjJ84t/exec";
 
-    const saveToSupabase = async (payload) => {
+    const saveToSheets = async (payload) => {
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
+        await fetch(SHEETS_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Prefer": "return=minimal"
-          },
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
       } catch (_) { /* non-blocking */ }
     };
 
-    /* ── Formspree form submission ── */
+    /* ── Form submission → Google Sheets ── */
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const submitBtn = form.querySelector("[type=submit]");
@@ -3670,28 +3664,18 @@
       const data = new FormData(form);
       const payload = {
         name:    data.get("name"),
+        email:   data.get("email") || "",
         phone:   data.get("phone"),
-        city:    data.get("city"),
-        project: data.get("project"),
-        message: data.get("message") || ""
+        interest: data.get("project"),
+        message: data.get("message") || "",
+        budget:  data.get("city") || ""
       };
 
       try {
-        /* ── Formspree: replace YOUR_FORM_ID after signing up at formspree.io ── */
-        const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-          method: "POST",
-          headers: { "Accept": "application/json" },
-          body: data
-        });
-
-        if (res.ok) {
-          formStatus.textContent = "Thank you! We will call you within 24 hours to confirm your consultation.";
-          formStatus.style.color = "var(--forest)";
-          form.reset();
-          await saveToSupabase({ ...payload, submitted_at: new Date().toISOString() });
-        } else {
-          throw new Error("server");
-        }
+        await saveToSheets(payload);
+        formStatus.textContent = "Thank you! We will call you within 24 hours to confirm your consultation.";
+        formStatus.style.color = "var(--forest)";
+        form.reset();
       } catch (_) {
         formStatus.textContent = "Something went wrong. Please call us directly at 0963999992.";
         formStatus.style.color = "var(--ember)";
