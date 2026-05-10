@@ -1,0 +1,70 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: assets/images
+public_folder: assets/images
+
+site_url: https://ewkena2-ops.github.io/KK
+
+collections:
+
+  - name: gallery
+    label: Gallery Images
+    label_singular: Gallery Image
+    folder: _data/gallery
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Image, name: image, widget: image }
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - { label: All, value: all }
+          - { label: Kitchens, value: kitchens }
+          - { label: Wardrobes, value: wardrobes }
+          - { label: Closets, value: closets }
+          - { label: TV Units, value: tv-units }
+      - { label: Featured (large tile), name: featured, widget: boolean, default: false }
+      - { label: Caption, name: caption, widget: string, required: false }
+
+  - name: projects
+    label: Completed Projects
+    label_singular: Project
+    folder: _data/projects
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Project Name, name: title, widget: string }
+      - { label: Cover Image, name: image, widget: image }
+      - { label: Location, name: location, widget: string }
+      - { label: Year, name: year, widget: number }
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - { label: Kitchen, value: kitchen }
+          - { label: Wardrobe, value: wardrobe }
+          - { label: Closet, value: closet }
+          - { label: TV Unit, value: tv-unit }
+          - { label: Full Interior, value: full-interior }
+      - { label: Description, name: description, widget: text }
+
+  - name: settings
+    label: Site Settings
+    files:
+      - label: Business Info
+        name: business
+        file: _data/settings/business.json
+        fields:
+          - { label: Business Name, name: name, widget: string }
+          - { label: Phone, name: phone, widget: string }
+          - { label: Email, name: email, widget: string }
+          - { label: Address, name: address, widget: string }
+          - { label: Instagram URL, name: instagram, widget: string, required: false }
+          - { label: Calendly URL, name: calendly_url, widget: string }
+          - { label: Formspree Form ID, name: formspree_id, widget: string }
+          - { label: Hero Headline, name: hero_headline, widget: string }
+          - { label: Hero Subtext, name: hero_subtext, widget: text }

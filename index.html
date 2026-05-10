@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+  <!-- Calendly -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <!-- Netlify Identity (for CMS login) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
     :root {
       --ink: #15120f;
@@ -2120,7 +2124,7 @@
 
       <div class="nav-actions">
         <a class="phone" href="tel:0963999992">0963999992 / 94 / 96</a>
-        <a class="btn btn-light" href="#contact">Free Consultation</a>
+        <a class="btn btn-primary" href="" onclick="Calendly.initPopupWidget({url:'https://calendly.com/kleverkuche'}); return false;">Book Now</a>
         <button class="mobile-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
           <span></span>
         </button>
@@ -2136,7 +2140,7 @@
           <p class="hero-copy">Klever K&uuml;che designs and installs kitchens, wardrobes, closets, and TV units with Super Matt UV MDF finishes, premium fittings, and a measured process from first sketch to final fit.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#collections">Explore Collections</a>
-            <a class="btn btn-ghost" href="#process">See Process</a>
+            <a class="btn btn-ghost" href="" onclick="Calendly.initPopupWidget({url:'https://calendly.com/kleverkuche'}); return false;">Book Consultation</a>
           </div>
         </div>
         <div class="hero-stats reveal" aria-label="Klever Kuche highlights">
@@ -3636,20 +3640,64 @@
       });
     });
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = new FormData(form);
-      const subject = encodeURIComponent("Klever Kuche consultation request");
-      const body = encodeURIComponent(
-        `Name: ${data.get("name")}\n` +
-        `Phone: ${data.get("phone")}\n` +
-        `City: ${data.get("city")}\n` +
-        `Project: ${data.get("project")}\n\n` +
-        `Message:\n${data.get("message") || ""}`
-      );
+    /* ── Supabase lead storage (replace with your project credentials) ── */
+    const SUPABASE_URL  = "https://YOUR_PROJECT.supabase.co";
+    const SUPABASE_KEY  = "YOUR_ANON_KEY";
 
-      window.location.href = `mailto:kleverkitchen29@gmail.com?subject=${subject}&body=${body}`;
-      formStatus.textContent = "Opening your email app with the consultation details.";
+    const saveToSupabase = async (payload) => {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) { /* non-blocking */ }
+    };
+
+    /* ── Formspree form submission ── */
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submitBtn = form.querySelector("[type=submit]");
+      submitBtn.disabled = true;
+      formStatus.textContent = "Sending…";
+      formStatus.style.color = "";
+
+      const data = new FormData(form);
+      const payload = {
+        name:    data.get("name"),
+        phone:   data.get("phone"),
+        city:    data.get("city"),
+        project: data.get("project"),
+        message: data.get("message") || ""
+      };
+
+      try {
+        /* ── Formspree: replace YOUR_FORM_ID after signing up at formspree.io ── */
+        const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+          method: "POST",
+          headers: { "Accept": "application/json" },
+          body: data
+        });
+
+        if (res.ok) {
+          formStatus.textContent = "Thank you! We will call you within 24 hours to confirm your consultation.";
+          formStatus.style.color = "var(--forest)";
+          form.reset();
+          await saveToSupabase({ ...payload, submitted_at: new Date().toISOString() });
+        } else {
+          throw new Error("server");
+        }
+      } catch (_) {
+        formStatus.textContent = "Something went wrong. Please call us directly at 0963999992.";
+        formStatus.style.color = "var(--ember)";
+      } finally {
+        submitBtn.disabled = false;
+      }
     });
 
     /* ── Lightbox ── */
@@ -3740,5 +3788,7 @@
       });
     })();
   </script>
+  <!-- Calendly widget JS (must be in body, after CSS link in head) -->
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </body>
 </html>
