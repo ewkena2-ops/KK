@@ -787,27 +787,31 @@
     }
 
     .gallery-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: clamp(16px, 3vw, 32px);
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
     }
 
     .gallery-panel {
-      position: sticky;
-      top: 100px;
-      min-height: auto;
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
+      position: relative;
+      top: auto;
+      width: 100%;
+      padding: 32px clamp(20px, 4vw, 48px);
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      align-items: start;
+      gap: 24px 40px;
       background: #171411;
       color: #fff;
       border: 1px solid rgba(199,154,61,.34);
       box-shadow: 0 30px 90px rgba(21,18,15,.2);
     }
 
-    .gallery-panel .section-kicker { color: var(--gold); }
-    .gallery-panel h2 { color: #fff; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.1; }
+    .gallery-panel .section-kicker { color: var(--gold); grid-column: 1; }
+    .gallery-panel h2 { color: #fff; font-size: clamp(22px, 3vw, 36px); line-height: 1.1; grid-column: 1; margin: 0; }
+    .gallery-panel .section-text { grid-column: 2; align-self: center; font-size: 14px; margin: 0; }
+    .gallery-filter { grid-column: 3; align-self: center; flex-direction: column; margin-top: 0; }
+    .gallery-count { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.14); padding-top: 16px; margin: 0; }
     .gallery-panel .section-text { color: rgba(255,255,255,.64); font-size: 13px; margin-top: 10px; }
 
     .gallery-panel::before {
@@ -1865,9 +1869,9 @@
       .quote-card.feature { grid-column: span 2; min-height: 480px; grid-row: span 2; }
       .quote-card.tall { grid-column: span 1; grid-row: span 2; }
 
-      /* — gallery — */
-      .gallery-layout { grid-template-columns: 1fr; }
-      .gallery-panel { position: relative; top: auto; min-height: auto; }
+      /* — gallery panel: stack filter column on tablet — */
+      .gallery-panel { grid-template-columns: 1fr 1fr; }
+      .gallery-filter { grid-column: 1 / -1; flex-direction: row; }
 
       /* — collection cards — */
       .collection-card { grid-column: auto; }
@@ -1946,10 +1950,12 @@
       .quote-card:not(.feature) .quote-copy blockquote { font-size: clamp(18px, 5.5vw, 26px); }
 
       /* — gallery — */
-      .gallery-panel { padding: 18px 14px; }
-      .gallery-filter { margin-top: 14px; gap: 6px; }
+      .gallery-panel { grid-template-columns: 1fr; padding: 18px 14px; gap: 10px; }
+      .gallery-panel .section-text { grid-column: 1; }
+      .gallery-filter { grid-column: 1; flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 6px; }
       .gallery-filter button { min-height: 32px; padding: 0 9px; font-size: 10px; }
-      .gallery-count strong { font-size: clamp(36px, 9vw, 56px); }
+      .gallery-count { grid-column: 1; }
+      .gallery-count strong { font-size: clamp(28px, 8vw, 44px); }
 
       /* — split/visual sections — */
       .split { min-height: auto; }
