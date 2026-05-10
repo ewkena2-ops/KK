@@ -437,6 +437,40 @@
       cursor: grabbing;
     }
 
+    .scene-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .scene-tab {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 22px;
+      border: 1px solid rgba(255, 255, 255, .22);
+      background: rgba(255, 255, 255, .06);
+      color: rgba(255, 255, 255, .68);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .scene-tab:hover {
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+    }
+
+    .scene-tab.is-active {
+      background: rgba(199, 154, 61, .2);
+      border-color: var(--brass);
+      color: #fff;
+    }
+
     .design-lab-shade {
       position: absolute;
       inset: 0;
@@ -2087,7 +2121,12 @@
         <div class="design-lab-copy">
           <p class="section-kicker reveal">3D Preview</p>
           <h2 class="reveal">See the room take shape before it is built.</h2>
-          <p class="section-text reveal">A moving cabinet, island, and storage wall preview with slim handled fronts, matte finishes, warm wood accents, and measured proportions.</p>
+          <p class="section-text reveal">Explore a kitchen, wardrobe, or walk-in closet in three dimensions. Switch scenes and finishes live — slim handled fronts, matte surfaces, warm wood accents.</p>
+          <div class="scene-tabs reveal" aria-label="3D scene selector">
+            <button type="button" class="scene-tab is-active" data-scene="kitchen">Kitchen</button>
+            <button type="button" class="scene-tab" data-scene="wardrobe">Wardrobe</button>
+            <button type="button" class="scene-tab" data-scene="closet">Closet</button>
+          </div>
           <div class="design-controls reveal" aria-label="3D finish options">
             <button type="button" class="is-active" data-finish="taupe" aria-pressed="true"><span class="finish-dot taupe"></span>Taupe</button>
             <button type="button" data-finish="graphite" aria-pressed="false"><span class="finish-dot graphite"></span>Graphite</button>
@@ -2745,8 +2784,8 @@
     if (canvas3d && designLab && window.WebGLRenderingContext) {
       const reduce3dMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(36, 1, .1, 80);
-      camera.position.set(5.8, 3.8, 7.4);
+      const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
+      camera.position.set(6.2, 3.5, 7.6);
 
       const renderer = new THREE.WebGLRenderer({
         canvas: canvas3d,
@@ -2758,81 +2797,521 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
+      renderer.toneMappingExposure = 1.18;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.setClearColor(0x000000, 0);
 
+      /* IBL — procedural canvas → PMREM for realistic reflections */
+      (() => {
+        const c = document.createElement("canvas");
+        c.width = 512; c.height = 256;
+        const x = c.getContext("2d");
+        const sky = x.createLinearGradient(0, 0, 0, 256);
+        sky.addColorStop(0,    "#fff8ea");
+        sky.addColorStop(.34,  "#f0e3cd");
+        sky.addColorStop(.5,   "#9c8e76");
+        sky.addColorStop(.62,  "#3a3127");
+        sky.addColorStop(1,    "#15100a");
+        x.fillStyle = sky; x.fillRect(0, 0, 512, 256);
+        const sun = x.createRadialGradient(370, 64, 4, 370, 64, 90);
+        sun.addColorStop(0, "#ffffff");
+        sun.addColorStop(.4, "rgba(255,250,235,.5)");
+        sun.addColorStop(1, "rgba(255,250,235,0)");
+        x.fillStyle = sun; x.fillRect(0, 0, 512, 256);
+        const fill = x.createRadialGradient(120, 120, 8, 120, 120, 150);
+        fill.addColorStop(0, "rgba(255,200,140,.55)");
+        fill.addColorStop(1, "rgba(255,200,140,0)");
+        x.fillStyle = fill; x.fillRect(0, 0, 512, 256);
+        const tex = new THREE.CanvasTexture(c);
+        tex.mapping = THREE.EquirectangularReflectionMapping;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const pm = new THREE.PMREMGenerator(renderer);
+        pm.compileEquirectangularShader();
+        scene.environment = pm.fromEquirectangular(tex).texture;
+        tex.dispose();
+        pm.dispose();
+      })();
+
       const model = new THREE.Group();
-      model.rotation.y = -.28;
       scene.add(model);
 
-      const frontMaterial = new THREE.MeshStandardMaterial({ color: 0x8f8373, roughness: .72, metalness: .03 });
-      const accentMaterial = new THREE.MeshStandardMaterial({ color: 0x6b472e, roughness: .58, metalness: .02 });
-      const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0xd8cdbb, roughness: .48, metalness: .01 });
-      const metalMaterial = new THREE.MeshStandardMaterial({ color: 0x171615, roughness: .36, metalness: .72 });
-      const shadowMaterial = new THREE.MeshStandardMaterial({ color: 0x201b16, roughness: .86, metalness: 0 });
-      const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x3a332b, roughness: .9, metalness: 0 });
-      const lineMaterial = new THREE.MeshStandardMaterial({ color: 0x17120e, roughness: .52, metalness: .18 });
+      /* MATERIALS — PBR-tuned with envMapIntensity for realistic reflections */
+      const frontMaterial   = new THREE.MeshStandardMaterial({ color: 0x8f8373, roughness: .48, metalness: .04, envMapIntensity: .9 });
+      const accentMaterial  = new THREE.MeshStandardMaterial({ color: 0x6b472e, roughness: .46, metalness: .04, envMapIntensity: .75 });
+      const stoneMaterial   = new THREE.MeshStandardMaterial({ color: 0xd8cdbb, roughness: .24, metalness: .04, envMapIntensity: 1.15 });
+      const metalMaterial   = new THREE.MeshStandardMaterial({ color: 0x171615, roughness: .2,  metalness: .92, envMapIntensity: 1.7 });
+      const shadowMaterial  = new THREE.MeshStandardMaterial({ color: 0x14110d, roughness: .94, metalness: 0,   envMapIntensity: .25 });
+      const wallMaterial    = new THREE.MeshStandardMaterial({ color: 0x3a332b, roughness: .92, metalness: 0,   envMapIntensity: .35 });
+      const lineMaterial    = new THREE.MeshStandardMaterial({ color: 0x5c5348, roughness: .42, metalness: .25, envMapIntensity: .6 });
+      const glowMaterial    = new THREE.MeshBasicMaterial({ color: 0xfbe1a3, transparent: true, opacity: .92 });
+      const mirrorMaterial  = new THREE.MeshStandardMaterial({ color: 0xc0d0cd, roughness: .03, metalness: 1,   envMapIntensity: 2.0 });
+      const floorMatA       = new THREE.MeshStandardMaterial({ color: 0x4a3826, roughness: .55, metalness: .1,  envMapIntensity: .55 });
+      const floorMatB       = new THREE.MeshStandardMaterial({ color: 0x3e2f1f, roughness: .6,  metalness: .1,  envMapIntensity: .55 });
+      const groutMaterial   = new THREE.MeshStandardMaterial({ color: 0x140e07, roughness: .98, metalness: 0,   envMapIntensity: .15 });
+      const plantMaterial   = new THREE.MeshStandardMaterial({ color: 0x2f4a2c, roughness: .72, metalness: 0,   envMapIntensity: .5 });
+      const ceramicMaterial = new THREE.MeshStandardMaterial({ color: 0xece2cc, roughness: .22, metalness: .03, envMapIntensity: 1.25 });
+      const fabricMaterial  = new THREE.MeshStandardMaterial({ color: 0x73624e, roughness: .9,  metalness: 0,   envMapIntensity: .35 });
+      const leatherMaterial = new THREE.MeshStandardMaterial({ color: 0x2e1d12, roughness: .5,  metalness: .05, envMapIntensity: .7 });
+      const fruitMatA       = new THREE.MeshStandardMaterial({ color: 0xa6382f, roughness: .42, metalness: .04, envMapIntensity: .8 });
+      const fruitMatB       = new THREE.MeshStandardMaterial({ color: 0xdfb84d, roughness: .42, metalness: .04, envMapIntensity: .8 });
 
-      const frontMaterials = [frontMaterial];
+      const frontMaterials  = [frontMaterial];
       const accentMaterials = [accentMaterial];
-      const metalMaterials = [metalMaterial];
-      const lineMaterials = [lineMaterial];
+      const metalMaterials  = [metalMaterial];
+      const lineMaterials   = [lineMaterial];
 
-      const box = (width, height, depth, x, y, z, material, parent = model) => {
-        const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
-        mesh.position.set(x, y, z);
-        parent.add(mesh);
-        return mesh;
+      /* HELPERS */
+      const bevelCache = new Map();
+
+      const box = (w, h, d, x, y, z, mat, parent = model) => {
+        const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+        m.position.set(x, y, z);
+        m.castShadow = true; m.receiveShadow = true;
+        parent.add(m);
+        return m;
       };
 
-      box(9.2, .08, 6.2, 0, -.04, .5, shadowMaterial);
-      box(9.2, 3.2, .08, 0, 1.55, -2.15, wallMaterial);
-      box(.08, 3.2, 6.2, -4.62, 1.55, .5, wallMaterial);
+      const bvl = (w, h, d, x, y, z, mat, parent = model, b = .014) => {
+        const key = w.toFixed(3) + "_" + h.toFixed(3) + "_" + d.toFixed(3) + "_" + b;
+        let geo = bevelCache.get(key);
+        if (!geo) {
+          const s = new THREE.Shape();
+          const hw = w / 2 - b, hh = h / 2 - b;
+          s.moveTo(-hw, -hh); s.lineTo(hw, -hh); s.lineTo(hw, hh); s.lineTo(-hw, hh); s.closePath();
+          geo = new THREE.ExtrudeGeometry(s, { depth: d - 2 * b, bevelEnabled: true, bevelThickness: b, bevelSize: b, bevelSegments: 2, curveSegments: 1 });
+          geo.translate(0, 0, -d / 2 + b);
+          bevelCache.set(key, geo);
+        }
+        const m = new THREE.Mesh(geo, mat);
+        m.position.set(x, y, z);
+        m.castShadow = true; m.receiveShadow = true;
+        parent.add(m);
+        return m;
+      };
 
-      for (let i = 0; i < 7; i += 1) {
-        const x = -2.76 + i * .92;
-        box(.82, 2.66, .36, x, 1.33, -1.92, frontMaterial);
-        box(.018, 1.72, .045, x + .31, 1.42, -1.71, metalMaterial);
-        box(.74, .018, .044, x, 2.13, -1.705, lineMaterial);
-        box(.74, .018, .044, x, .78, -1.705, lineMaterial);
-      }
+      const cyl = (r, h, x, y, z, mat, parent = model, axis = "y") => {
+        const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 18), mat);
+        m.position.set(x, y, z);
+        if (axis === "x") m.rotation.z = Math.PI / 2;
+        else if (axis === "z") m.rotation.x = Math.PI / 2;
+        m.castShadow = true; m.receiveShadow = true;
+        parent.add(m);
+        return m;
+      };
 
-      box(.9, 2.66, .42, 3.18, 1.33, -1.9, accentMaterial);
-      for (let shelf = 0; shelf < 4; shelf += 1) {
-        box(.82, .045, .36, 3.18, .52 + shelf * .62, -1.64, stoneMaterial);
-      }
+      const sph = (r, x, y, z, mat, parent = model) => {
+        const m = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 12), mat);
+        m.position.set(x, y, z);
+        m.castShadow = true; m.receiveShadow = true;
+        parent.add(m);
+        return m;
+      };
 
-      box(2.95, .82, 1.42, -.55, .41, .9, frontMaterial);
-      box(3.22, .18, 1.68, -.55, .9, .9, stoneMaterial);
-      box(2.72, .035, .045, -.55, .62, 1.63, lineMaterial);
-      box(2.72, .035, .045, -.55, .33, 1.63, lineMaterial);
-      for (let col = 0; col < 3; col += 1) {
-        const x = -1.45 + col * .9;
-        box(.62, .035, .052, x, .72, 1.66, metalMaterial);
-        box(.62, .035, .052, x, .43, 1.66, metalMaterial);
-      }
+      const plankFloor = (g, w, d, dz = 1.0, planks = 22) => {
+        const pw = w / planks;
+        box(w + .06, .03, d + .06, 0, -.05, dz, groutMaterial, g);
+        for (let i = 0; i < planks; i++) {
+          const x = -w / 2 + pw / 2 + i * pw;
+          const mat = ((i + ((i / 3) | 0)) & 1) === 0 ? floorMatA : floorMatB;
+          box(pw - .012, .025, d - .04, x, -.025, dz, mat, g);
+        }
+      };
 
-      box(1.12, 1.04, .38, -3.75, .52, -.42, frontMaterial);
-      box(1.18, .12, .48, -3.75, 1.1, -.42, stoneMaterial);
-      box(.026, .68, .048, -3.29, .6, -.2, metalMaterial);
-      box(.026, .68, .048, -4.21, .6, -.2, metalMaterial);
-      box(.95, .05, .34, -3.75, 1.42, -.36, accentMaterial);
-      box(.95, .05, .34, -3.75, 1.8, -.36, accentMaterial);
+      const wallShell = (g, w, d, h = 4.0, wallZ = -2.22, wallX = -5.0) => {
+        plankFloor(g, w, d, d / 2 - 1.2);
+        box(w, h, .08, 0, h / 2, wallZ, wallMaterial, g);
+        box(.08, h, d, wallX, h / 2, d / 2 - 1.2, wallMaterial, g);
+        box(w, .14, .015, 0, .07, wallZ + .045, accentMaterial, g);
+        box(.015, .14, d, wallX + .045, .07, d / 2 - 1.2, accentMaterial, g);
+        box(w, .1, .12, 0, h - .05, wallZ + .06, accentMaterial, g);
+      };
 
-      const glowMaterial = new THREE.MeshBasicMaterial({ color: 0xf0c66a, transparent: true, opacity: .58 });
-      box(5.8, .025, .018, .05, 2.72, -1.66, glowMaterial);
-      box(2.9, .025, .018, -.55, 1.02, 1.72, glowMaterial);
-      box(.74, .018, .018, 3.18, 2.32, -1.42, glowMaterial);
-      box(.74, .018, .018, 3.18, 1.7, -1.42, glowMaterial);
+      /* ====== KITCHEN ====== */
+      const buildKitchenScene = (g) => {
+        wallShell(g, 11, 8.5, 4.0, -2.22, -5.05);
 
-      const ambient = new THREE.HemisphereLight(0xfff7e8, 0x202821, 1.75);
+        // BACK WALL — base run (5 doors with bevels)
+        const bH = .92, bD = .58, bZ = -1.82;
+        for (let i = 0; i < 5; i++) {
+          const x = -1.84 + i * .92;
+          bvl(.86, bH, bD, x, bH / 2, bZ, frontMaterial, g);
+          box(.018, .54, .032, x + .35, bH / 2, bZ + bD / 2 + .017, metalMaterial, g);
+        }
+        box(5.0, .12, .5, -.1, .06, bZ + .04, shadowMaterial, g);
+        box(5.06, .07, bD + .08, -.1, bH + .035, bZ - .02, stoneMaterial, g);
+        box(5.06, .015, .015, -.1, bH + .01, bZ + bD / 2 + .04, lineMaterial, g);
+        box(5.0, .58, .03, -.1, bH + .35, bZ + bD / 2 + .005, stoneMaterial, g);
+
+        // Sink + faucet
+        const skX = .68;
+        box(.78, .04, .42, skX, bH + .055, bZ + bD / 2 - .26, shadowMaterial, g);
+        box(.74, .12, .38, skX, bH - .04, bZ + bD / 2 - .26, shadowMaterial, g);
+        cyl(.014, .35, skX, bH + .23, bZ + bD / 2 - .04, metalMaterial, g, "y");
+        cyl(.012, .22, skX, bH + .395, bZ + bD / 2 - .15, metalMaterial, g, "z");
+        cyl(.018, .04, skX, bH + .39, bZ + bD / 2 - .26, metalMaterial, g, "y");
+        box(.04, .06, .02, skX + .04, bH + .25, bZ + bD / 2 - .04, metalMaterial, g);
+
+        // Induction cooktop (4 burners)
+        const stX = -1.4;
+        box(.78, .015, .42, stX, bH + .08, bZ + bD / 2 - .26, lineMaterial, g);
+        for (let r = 0; r < 2; r++) {
+          for (let c = 0; c < 2; c++) {
+            cyl(.085, .005, stX - .18 + c * .36, bH + .088, bZ + bD / 2 - .42 + r * .32, metalMaterial, g, "y");
+            cyl(.062, .003, stX - .18 + c * .36, bH + .091, bZ + bD / 2 - .42 + r * .32, lineMaterial, g, "y");
+          }
+        }
+
+        // BACK WALL — upper run (skip i=2 for hood)
+        const uY = 1.62, uH = 1.26, uD = .36, uZ = -1.88;
+        for (let i = 0; i < 5; i++) {
+          if (i === 2) continue;
+          const x = -1.84 + i * .92;
+          bvl(.86, uH, uD, x, uY + uH / 2, uZ, frontMaterial, g);
+          box(.016, .82, .032, x + .35, uY + uH / 2, uZ + uD / 2 + .017, metalMaterial, g);
+        }
+        box(4.85, .018, .018, -.1, uY - .005, uZ + uD / 2 - .015, glowMaterial, g);
+        box(5.06, .14, .42, -.1, uY + uH + .07, uZ + .03, accentMaterial, g);
+
+        // Range hood (above stove)
+        box(1.42, .26, .5, stX, uY + uH * .42, uZ + .08, accentMaterial, g);
+        box(1.36, .04, .48, stX, uY + uH * .42 - .15, uZ + .08, metalMaterial, g);
+        box(1.16, .015, .015, stX, uY + uH * .42 - .14, uZ + .26, glowMaterial, g);
+        box(.7, 1.1, .38, stX, uY + uH + .27, uZ + .03, accentMaterial, g);
+        box(.04, 1.1, .39, stX + .25, uY + uH + .27, uZ + .03, lineMaterial, g);
+        box(.04, 1.1, .39, stX - .25, uY + uH + .27, uZ + .03, lineMaterial, g);
+
+        // Tall pantry/oven tower — right
+        const tX = 3.18;
+        box(1.0, 3.18, .58, tX, 1.59, -1.85, accentMaterial, g);
+        bvl(.88, 1.34, .074, tX, 2.46, -1.59, frontMaterial, g);
+        box(.018, .82, .034, tX + .36, 2.46, -1.57, metalMaterial, g);
+        box(.96, .04, .56, tX, 1.78, -1.85, stoneMaterial, g);
+        bvl(.88, 1.32, .074, tX, 1.0, -1.59, frontMaterial, g);
+        cyl(.018, .56, tX, .96, -1.55, metalMaterial, g, "x");
+        box(.66, .42, .005, tX, 1.18, -1.555, mirrorMaterial, g);
+        box(.84, .015, .015, tX, .025, -1.55, glowMaterial, g);
+
+        // ISLAND
+        const iX = -.5, iZ = 1.05;
+        box(2.96, .92, 1.4, iX, .46, iZ, frontMaterial, g);
+        for (let d = 0; d < 3; d++) {
+          const dx = iX - .96 + d * .96;
+          bvl(.84, .26, .03, dx, .76, iZ + .71, frontMaterial, g);
+          cyl(.014, .42, dx, .76, iZ + .73, metalMaterial, g, "x");
+        }
+        for (let d = 0; d < 2; d++) {
+          const dx = iX - .68 + d * 1.36;
+          bvl(1.24, .54, .03, dx, .35, iZ + .71, frontMaterial, g);
+          box(.014, .32, .03, dx + .56, .35, iZ + .73, metalMaterial, g);
+        }
+        box(3.24, .07, 1.66, iX, .955, iZ - .07, stoneMaterial, g);
+        box(3.24, .015, .015, iX, .94, iZ + .76, lineMaterial, g);
+        box(3.18, .018, .018, iX, .92, iZ + .8, glowMaterial, g);
+        box(3.06, .12, 1.34, iX, .06, iZ, shadowMaterial, g);
+
+        // Bar stools (2)
+        for (let s = 0; s < 2; s++) {
+          const sx = iX - .85 + s * 1.7, sz = iZ + 1.2;
+          cyl(.18, .05, sx, .69, sz, leatherMaterial, g, "y");
+          cyl(.025, .68, sx, .34, sz, metalMaterial, g, "y");
+          for (let l = 0; l < 4; l++) {
+            const a = l * Math.PI / 2 + Math.PI / 4;
+            cyl(.014, .16, sx + Math.cos(a) * .2, .08, sz + Math.sin(a) * .2, metalMaterial, g, "y");
+          }
+        }
+
+        // Pendant lights (3 above island)
+        for (let p = 0; p < 3; p++) {
+          const px = iX - 1.0 + p * 1.0;
+          cyl(.005, 1.42, px, 2.7, iZ - .12, metalMaterial, g, "y");
+          cyl(.13, .26, px, 2.0, iZ - .12, accentMaterial, g, "y");
+          sph(.085, px, 1.83, iZ - .12, glowMaterial, g);
+        }
+
+        // Vase + branches on island
+        cyl(.08, .26, iX + 1.05, 1.12, iZ - .15, ceramicMaterial, g, "y");
+        for (let b = 0; b < 4; b++) {
+          const a = (b - 1.5) * .15;
+          cyl(.008, .42, iX + 1.05 + Math.sin(a) * .12, 1.42, iZ - .15 + Math.cos(a) * .04, accentMaterial, g, "y");
+        }
+
+        // Fruit bowl on island
+        cyl(.16, .04, iX - .8, 1.005, iZ - .1, ceramicMaterial, g, "y");
+        cyl(.14, .035, iX - .8, 1.04, iZ - .1, ceramicMaterial, g, "y");
+        sph(.05, iX - .85, 1.085, iZ - .14, fruitMatA, g);
+        sph(.045, iX - .76, 1.08, iZ - .07, fruitMatA, g);
+        sph(.04, iX - .82, 1.075, iZ - .07, fruitMatB, g);
+        sph(.05, iX - .77, 1.085, iZ - .14, fruitMatB, g);
+
+        // Cutting board + grinders
+        box(.46, .03, .26, iX - .15, 1.005, iZ - .05, accentMaterial, g);
+        cyl(.04, .14, iX + .35, 1.06, iZ - .14, metalMaterial, g, "y");
+        cyl(.04, .12, iX + .45, 1.05, iZ - .14, accentMaterial, g, "y");
+
+        // LEFT WALL: open shelf with items
+        const lwx = -4.55, lwz = -.7;
+        box(.45, 2.3, 1.0, lwx, 1.2, lwz, accentMaterial, g);
+        for (let s = 0; s < 3; s++) {
+          box(.4, .04, .94, lwx, .82 + s * .54, lwz, stoneMaterial, g);
+        }
+        cyl(.06, .22, lwx, .94, lwz - .15, ceramicMaterial, g, "y");
+        cyl(.05, .16, lwx, .91, lwz + .15, ceramicMaterial, g, "y");
+        box(.1, .16, .14, lwx, 1.46, lwz - .2, frontMaterial, g);
+        box(.12, .14, .14, lwx, 1.45, lwz, accentMaterial, g);
+        box(.1, .16, .14, lwx, 1.46, lwz + .2, fabricMaterial, g);
+        // Plant on top
+        cyl(.1, .16, lwx, 2.42, lwz, ceramicMaterial, g, "y");
+        sph(.18, lwx, 2.66, lwz, plantMaterial, g);
+        sph(.14, lwx + .08, 2.6, lwz - .04, plantMaterial, g);
+        sph(.12, lwx - .06, 2.6, lwz + .05, plantMaterial, g);
+        // Lower cabinet
+        bvl(.42, .76, .98, lwx, .38, lwz, frontMaterial, g);
+        box(.014, .42, .03, lwx + .03, .38, lwz + .49, metalMaterial, g);
+        box(.5, .07, 1.04, lwx, .8, lwz, stoneMaterial, g);
+        box(.48, .12, 1.0, lwx, .06, lwz, shadowMaterial, g);
+      };
+
+      /* ====== WARDROBE ====== */
+      const buildWardrobeScene = (g) => {
+        wallShell(g, 11, 7.8, 4.0, -1.78, -5.3);
+
+        const dW = 1.18, dH = 3.18, dZ = -1.54;
+
+        // 7-door wardrobe wall (skip i=4 = open, i=3 = mirror)
+        for (let i = 0; i < 7; i++) {
+          if (i === 4) continue;
+          const x = -3.54 + i * dW;
+          const isMirror = (i === 3);
+          const mat = isMirror ? mirrorMaterial : (i === 1 ? accentMaterial : frontMaterial);
+          bvl(dW - .07, dH, .42, x, dH / 2, dZ, mat, g);
+          if (isMirror) {
+            box(dW - .07, .04, .44, x, .18, dZ, metalMaterial, g);
+            box(dW - .07, .04, .44, x, dH - .18, dZ, metalMaterial, g);
+            box(.04, dH, .44, x - (dW - .07) / 2, dH / 2, dZ, metalMaterial, g);
+            box(.04, dH, .44, x + (dW - .07) / 2, dH / 2, dZ, metalMaterial, g);
+          } else {
+            const hOff = (i < 3 || i >= 5) ? .42 : -.42;
+            box(.022, 2.0, .04, x + hOff, dH / 2, dZ + .23, metalMaterial, g);
+          }
+        }
+
+        // Open section (i=4)
+        const oX = -3.54 + 4 * dW;
+        box(.06, dH, .78, oX - dW / 2 + .03, dH / 2, dZ - .36, accentMaterial, g);
+        box(.06, dH, .78, oX + dW / 2 - .03, dH / 2, dZ - .36, accentMaterial, g);
+        box(dW - .04, dH, .06, oX, dH / 2, dZ - .73, accentMaterial, g);
+        box(dW + .08, .06, .78, oX, dH - .03, dZ - .36, stoneMaterial, g);
+        // Hanging rod + hangers + garments
+        cyl(.022, dW - .12, oX, 2.62, dZ - .38, metalMaterial, g, "x");
+        for (let c = 0; c < 5; c++) {
+          const cx = oX - .4 + c * .2;
+          cyl(.005, .14, cx, 2.55, dZ - .42, metalMaterial, g, "y");
+          cyl(.004, .18, cx, 2.5, dZ - .4, metalMaterial, g, "z");
+          const gMat = c % 3 === 0 ? leatherMaterial : (c % 3 === 1 ? frontMaterial : accentMaterial);
+          box(.16, 1.1, .12, cx, 1.96, dZ - .42, gMat, g);
+        }
+        // Mid shelf with folded clothes
+        box(dW - .08, .06, .72, oX, 1.36, dZ - .36, stoneMaterial, g);
+        for (let st = 0; st < 2; st++) {
+          const sx = oX - .25 + st * .5;
+          for (let i = 0; i < 3; i++) {
+            box(.34, .07, .42, sx, 1.42 + i * .08, dZ - .36, i % 2 === 0 ? fabricMaterial : accentMaterial, g);
+          }
+        }
+        // Lower shoe shelf with shoes
+        box(dW - .08, .06, .72, oX, .56, dZ - .36, stoneMaterial, g);
+        for (let p = 0; p < 3; p++) {
+          const sx = oX - .35 + p * .35;
+          box(.12, .08, .26, sx - .04, .64, dZ - .42, leatherMaterial, g);
+          box(.12, .08, .26, sx + .04, .64, dZ - .42, leatherMaterial, g);
+        }
+        // Bottom drawer
+        bvl(dW - .08, .26, .04, oX, .22, dZ - .04, frontMaterial, g);
+        cyl(.014, .42, oX, .22, dZ - .02, metalMaterial, g, "x");
+        // Open section glow strips
+        box(.94, .018, .02, oX, dH - .08, dZ - .14, glowMaterial, g);
+        box(.94, .018, .02, oX, 1.34, dZ - .14, glowMaterial, g);
+
+        // Plinth + crown
+        box(9.2, .16, .52, -.3, .08, dZ + .08, shadowMaterial, g);
+        box(9.2, .22, .56, -.3, dH + .11, dZ + .07, accentMaterial, g);
+        box(9.2, .04, .58, -.3, dH + .22, dZ + .06, metalMaterial, g);
+        box(8.6, .02, .02, -.3, dH - .04, dZ + .28, glowMaterial, g);
+
+        // BENCH/OTTOMAN in front
+        const bxX = 0, bxZ = 1.32;
+        box(1.78, .42, .72, bxX, .21, bxZ, accentMaterial, g);
+        box(1.86, .14, .8, bxX, .49, bxZ, fabricMaterial, g);
+        for (let lx = -1; lx <= 1; lx += 2) {
+          for (let lz = -1; lz <= 1; lz += 2) {
+            box(.06, .42, .06, bxX + lx * .8, .21, bxZ + lz * .3, metalMaterial, g);
+          }
+        }
+        // Throw pillow
+        box(.42, .18, .28, bxX - .56, .6, bxZ, fabricMaterial, g);
+        // Slippers under bench
+        box(.12, .06, .26, bxX - .3, .03, bxZ + .35, leatherMaterial, g);
+        box(.12, .06, .26, bxX - .12, .03, bxZ + .35, leatherMaterial, g);
+
+        // Tall ceramic vase next to bench (floor)
+        cyl(.14, .55, bxX + 1.4, .28, bxZ - .1, ceramicMaterial, g, "y");
+        for (let b = 0; b < 5; b++) {
+          const a = (b - 2) * .12;
+          cyl(.008, .85, bxX + 1.4 + Math.sin(a) * .18, .92, bxZ - .1 + Math.cos(a) * .08, accentMaterial, g, "y");
+        }
+      };
+
+      /* ====== WALK-IN CLOSET ====== */
+      const buildClosetScene = (g) => {
+        wallShell(g, 11, 8.0, 4.0, -2.32, -5.5);
+
+        const tH = 3.18, tD = .62;
+
+        // LEFT: full-height hanging
+        const lX = -3.2, lW = 2.8;
+        box(.06, tH, tD, lX - lW / 2, tH / 2, -1.92, accentMaterial, g);
+        box(.06, tH, tD, lX + lW / 2, tH / 2, -1.92, accentMaterial, g);
+        box(lW + .06, .06, tD, lX, tH, -1.92, accentMaterial, g);
+        box(lW - .06, tH, .04, lX, tH / 2, -2.22, wallMaterial, g);
+        // Upper rod with brackets
+        cyl(.024, lW - .12, lX, 2.7, -1.88, metalMaterial, g, "x");
+        // Hangers + garments upper
+        for (let c = 0; c < 7; c++) {
+          const cx = lX - 1.02 + c * .34;
+          cyl(.005, .16, cx, 2.62, -1.92, metalMaterial, g, "y");
+          cyl(.004, .2, cx, 2.55, -1.92, metalMaterial, g, "z");
+          const gMat = c % 3 === 0 ? leatherMaterial : (c % 3 === 1 ? frontMaterial : accentMaterial);
+          box(.18, 1.24, .14, cx, 1.96, -1.92, gMat, g);
+        }
+        // Mid shelf
+        box(lW - .08, .06, tD - .04, lX, 1.7, -1.92, stoneMaterial, g);
+        // Lower rod + shorter garments
+        cyl(.022, lW - .12, lX, 1.3, -1.88, metalMaterial, g, "x");
+        for (let c = 0; c < 5; c++) {
+          const cx = lX - .72 + c * .36;
+          cyl(.005, .16, cx, 1.22, -1.92, metalMaterial, g, "y");
+          box(.16, .68, .12, cx, .92, -1.92, c % 2 === 0 ? frontMaterial : fabricMaterial, g);
+        }
+        // Shoe shelf with shoes
+        box(lW - .08, .06, tD - .04, lX, .26, -1.92, stoneMaterial, g);
+        for (let p = 0; p < 4; p++) {
+          const sx = lX - .9 + p * .6;
+          box(.16, .08, .3, sx - .06, .34, -1.92, leatherMaterial, g);
+          box(.16, .08, .3, sx + .06, .34, -1.92, leatherMaterial, g);
+        }
+        box(lW - .18, .02, .02, lX, tH - .04, -1.66, glowMaterial, g);
+
+        // CENTRE BACK: open display shelving with curated items
+        const cX = .5, cW = 2.4;
+        box(.06, tH, tD, cX - cW / 2, tH / 2, -1.92, accentMaterial, g);
+        box(.06, tH, tD, cX + cW / 2, tH / 2, -1.92, accentMaterial, g);
+        box(cW + .06, .06, tD, cX, tH, -1.92, accentMaterial, g);
+        box(cW - .06, tH, .04, cX, tH / 2, -2.22, wallMaterial, g);
+        for (let s = 0; s < 6; s++) {
+          box(cW - .06, .06, tD - .04, cX, .3 + s * .5, -1.92, stoneMaterial, g);
+        }
+        // Shelf 0: shoe boxes
+        box(.34, .14, .42, cX - .6, .42, -1.92, leatherMaterial, g);
+        box(.34, .14, .42, cX, .42, -1.92, accentMaterial, g);
+        box(.34, .14, .42, cX + .6, .42, -1.92, fabricMaterial, g);
+        // Shelf 1: handbags
+        box(.36, .26, .14, cX - .6, .58, -1.85, leatherMaterial, g);
+        cyl(.04, .12, cX - .6, .73, -1.78, metalMaterial, g, "x");
+        box(.4, .28, .16, cX + .1, .58, -1.85, fabricMaterial, g);
+        cyl(.04, .14, cX + .1, .74, -1.78, leatherMaterial, g, "x");
+        // Shelf 2: folded clothes
+        for (let st = 0; st < 3; st++) {
+          const sx = cX - .7 + st * .7;
+          for (let i = 0; i < 3; i++) {
+            box(.42, .07, .42, sx, .98 + i * .08, -1.92, i === 1 ? fabricMaterial : (st === 1 ? accentMaterial : frontMaterial), g);
+          }
+        }
+        // Shelf 3: hat boxes
+        cyl(.18, .22, cX - .55, 1.7, -1.92, accentMaterial, g, "y");
+        cyl(.16, .18, cX, 1.68, -1.92, fabricMaterial, g, "y");
+        cyl(.18, .22, cX + .55, 1.7, -1.92, leatherMaterial, g, "y");
+        // Shelf 4: ornaments
+        cyl(.06, .26, cX - .5, 2.16, -1.92, ceramicMaterial, g, "y");
+        sph(.1, cX, 2.16, -1.92, ceramicMaterial, g);
+        cyl(.08, .14, cX + .5, 2.12, -1.92, ceramicMaterial, g, "y");
+        // Shelf 5: top accents
+        box(.4, .14, .12, cX - .4, 2.62, -1.92, accentMaterial, g);
+        cyl(.06, .2, cX + .3, 2.65, -1.92, ceramicMaterial, g, "y");
+        box(cW - .14, .02, .02, cX, tH - .04, -1.66, glowMaterial, g);
+
+        // RIGHT: drawer tower
+        const rX = 3.5, rW = 2.2;
+        box(.06, tH, tD, rX - rW / 2, tH / 2, -1.92, accentMaterial, g);
+        box(.06, tH, tD, rX + rW / 2, tH / 2, -1.92, accentMaterial, g);
+        box(rW + .06, .06, tD, rX, tH, -1.92, accentMaterial, g);
+        box(rW - .06, tH, .04, rX, tH / 2, -2.22, wallMaterial, g);
+        for (let d = 0; d < 5; d++) {
+          bvl(rW - .1, .36, .04, rX, .22 + d * .44, -1.61, frontMaterial, g);
+          cyl(.014, .3, rX, .22 + d * .44, -1.585, metalMaterial, g, "x");
+        }
+        box(rW + .1, .06, tD + .08, rX, tH - .06, -1.88, stoneMaterial, g);
+        // Items on top: jewelry tray + perfumes
+        box(.3, .04, .2, rX - .4, tH - .01, -1.86, accentMaterial, g);
+        cyl(.04, .14, rX + .2, tH + .04, -1.86, ceramicMaterial, g, "y");
+        cyl(.035, .12, rX + .35, tH + .03, -1.86, ceramicMaterial, g, "y");
+        cyl(.04, .16, rX - .15, tH + .05, -1.86, mirrorMaterial, g, "y");
+        box(rW - .14, .02, .02, rX, tH - .04, -1.66, glowMaterial, g);
+
+        // CENTRE ISLAND
+        const isX = -.2, isZ = .9;
+        box(2.7, .86, 1.12, isX, .43, isZ, frontMaterial, g);
+        for (let d = 0; d < 3; d++) {
+          const dx = isX - .72 + d * .72;
+          bvl(.62, .38, .03, dx, .46, isZ + .57, frontMaterial, g);
+          cyl(.014, .32, dx, .46, isZ + .59, metalMaterial, g, "x");
+        }
+        box(2.9, .07, 1.3, isX, .92, isZ, stoneMaterial, g);
+        box(2.9, .015, .015, isX, .91, isZ + .65, lineMaterial, g);
+        box(2.7, .12, 1.12, isX, .06, isZ, shadowMaterial, g);
+        // Items on island top
+        box(.5, .04, .26, isX - .5, .96, isZ - .1, accentMaterial, g);
+        cyl(.06, .22, isX + .4, 1.04, isZ - .15, ceramicMaterial, g, "y");
+        cyl(.045, .16, isX + .55, 1.0, isZ - .15, ceramicMaterial, g, "y");
+        cyl(.04, .14, isX + .65, .99, isZ - .15, mirrorMaterial, g, "y");
+
+        // Standing mirror on a stand (right of island)
+        cyl(.04, .12, isX + 1.5, .06, isZ - .1, accentMaterial, g, "y");
+        box(.05, 1.1, .82, isX + 1.5, .61, isZ - .1, accentMaterial, g);
+        box(.025, .98, .68, isX + 1.51, .61, isZ - .1, mirrorMaterial, g);
+
+        // LED strips along front of island top
+        box(2.6, .015, .015, isX, .92, isZ - .58, glowMaterial, g);
+      };
+
+      const ambient = new THREE.HemisphereLight(0xfff7e6, 0x161210, .85);
       scene.add(ambient);
-      const keyLight = new THREE.DirectionalLight(0xffefd0, 3.1);
-      keyLight.position.set(3.4, 6.2, 4.6);
+      const keyLight = new THREE.DirectionalLight(0xffeac8, 2.4);
+      keyLight.position.set(4.6, 7.4, 4.2);
+      keyLight.castShadow = true;
+      keyLight.shadow.mapSize.set(1536, 1536);
+      keyLight.shadow.camera.near = 0.5;
+      keyLight.shadow.camera.far = 28;
+      keyLight.shadow.camera.left = -7;
+      keyLight.shadow.camera.right = 7;
+      keyLight.shadow.camera.top = 7;
+      keyLight.shadow.camera.bottom = -2;
+      keyLight.shadow.bias = -0.0006;
+      keyLight.shadow.normalBias = .025;
+      keyLight.shadow.radius = 4;
       scene.add(keyLight);
-      const warmLight = new THREE.PointLight(0xf0bd60, 15, 10);
-      warmLight.position.set(-1.8, 2.8, 1.8);
+      // Cool fill from front-left (window suggestion)
+      const fillLight = new THREE.DirectionalLight(0xb6cde6, .55);
+      fillLight.position.set(-3, 5, 6);
+      scene.add(fillLight);
+      // Warm accent (animated, simulates pendant ambience)
+      const warmLight = new THREE.PointLight(0xf0bd60, 6, 9, 1.6);
+      warmLight.position.set(-1.0, 2.0, 1.4);
       scene.add(warmLight);
+      // Backlight rim — adds depth to the back wall
+      const rimLight = new THREE.PointLight(0xffe0b8, 4.5, 8, 1.7);
+      rimLight.position.set(2.8, 2.4, -1.4);
+      scene.add(rimLight);
 
       const finishes = {
         taupe:    { front: 0x8f8373, accent: 0x6b472e, metal: 0x171615, line: 0x5c5348 },
@@ -2841,33 +3320,60 @@
         olive:    { front: 0x66705a, accent: 0x3d2010, metal: 0x151412, line: 0x40473a }
       };
 
+      let currentFinish = "taupe";
+
       const applyFinish = (name) => {
+        currentFinish = name;
         const finish = finishes[name] || finishes.taupe;
-        frontMaterials.forEach((material) => material.color.setHex(finish.front));
-        accentMaterials.forEach((material) => material.color.setHex(finish.accent));
-        metalMaterials.forEach((material) => material.color.setHex(finish.metal));
-        lineMaterials.forEach((material) => material.color.setHex(finish.line));
-        document.querySelectorAll("[data-finish]").forEach((button) => {
-          const active = button.dataset.finish === name;
-          button.classList.toggle("is-active", active);
-          button.setAttribute("aria-pressed", String(active));
+        frontMaterials.forEach((m)  => m.color.setHex(finish.front));
+        accentMaterials.forEach((m) => m.color.setHex(finish.accent));
+        metalMaterials.forEach((m)  => m.color.setHex(finish.metal));
+        lineMaterials.forEach((m)   => m.color.setHex(finish.line));
+        document.querySelectorAll("[data-finish]").forEach((btn) => {
+          const active = btn.dataset.finish === name;
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-pressed", String(active));
         });
       };
 
-      document.querySelectorAll("[data-finish]").forEach((button) => {
-        button.addEventListener("click", () => applyFinish(button.dataset.finish));
+      document.querySelectorAll("[data-finish]").forEach((btn) => {
+        btn.addEventListener("click", () => applyFinish(btn.dataset.finish));
+      });
+
+      const sceneRotations = { kitchen: -.28, wardrobe: -.18, closet: -.32 };
+      let currentSceneName = "kitchen";
+
+      const loadScene = (name) => {
+        currentSceneName = name;
+        bevelCache.forEach((geo) => geo.dispose());
+        bevelCache.clear();
+        const seen = new Set();
+        model.traverse((child) => {
+          if (child.isMesh && child.geometry && !seen.has(child.geometry.uuid)) {
+            child.geometry.dispose();
+            seen.add(child.geometry.uuid);
+          }
+        });
+        model.clear();
+        model.rotation.y = sceneRotations[name] ?? -.28;
+        ({ kitchen: buildKitchenScene, wardrobe: buildWardrobeScene, closet: buildClosetScene })[name]?.(model);
+        applyFinish(currentFinish);
+        document.querySelectorAll("[data-scene]").forEach((btn) => {
+          btn.classList.toggle("is-active", btn.dataset.scene === name);
+        });
+      };
+
+      document.querySelectorAll("[data-scene]").forEach((btn) => {
+        btn.addEventListener("click", () => loadScene(btn.dataset.scene));
       });
 
       const pointer = { x: 0, y: 0 };
-      canvas3d.addEventListener("pointermove", (event) => {
-        const rect = canvas3d.getBoundingClientRect();
-        pointer.x = ((event.clientX - rect.left) / rect.width - .5) * 2;
-        pointer.y = ((event.clientY - rect.top) / rect.height - .5) * 2;
+      canvas3d.addEventListener("pointermove", (e) => {
+        const r = canvas3d.getBoundingClientRect();
+        pointer.x = ((e.clientX - r.left) / r.width - .5) * 2;
+        pointer.y = ((e.clientY - r.top) / r.height - .5) * 2;
       });
-      canvas3d.addEventListener("pointerleave", () => {
-        pointer.x = 0;
-        pointer.y = 0;
-      });
+      canvas3d.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; });
 
       const resize = () => {
         const rect = designLab.getBoundingClientRect();
@@ -2881,16 +3387,17 @@
       const resizeObserver = new ResizeObserver(resize);
       resizeObserver.observe(designLab);
       resize();
-      applyFinish("taupe");
+      loadScene("kitchen");
 
       const clock = new THREE.Clock();
       const renderScene = () => {
         const elapsed = clock.getElapsedTime();
-        model.rotation.y = -.28 + Math.sin(elapsed * .34) * .08 + pointer.x * .12;
+        const baseY = sceneRotations[currentSceneName] ?? -.28;
+        model.rotation.y = baseY + Math.sin(elapsed * .34) * .08 + pointer.x * .12;
         model.rotation.x = pointer.y * .035;
         model.position.y = reduce3dMotion ? 0 : Math.sin(elapsed * .82) * .035;
         warmLight.position.x = -1.8 + Math.sin(elapsed * .7) * .9;
-        camera.lookAt(.1, 1.12, -.28);
+        camera.lookAt(.1, 1.35, -.3);
         renderer.render(scene, camera);
         window.__klever3dReady = true;
       };
