@@ -1908,9 +1908,12 @@
         grid-column: span 2;
       }
 
-      .collection-card,
-      .collection-card.media {
+      .collection-card {
         grid-column: auto;
+      }
+
+      .collection-card.media {
+        grid-column: span 2;
       }
 
       .split,
@@ -1970,20 +1973,54 @@
         flex: 0 0 32px;
       }
       .design-lab {
-        min-height: 600px;
+        min-height: 560px;
       }
       .design-lab-copy {
-        padding-top: 84px;
+        padding-top: 72px;
+        padding-bottom: 28px;
+      }
+      .scene-tab {
+        padding: 8px 14px;
+        font-size: 11px;
+      }
+      .design-controls {
+        gap: 8px;
+        margin-top: 18px;
       }
       .design-controls button {
         min-height: 40px;
+        font-size: 10px;
+        padding: 0 10px 0 8px;
       }
       .hero-stats,
       .collection-grid,
+      .systems-grid,
+      .process-grid,
+      .quote-grid,
       .spec-badge,
       .form-grid,
       .footer-inner {
         grid-template-columns: 1fr;
+      }
+
+      .system-card {
+        min-height: 300px;
+        grid-template-rows: 180px 1fr;
+      }
+
+      .process-step {
+        min-height: 200px;
+      }
+
+      .quote-card,
+      .quote-card.feature,
+      .quote-card.tall {
+        min-height: 280px;
+      }
+
+      .quote-copy blockquote,
+      .quote-card:not(.feature) .quote-copy blockquote {
+        font-size: clamp(22px, 6vw, 32px);
       }
 
       .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -2019,9 +2056,6 @@
         font-size: 10px;
       }
 
-      .process-step { min-height: 220px; }
-      .system-card { min-height: 360px; }
-
       .quote-grid {
         grid-auto-rows: auto;
       }
@@ -2031,7 +2065,6 @@
       .quote-card.tall {
         grid-column: auto;
         grid-row: auto;
-        min-height: 300px;
       }
 
       .stat,
