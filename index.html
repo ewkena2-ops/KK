@@ -162,7 +162,9 @@
       text-decoration: none;
       opacity: .82;
       white-space: nowrap;
+      cursor: pointer;
     }
+    .phone:hover { opacity: 1; text-decoration: underline; }
 
     .btn {
       display: inline-flex;
@@ -508,6 +510,36 @@
       color: rgba(255,255,255,.68);
     }
 
+    .angle-tabs {
+      display: flex;
+      gap: 6px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .angle-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.58);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .angle-tab:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .angle-tab.is-active { background: rgba(199,154,61,.2); border-color: var(--brass); color: #fff; }
+
+    .angle-tab svg { width: 14px; height: 14px; opacity: .7; flex-shrink: 0; }
+    .angle-tab.is-active svg { opacity: 1; }
+
     .design-controls {
       display: flex;
       flex-wrap: wrap;
@@ -549,10 +581,14 @@
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
     }
 
-    .finish-dot.taupe { --finish: #8f8373; }
+    .finish-dot.taupe    { --finish: #8f8373; }
     .finish-dot.graphite { --finish: #30302e; }
-    .finish-dot.ivory { --finish: #e8dfcf; }
-    .finish-dot.olive { --finish: #66705a; }
+    .finish-dot.ivory    { --finish: #e8dfcf; }
+    .finish-dot.olive    { --finish: #66705a; }
+    .finish-dot.sage     { --finish: #6d7b68; }
+    .finish-dot.navy     { --finish: #1e2d3e; }
+    .finish-dot.clay     { --finish: #9c5c48; }
+    .finish-dot.chalk    { --finish: #f0ece6; border-color: rgba(0,0,0,.18); }
 
     .collections {
       background: linear-gradient(180deg, var(--paper) 0%, #fff9ef 100%);
@@ -796,6 +832,10 @@
       gap: 28px;
     }
 
+    .gallery-wall {
+      width: 100%;
+    }
+
     .gallery-panel {
       position: relative;
       top: auto;
@@ -809,14 +849,14 @@
       color: #fff;
       border: 1px solid rgba(199,154,61,.34);
       box-shadow: 0 30px 90px rgba(21,18,15,.2);
+      min-height: auto;
     }
 
     .gallery-panel .section-kicker { color: var(--gold); grid-column: 1; }
     .gallery-panel h2 { color: #fff; font-size: clamp(22px, 3vw, 36px); line-height: 1.1; grid-column: 1; margin: 0; }
-    .gallery-panel .section-text { grid-column: 2; align-self: center; font-size: 14px; margin: 0; }
+    .gallery-panel .section-text { grid-column: 2; align-self: center; color: rgba(255,255,255,.64); font-size: 13px; margin: 0; }
     .gallery-filter { grid-column: 3; align-self: center; flex-direction: column; margin-top: 0; }
     .gallery-count { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.14); padding-top: 16px; margin: 0; }
-    .gallery-panel .section-text { color: rgba(255,255,255,.64); font-size: 13px; margin-top: 10px; }
 
     .gallery-panel::before {
       position: absolute;
@@ -979,26 +1019,32 @@
     }
     .image-tile { cursor: pointer; }
 
-    /* ── Gallery grid: mobile-first, masonry only on desktop ── */
+    /* ── Gallery grid ── */
     .image-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: clamp(260px, 72vw, 340px);
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       padding: 10px;
       background: rgba(21,18,15,.08);
       border: 1px solid rgba(21,18,15,.12);
     }
 
+    @media (min-width: 1061px) {
+      .image-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        padding: 14px;
+      }
+    }
+
     .image-tile {
       position: relative;
       overflow: hidden;
-      background: var(--sand);
+      background: #1a1612;
       border: 1px solid rgba(255,255,255,.54);
       box-shadow: 0 18px 48px rgba(21,18,15,.14);
       isolation: isolate;
-      grid-column: 1 / -1;
-      grid-row: span 1;
+      aspect-ratio: 16 / 9;
       transform: none;
       transition: transform .42s var(--ease), box-shadow .42s var(--ease), border-color .3s ease;
       will-change: transform;
@@ -1008,46 +1054,11 @@
       display: none !important;
     }
 
-    .image-tile.large,
-    .image-tile.wide {
-      grid-column: 1 / -1;
-      grid-row: span 1;
-    }
-
-    /* tablet: 2-column */
-    @media (min-width: 600px) {
-      .image-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: clamp(200px, 30vw, 280px);
-        gap: 12px;
-        padding: 12px;
-      }
-      .image-tile, .image-tile.large, .image-tile.wide { grid-column: span 1; grid-row: span 1; }
-      .image-tile.large { grid-column: span 2; grid-row: span 1; }
-    }
-
-    /* desktop: 12-col masonry */
-    @media (min-width: 1061px) {
-      .image-grid {
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-auto-rows: 96px;
-        grid-auto-flow: dense;
-        gap: 14px;
-        padding: 14px;
-      }
-      .image-tile { grid-column: span 3; grid-row: span 3; transform: perspective(900px) rotateX(0) rotateY(0) translateY(0); transform-style: preserve-3d; }
-      .image-tile.large { grid-column: span 6; grid-row: span 5; }
-      .image-tile.wide { grid-column: span 6; grid-row: span 3; }
-      .image-tile:nth-child(5n + 2) { grid-row: span 4; }
-      .image-tile:nth-child(7n + 3) { grid-column: span 4; }
-      .image-tile:nth-child(9n + 5) { grid-column: span 5; }
-      .image-tile:nth-child(11n + 8) { grid-row: span 4; }
-    }
-
     .image-tile img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
       transition: transform .6s var(--ease), filter .35s ease;
     }
 
@@ -1974,7 +1985,7 @@
       .quote-card.feature { grid-column: span 2; min-height: 480px; grid-row: span 2; }
       .quote-card.tall { grid-column: span 1; grid-row: span 2; }
 
-      /* — gallery panel: stack filter column on tablet — */
+      /* — gallery panel — */
       .gallery-panel { grid-template-columns: 1fr 1fr; }
       .gallery-filter { grid-column: 1 / -1; flex-direction: row; }
 
@@ -2022,6 +2033,8 @@
       .scene-tab { padding: 7px 13px; font-size: 10px; letter-spacing: .08em; }
       .design-controls { gap: 7px; margin-top: 14px; flex-wrap: wrap; }
       .design-controls button { min-height: 38px; font-size: 10px; padding: 0 9px 0 7px; gap: 6px; }
+      .angle-tabs { gap: 5px; margin-top: 12px; }
+      .angle-tab { padding: 6px 10px; font-size: 9px; }
 
       /* — ALL main grids → 1 column — */
       .hero-stats,
@@ -2061,6 +2074,7 @@
       .gallery-filter button { min-height: 32px; padding: 0 9px; font-size: 10px; }
       .gallery-count { grid-column: 1; }
       .gallery-count strong { font-size: clamp(28px, 8vw, 44px); }
+      .image-grid { grid-template-columns: 1fr; gap: 10px; padding: 10px; }
 
       /* — split/visual sections — */
       .split { min-height: auto; }
@@ -2124,8 +2138,7 @@
 
       <div class="nav-actions">
         <a class="phone" href="tel:0963999992">0963999992 / 94 / 96</a>
-        <a class="btn btn-primary" href="" onclick="Calendly.initPopupWidget({url:'https://calendly.com/kleverkuche'}); return false;">Book Now</a>
-        <button class="mobile-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+<button class="mobile-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
           <span></span>
         </button>
       </div>
@@ -2165,11 +2178,30 @@
             <button type="button" class="scene-tab" data-scene="wardrobe">Wardrobe</button>
             <button type="button" class="scene-tab" data-scene="closet">Closet</button>
           </div>
+          <div class="angle-tabs reveal" aria-label="Camera angle">
+            <button type="button" class="angle-tab is-active" data-angle="overview">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12 L8 4 L14 12"/><path d="M5 12 L8 7 L11 12"/></svg>Overview
+            </button>
+            <button type="button" class="angle-tab" data-angle="front">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="10" height="8" rx="1"/></svg>Front
+            </button>
+
+            <button type="button" class="angle-tab" data-angle="top">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="8" cy="8" rx="5" ry="3"/><line x1="8" y1="5" x2="8" y2="2"/></svg>Top
+            </button>
+            <button type="button" class="angle-tab" data-angle="detail">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="4"/><line x1="11" y1="11" x2="14" y2="14"/></svg>Detail
+            </button>
+          </div>
           <div class="design-controls reveal" aria-label="3D finish options">
-            <button type="button" class="is-active" data-finish="taupe" aria-pressed="true"><span class="finish-dot taupe"></span>Taupe</button>
+            <button type="button" class="is-active" data-finish="taupe"    aria-pressed="true"><span class="finish-dot taupe"></span>Taupe</button>
             <button type="button" data-finish="graphite" aria-pressed="false"><span class="finish-dot graphite"></span>Graphite</button>
-            <button type="button" data-finish="ivory" aria-pressed="false"><span class="finish-dot ivory"></span>Ivory</button>
-            <button type="button" data-finish="olive" aria-pressed="false"><span class="finish-dot olive"></span>Olive</button>
+            <button type="button" data-finish="ivory"    aria-pressed="false"><span class="finish-dot ivory"></span>Ivory</button>
+            <button type="button" data-finish="olive"    aria-pressed="false"><span class="finish-dot olive"></span>Olive</button>
+            <button type="button" data-finish="sage"     aria-pressed="false"><span class="finish-dot sage"></span>Sage</button>
+            <button type="button" data-finish="navy"     aria-pressed="false"><span class="finish-dot navy"></span>Navy</button>
+            <button type="button" data-finish="clay"     aria-pressed="false"><span class="finish-dot clay"></span>Clay</button>
+            <button type="button" data-finish="chalk"    aria-pressed="false"><span class="finish-dot chalk"></span>Chalk</button>
           </div>
         </div>
       </section>
@@ -2411,10 +2443,6 @@
               <img src="assets/images/bedroom-wardrobe-vanity.png" alt="Modern wardrobe cabinet fronts with slim vertical handles and matte panels">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>Handled cabinet finish</strong></figcaption>
             </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/kitchen-compact.png" alt="Compact modern apartment kitchen in Addis Ababa">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Compact apartment layout</strong></figcaption>
-            </figure>
             <figure class="image-tile wide reveal">
               <img src="assets/images/tv-detail.png" alt="Modern TV wall detail with walnut slat panels and LED lighting">
               <figcaption class="image-caption"><span>TV Unit</span><strong>Concealed cable media wall</strong></figcaption>
@@ -2471,66 +2499,62 @@
               <img src="assets/images/ethiopia-kids-storage.png" alt="Kids bedroom wardrobe and study storage for an Ethiopian family home">
               <figcaption class="image-caption"><span>Kids Room</span><strong>Wardrobe and study storage</strong></figcaption>
             </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-realistic-soft-modern-kitchen.png" alt="Generated realistic soft modern kitchen concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Soft modern kitchen concept</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-coffee-niche-kitchen.png" alt="Generated realistic kitchen concept with coffee niche and no people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Coffee niche layout</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-natural-wood-kitchen.png" alt="Generated realistic natural wood kitchen concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Natural wood finish</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-open-plan-kitchen.png" alt="Generated realistic open-plan kitchen and living concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Open-plan living idea</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-realistic-wide-dining-kitchen.png" alt="Generated realistic wide kitchen and dining concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Kitchen with dining zone</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-neutral-tall-units.png" alt="Generated realistic neutral tall kitchen units concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Neutral tall units</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-white-breakfast-kitchen.png" alt="Generated realistic white breakfast kitchen concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>White breakfast kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-grey-corner-kitchen.png" alt="Generated realistic grey corner kitchen concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Grey corner layout</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-pattern-backsplash-kitchen.png" alt="Generated realistic white kitchen concept with patterned backsplash without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Pattern backsplash</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-realistic-open-living-kitchen.png" alt="Generated realistic open living kitchen concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Open living kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-stone-wall-kitchen.png" alt="Generated realistic kitchen concept with stone feature wall and no people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Stone wall finish</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-island-storage-kitchen.png" alt="Generated realistic kitchen island storage concept with closed handled drawers and no people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>Handled island storage</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-white-corner-kitchen.png" alt="Generated realistic white corner kitchen concept without people">
-              <figcaption class="image-caption"><span>Generated Realistic</span><strong>White corner kitchen</strong></figcaption>
-            </figure>
 
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/generated-realistic-soft-modern-kitchen.png" alt="Soft modern kitchen concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Soft modern kitchen concept</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-coffee-niche-kitchen.png" alt="Kitchen with coffee niche layout">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Coffee niche layout</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-natural-wood-kitchen.png" alt="Kitchen with natural wood finish">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Natural wood finish</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-open-plan-kitchen.png" alt="Open-plan kitchen and living concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Open-plan living idea</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/generated-realistic-wide-dining-kitchen.png" alt="Wide kitchen with dining zone">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Kitchen with dining zone</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-neutral-tall-units.png" alt="Kitchen with neutral tall units">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Neutral tall units</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-white-breakfast-kitchen.png" alt="White breakfast kitchen concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>White breakfast kitchen</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-grey-corner-kitchen.png" alt="Grey corner kitchen concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Grey corner layout</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-pattern-backsplash-kitchen.png" alt="Kitchen with patterned backsplash">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Pattern backsplash</strong></figcaption>
+            </figure>
+            <figure class="image-tile wide reveal">
+              <img src="assets/images/generated-realistic-open-living-kitchen.png" alt="Open living kitchen concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Open living kitchen</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-stone-wall-kitchen.png" alt="Kitchen with stone feature wall">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Stone wall finish</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-island-storage-kitchen.png" alt="Kitchen island storage concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>Handled island storage</strong></figcaption>
+            </figure>
+            <figure class="image-tile reveal">
+              <img src="assets/images/generated-realistic-white-corner-kitchen.png" alt="White corner kitchen concept">
+              <figcaption class="image-caption"><span>Kitchen</span><strong>White corner kitchen</strong></figcaption>
+            </figure>
             <figure class="image-tile wide reveal">
               <img src="assets/images/wardrobe.png" alt="Full-height modern wardrobe with Super Matt UV MDF doors and integrated LED strip lighting">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>Full-height wardrobe wall</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/wardrobe-detail-drawer.png" alt="Wardrobe interior drawer detail with soft-close Blum fittings and premium finish">
-              <figcaption class="image-caption"><span>Wardrobe Detail</span><strong>Soft-close drawer interior</strong></figcaption>
             </figure>
             <figure class="image-tile large reveal">
               <img src="assets/images/closet.png" alt="Modern walk-in closet with open shelving, hanging rail, and warm ambient lighting">
@@ -2541,62 +2565,6 @@
               <figcaption class="image-caption"><span>Kitchen Detail</span><strong>Handleless J-pull profile</strong></figcaption>
             </figure>
 
-            <figure class="image-tile large reveal">
-              <img src="assets/images/nobilia-ref-open-plan.jpg" alt="Nobilia open-plan kitchen with island and dining area, modern luxury interior">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Open-plan kitchen &amp; dining</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-glass-island.webp" alt="Nobilia kitchen with glass-front island and premium handleless cabinet fronts">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Glass island kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-grey-classic.webp" alt="Nobilia grey classic kitchen with full-height pantry units and quartz worktop">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Grey classic pantry kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-grey-corner.webp" alt="Nobilia grey corner kitchen with handleless fronts and stone worktop">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Grey corner layout</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-modern-coffee.webp" alt="Nobilia modern kitchen with coffee station niche and dark premium fronts">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Modern coffee station kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-natural-wood.webp" alt="Nobilia kitchen with natural wood accents, warm cabinet fronts and open shelving">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Natural wood accent kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-neutral-tall-units.webp" alt="Nobilia neutral tall pantry units with integrated appliances and handleless fronts">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Tall units &amp; appliances</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-open-living.webp" alt="Nobilia open living kitchen with island seating and seamless dining flow">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Open living kitchen island</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-soft-modern-stage.webp" alt="Nobilia soft modern kitchen with warm tones and staged luxury interior">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Soft modern staged kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-stone-wall.webp" alt="Nobilia kitchen with stone feature wall backsplash and premium cabinet fronts">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Stone wall kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-white-breakfast.webp" alt="Nobilia white breakfast kitchen with island bar seating and integrated appliances">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>White breakfast kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-white-corner.webp" alt="Nobilia white corner kitchen layout with handleless cabinet fronts and quartz worktop">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>White corner kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile reveal">
-              <img src="assets/images/nobilia-ref-white-pattern.webp" alt="Nobilia white kitchen with patterned backsplash tiles and premium island">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Patterned backsplash kitchen</strong></figcaption>
-            </figure>
-            <figure class="image-tile wide reveal">
-              <img src="assets/images/nobilia-ref-wide-dining.webp" alt="Nobilia wide kitchen with integrated dining zone and full-length island">
-              <figcaption class="image-caption"><span>Kitchen</span><strong>Wide dining kitchen</strong></figcaption>
-            </figure>
               </div>
             </div>
           </div>
@@ -2796,6 +2764,20 @@
                   <select id="city" name="city" required>
                     <option value="">Select city</option>
                     <option>Addis Ababa</option>
+                    <option>Dire Dawa</option>
+                    <option>Bahir Dar</option>
+                    <option>Gondar</option>
+                    <option>Mekelle</option>
+                    <option>Hawassa</option>
+                    <option>Adama (Nazret)</option>
+                    <option>Jimma</option>
+                    <option>Dessie</option>
+                    <option>Bishoftu (Debre Zeit)</option>
+                    <option>Arba Minch</option>
+                    <option>Harar</option>
+                    <option>Jijiga</option>
+                    <option>Nekemte</option>
+                    <option>Shashamane</option>
                     <option>Other</option>
                   </select>
                 </div>
@@ -2807,6 +2789,14 @@
                     <option>Wardrobe</option>
                     <option>Walk-in closet</option>
                     <option>TV unit</option>
+                    <option>Home office storage</option>
+                    <option>Pantry unit</option>
+                    <option>Bathroom vanity</option>
+                    <option>Kids room storage</option>
+                    <option>Entryway storage</option>
+                    <option>Living room shelving</option>
+                    <option>Multiple rooms</option>
+                    <option>Other</option>
                   </select>
                 </div>
                 <div class="field full">
@@ -2862,8 +2852,8 @@
           <h3>Visit</h3>
           <ul>
             <li>Addis Ababa</li>
-            <li>0963999992 / 94 / 96</li>
-            <li>kleverkitchen29@gmail.com</li>
+            <li><a href="tel:0963999992">0963999992 / 94 / 96</a></li>
+            <li><a href="mailto:kleverkitchen29@gmail.com">kleverkitchen29@gmail.com</a></li>
           </ul>
         </div>
       </div>
@@ -2947,6 +2937,10 @@
 
       const model = new THREE.Group();
       scene.add(model);
+      const interactiveDoors = [];
+      const steamObjects = [];
+      const raycaster = new THREE.Raycaster();
+      const tapPoint = new THREE.Vector2();
 
       /* MATERIALS — PBR-tuned with envMapIntensity for realistic reflections */
       const frontMaterial   = new THREE.MeshStandardMaterial({ color: 0x8f8373, roughness: .48, metalness: .04, envMapIntensity: .9 });
@@ -2960,6 +2954,7 @@
       const mirrorMaterial  = new THREE.MeshStandardMaterial({ color: 0xc0d0cd, roughness: .03, metalness: 1,   envMapIntensity: 2.0 });
       const floorMatA       = new THREE.MeshStandardMaterial({ color: 0x4a3826, roughness: .55, metalness: .1,  envMapIntensity: .55 });
       const floorMatB       = new THREE.MeshStandardMaterial({ color: 0x3e2f1f, roughness: .6,  metalness: .1,  envMapIntensity: .55 });
+      const waterMaterial   = new THREE.MeshStandardMaterial({ color: 0x7ec8e3, roughness: .05, metalness: .15, transparent: true, opacity: .72, envMapIntensity: 1.4 });
       const groutMaterial   = new THREE.MeshStandardMaterial({ color: 0x140e07, roughness: .98, metalness: 0,   envMapIntensity: .15 });
       const plantMaterial   = new THREE.MeshStandardMaterial({ color: 0x2f4a2c, roughness: .72, metalness: 0,   envMapIntensity: .5 });
       const ceramicMaterial = new THREE.MeshStandardMaterial({ color: 0xece2cc, roughness: .22, metalness: .03, envMapIntensity: 1.25 });
@@ -3020,6 +3015,50 @@
         return m;
       };
 
+      const cabinetInterior = ({ w, h, d, x, y, z, parent = model, shelves = 1 }) => {
+        box(w, h, .018, x, y, z - d / 2, shadowMaterial, parent);
+        box(.018, h, d, x - w / 2, y, z, accentMaterial, parent);
+        box(.018, h, d, x + w / 2, y, z, accentMaterial, parent);
+        box(w, .018, d, x, y + h / 2, z, accentMaterial, parent);
+        box(w, .018, d, x, y - h / 2, z, accentMaterial, parent);
+        for (let i = 1; i <= shelves; i++) {
+          box(w - .04, .018, d - .04, x, y - h / 2 + (h / (shelves + 1)) * i, z, stoneMaterial, parent);
+        }
+      };
+
+      const hingedDoor = ({ w, h, d, x, y, z, mat, parent = model, hinge = "left", open = null, handleH = .5, handleY = 0 }) => {
+        const hingeX = hinge === "left" ? x - w / 2 : x + w / 2;
+        const pivot = new THREE.Group();
+        pivot.position.set(hingeX, y, z);
+        parent.add(pivot);
+
+        const localX = x - hingeX;
+        const panel = bvl(w, h, d, localX, 0, 0, mat, pivot);
+        const handleX = hinge === "left" ? w - .08 : -w + .08;
+        const handle = box(.018, handleH, .034, localX + handleX / 2, handleY, .02, metalMaterial, pivot);
+        const door = { type: "door", pivot, target: 0, open: open ?? (hinge === "left" ? -1.18 : 1.18), closed: 0, isOpen: false, hitTargets: [panel, handle] };
+        door.hitTargets.forEach((target) => { target.userData.interactiveDoor = door; });
+        interactiveDoors.push(door);
+        return door;
+      };
+
+      const slideDrawer = ({ w, h, d, x, y, z, mat, parent = model, travel = .48 }) => {
+        const drawer = new THREE.Group();
+        drawer.position.set(x, y, z);
+        parent.add(drawer);
+        box(w, h, .035, 0, 0, d / 2, mat, drawer);
+        box(w - .08, h - .06, d, 0, 0, 0, shadowMaterial, drawer);
+        box(w - .12, .025, d - .08, 0, h / 2 - .08, -.02, stoneMaterial, drawer);
+        box(.012, .018, d - .04, -(w / 2 - .018), -(h / 2 - .018), 0, metalMaterial, drawer);
+        box(.012, .018, d - .04,  (w / 2 - .018), -(h / 2 - .018), 0, metalMaterial, drawer);
+        const handle = cyl(.016, w * .82, 0, 0, d / 2 + .03, metalMaterial, drawer, "x");
+        const face = drawer.children[0];
+        const item = { type: "drawer", pivot: drawer, homeZ: z, target: z, open: z + travel, closed: z, isOpen: false, hitTargets: [face, handle] };
+        item.hitTargets.forEach((target) => { target.userData.interactiveDoor = item; });
+        interactiveDoors.push(item);
+        return item;
+      };
+
       const plankFloor = (g, w, d, dz = 1.0, planks = 22) => {
         const pw = w / planks;
         box(w + .06, .03, d + .06, 0, -.05, dz, groutMaterial, g);
@@ -3045,63 +3084,168 @@
 
         // BACK WALL — base run (5 doors with bevels)
         const bH = .92, bD = .58, bZ = -1.82;
+        const baseDoorZ = bZ + bD / 2 + .009;
         for (let i = 0; i < 5; i++) {
           const x = -1.84 + i * .92;
-          bvl(.86, bH, bD, x, bH / 2, bZ, frontMaterial, g);
-          box(.018, .54, .032, x + .35, bH / 2, bZ + bD / 2 + .017, metalMaterial, g);
+          if (i !== 2) cabinetInterior({ w: .92, h: bH, d: bD - .08, x, y: bH / 2, z: bZ, parent: g, shelves: 1 });
+          if (i === 2) {
+            box(.018, bH, bD - .018, x - .46, bH / 2, bZ, shadowMaterial, g);
+            box(.018, bH, bD - .018, x + .46, bH / 2, bZ, shadowMaterial, g);
+            box(.90, bH, .018, x, bH / 2, bZ - (bD - .018) / 2 + .009, shadowMaterial, g);
+            const drawerZ = baseDoorZ - .22;
+            [0.767, 0.46, 0.153].forEach((drawerY) => {
+              slideDrawer({ w: .92, h: .307, d: .44, x, y: drawerY, z: drawerZ, mat: frontMaterial, parent: g, travel: .38 });
+            });
+            continue;
+          }
+          if (i === 3) {
+            hingedDoor({ w: .46, h: bH, d: .018, x: x - .23, y: bH / 2, z: baseDoorZ, mat: frontMaterial, parent: g, hinge: "left",  handleH: .38, open: -Math.PI / 2 });
+            hingedDoor({ w: .46, h: bH, d: .018, x: x + .23, y: bH / 2, z: baseDoorZ, mat: frontMaterial, parent: g, hinge: "right", handleH: .38, open:  Math.PI / 2 });
+            continue;
+          }
+          hingedDoor({ w: .92, h: bH, d: .018, x, y: bH / 2, z: baseDoorZ, mat: frontMaterial, parent: g, hinge: i % 2 === 0 ? "left" : "right", handleH: .54 });
         }
-        box(5.0, .12, .5, -.1, .06, bZ + .04, shadowMaterial, g);
-        box(5.06, .07, bD + .08, -.1, bH + .035, bZ - .02, stoneMaterial, g);
-        box(5.06, .015, .015, -.1, bH + .01, bZ + bD / 2 + .04, lineMaterial, g);
-        box(5.0, .58, .03, -.1, bH + .35, bZ + bD / 2 + .005, stoneMaterial, g);
+        cabinetInterior({ w: .92, h: bH, d: bD - .08, x: 2.76, y: bH / 2, z: bZ, parent: g, shelves: 1 });
+        hingedDoor({ w: .92, h: bH, d: .018, x: 2.76, y: bH / 2, z: baseDoorZ, mat: frontMaterial, parent: g, hinge: "left", handleH: .54 });
+        cabinetInterior({ w: .92, h: bH, d: bD - .08, x: 3.68, y: bH / 2, z: bZ, parent: g, shelves: 1 });
+        hingedDoor({ w: .92, h: bH, d: .018, x: 3.68, y: bH / 2, z: baseDoorZ, mat: frontMaterial, parent: g, hinge: "left", handleH: .54 });
+        box(6.54, .12, .016, .76, .06, baseDoorZ - .052, shadowMaterial, g);
+        box(6.54, .008, .052, .76, .004, baseDoorZ - .026, shadowMaterial, g);
+        box(6.78, .07, bD + .08, .76, bH + .035, bZ - .02, stoneMaterial, g);
+        box(6.78, .015, .015, .76, bH + .01, bZ + bD / 2 + .04, lineMaterial, g);
+        box(6.72, .58, .03, .76, bH + .35, bZ - bD / 2 + .02, stoneMaterial, g);
 
         // Sink + faucet
-        const skX = .68;
-        box(.78, .04, .42, skX, bH + .055, bZ + bD / 2 - .26, shadowMaterial, g);
-        box(.74, .12, .38, skX, bH - .04, bZ + bD / 2 - .26, shadowMaterial, g);
-        cyl(.014, .35, skX, bH + .23, bZ + bD / 2 - .04, metalMaterial, g, "y");
-        cyl(.012, .22, skX, bH + .395, bZ + bD / 2 - .15, metalMaterial, g, "z");
-        cyl(.018, .04, skX, bH + .39, bZ + bD / 2 - .26, metalMaterial, g, "y");
-        box(.04, .06, .02, skX + .04, bH + .25, bZ + bD / 2 - .04, metalMaterial, g);
+        const skX = 1.5;
+        const skZ = bZ - .04;
+        const sinkRim  = box(.78, .04, .42, skX, bH + .055, skZ, shadowMaterial, g);
+        const sinkBowl = box(.74, .12, .38, skX, bH - .04,  skZ, shadowMaterial, g);
+        cyl(.014, .35, skX, bH + .23, bZ - bD / 2 + .08, metalMaterial, g, "y");
+        cyl(.012, .22, skX, bH + .395, bZ - bD / 2 + .19, metalMaterial, g, "z");
+        cyl(.018, .04, skX, bH + .39, skZ, metalMaterial, g, "y");
+        box(.04, .06, .02, skX + .04, bH + .25, bZ - bD / 2 + .08, metalMaterial, g);
+        const waterSurface = box(.66, .008, .30, skX, bH - .005, skZ, waterMaterial, g);
+        const waterStream = cyl(.012, .38, skX, bH + .21, skZ - .02, waterMaterial, g, "y");
+        waterSurface.visible = false;
+        waterStream.visible = false;
+        const pickMat = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
+        const sinkZone = new THREE.Mesh(new THREE.BoxGeometry(1.1, .45, .52), pickMat);
+        sinkZone.position.set(skX, bH + .1, skZ);
+        g.add(sinkZone);
+        const sinkTap = { type: "tap", isOpen: false, open: 1, closed: 0, target: 0, pivot: { position: {} }, waterMesh: [waterSurface, waterStream], hitTargets: [sinkRim, sinkBowl, sinkZone] };
+        [sinkRim, sinkBowl, sinkZone].forEach(m => m.userData.interactiveDoor = sinkTap);
+        interactiveDoors.push(sinkTap);
 
         // Induction cooktop (4 burners)
-        const stX = -1.4;
-        box(.78, .015, .42, stX, bH + .08, bZ + bD / 2 - .26, lineMaterial, g);
+        const stX = 0;
+        const stoveSurface = box(.78, .015, .42, stX, bH + .08, bZ + bD / 2 - .26, lineMaterial, g);
         for (let r = 0; r < 2; r++) {
           for (let c = 0; c < 2; c++) {
             cyl(.085, .005, stX - .18 + c * .36, bH + .088, bZ + bD / 2 - .42 + r * .32, metalMaterial, g, "y");
             cyl(.062, .003, stX - .18 + c * .36, bH + .091, bZ + bD / 2 - .42 + r * .32, lineMaterial, g, "y");
           }
         }
+        // Boiling pot on back-left burner
+        const potMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.22, metalness: 0.88 });
+        const potX = stX - .18, potZ = bZ + bD / 2 - .42, potBaseY = bH + .093;
+        cyl(.082, .13, potX, potBaseY + .065, potZ, potMat, g, "y");
+        cyl(.09, .014, potX, potBaseY + .133, potZ, potMat, g, "y");
+        box(.17, .013, .013, potX + .095, potBaseY + .08, potZ, metalMaterial, g);
+        const steamGeo = new THREE.CylinderGeometry(.022, .007, .12, 6);
+        const sMeshes = [];
+        for (let i = 0; i < 4; i++) {
+          const sm = new THREE.Mesh(steamGeo, new THREE.MeshStandardMaterial({ color: 0xdddddd, transparent: true, opacity: 0, roughness: 1, depthWrite: false }));
+          sm.position.set(potX + (i - 1.5) * .022, potBaseY + .2, potZ + (i % 2 ? .012 : -.012));
+          g.add(sm);
+          sMeshes.push(sm);
+        }
+        steamObjects.push({ meshes: sMeshes, baseY: potBaseY + .14, range: .22 });
 
-        // BACK WALL — upper run (skip i=2 for hood)
+        const flameMaterial = new THREE.MeshStandardMaterial({ color: 0xff6a00, emissive: 0xff3300, emissiveIntensity: 2.0, transparent: true, opacity: 0.88 });
+        const flameGeo = new THREE.ConeGeometry(.055, .16, 8);
+        const flameMeshes = [];
+        for (let r = 0; r < 2; r++) {
+          for (let c = 0; c < 2; c++) {
+            const fm = new THREE.Mesh(flameGeo, flameMaterial);
+            fm.position.set(stX - .18 + c * .36, bH + .17, bZ + bD / 2 - .42 + r * .32);
+            fm.visible = false;
+            g.add(fm);
+            flameMeshes.push(fm);
+          }
+        }
+        const stoveZone = new THREE.Mesh(new THREE.BoxGeometry(1.0, .28, .52), pickMat);
+        stoveZone.position.set(stX, bH + .1, bZ + bD / 2 - .26);
+        g.add(stoveZone);
+        const stoveFire = { type: "tap", isOpen: false, open: 1, closed: 0, target: 0, pivot: { position: {} }, waterMesh: flameMeshes, hitTargets: [stoveSurface, stoveZone] };
+        [stoveSurface, stoveZone].forEach(m => m.userData.interactiveDoor = stoveFire);
+        interactiveDoors.push(stoveFire);
+
+        // BACK WALL — upper run
         const uY = 1.62, uH = 1.26, uD = .36, uZ = -1.88;
+        const addUpperCabinet = (x, hinge = "left") => {
+          cabinetInterior({ w: .92, h: uH, d: uD - .06, x, y: uY + uH / 2, z: uZ, parent: g, shelves: 2 });
+          hingedDoor({ w: .92, h: uH, d: .018, x, y: uY + uH / 2, z: uZ + uD / 2 + .009, mat: frontMaterial, parent: g, hinge, handleH: .82 });
+        };
         for (let i = 0; i < 5; i++) {
           if (i === 2) continue;
           const x = -1.84 + i * .92;
-          bvl(.86, uH, uD, x, uY + uH / 2, uZ, frontMaterial, g);
-          box(.016, .82, .032, x + .35, uY + uH / 2, uZ + uD / 2 + .017, metalMaterial, g);
+          addUpperCabinet(x, i < 2 ? "left" : "right");
         }
-        box(4.85, .018, .018, -.1, uY - .005, uZ + uD / 2 - .015, glowMaterial, g);
-        box(5.06, .14, .42, -.1, uY + uH + .07, uZ + .03, accentMaterial, g);
+        // 2-door cabinet above the cooker hood
+        const hoodFillerH = .58;
+        const hoodCabY = uY + uH - hoodFillerH / 2;
+        cabinetInterior({ w: .96, h: hoodFillerH, d: uD - .06, x: stX, y: hoodCabY, z: uZ, parent: g, shelves: 0 });
+        hingedDoor({ w: .49, h: hoodFillerH, d: .018, x: stX - .245, y: hoodCabY, z: uZ + uD / 2 + .009, mat: frontMaterial, parent: g, hinge: "left",  handleH: .18 });
+        hingedDoor({ w: .49, h: hoodFillerH, d: .018, x: stX + .245, y: hoodCabY, z: uZ + uD / 2 + .009, mat: frontMaterial, parent: g, hinge: "right", handleH: .18 });
+        // Extra upper cabinet — fills left of hood chimney
+        addUpperCabinet(-2.76, "left");
+        addUpperCabinet(-3.68, "left");
+        addUpperCabinet(2.76, "right");
+        addUpperCabinet(3.68, "right");
+        box(8.2, .018, .018, 0, uY - .005, uZ + uD / 2 - .015, glowMaterial, g);
+        box(8.2, .14, .42, 0, uY + uH + .07, uZ + .03, accentMaterial, g);
 
         // Range hood (above stove)
-        box(1.42, .26, .5, stX, uY + uH * .42, uZ + .08, accentMaterial, g);
-        box(1.36, .04, .48, stX, uY + uH * .42 - .15, uZ + .08, metalMaterial, g);
-        box(1.16, .015, .015, stX, uY + uH * .42 - .14, uZ + .26, glowMaterial, g);
-        box(.7, 1.1, .38, stX, uY + uH + .27, uZ + .03, accentMaterial, g);
-        box(.04, 1.1, .39, stX + .25, uY + uH + .27, uZ + .03, lineMaterial, g);
-        box(.04, 1.1, .39, stX - .25, uY + uH + .27, uZ + .03, lineMaterial, g);
+        const hoodZ = uZ - .04;
+        const hoodFront = uZ + uD / 2 + .14;
+        const hoodDepth = Math.abs(hoodFront - hoodZ);
+        const hoodCZ = (hoodZ + hoodFront) / 2;
+        box(.86, .32, hoodDepth, stX, uY + uH * .42, hoodCZ, accentMaterial, g);
+        box(.06, .32, hoodDepth, stX - .46, uY + uH * .42, hoodCZ, accentMaterial, g);
+        box(.06, .32, hoodDepth, stX + .46, uY + uH * .42, hoodCZ, accentMaterial, g);
+        box(.82, .04, hoodDepth - .02, stX, uY + uH * .42 - .18, hoodCZ, metalMaterial, g);
+        box(.72, .015, .015, stX, uY + uH * .42 - .17, hoodFront - .01, glowMaterial, g);
+        box(.7, 4.0 - (uY + uH), .28, stX, (4.0 + uY + uH) / 2, uZ - .06, accentMaterial, g);
+        box(.04, 4.0 - (uY + uH), .29, stX + .3, (4.0 + uY + uH) / 2, uZ - .06, lineMaterial, g);
+        box(.04, 4.0 - (uY + uH), .29, stX - .3, (4.0 + uY + uH) / 2, uZ - .06, lineMaterial, g);
 
-        // Tall pantry/oven tower — right
-        const tX = 3.18;
-        box(1.0, 3.18, .58, tX, 1.59, -1.85, accentMaterial, g);
-        bvl(.88, 1.34, .074, tX, 2.46, -1.59, frontMaterial, g);
-        box(.018, .82, .034, tX + .36, 2.46, -1.57, metalMaterial, g);
-        box(.96, .04, .56, tX, 1.78, -1.85, stoneMaterial, g);
-        bvl(.88, 1.32, .074, tX, 1.0, -1.59, frontMaterial, g);
-        cyl(.018, .56, tX, .96, -1.55, metalMaterial, g, "x");
-        box(.66, .42, .005, tX, 1.18, -1.555, mirrorMaterial, g);
+        // Tall microwave/oven tower — right
+        const tX = 4.64, tFrontW = .96, tFaceZ = -1.555;
+        const tBodyZ = -1.85, tBodyD = .58;
+        box(1.0, 3.18, .025, tX, 1.59, tBodyZ - tBodyD / 2 + .013, accentMaterial, g);
+        box(.02, 3.18, tBodyD, tX - .49, 1.59, tBodyZ, accentMaterial, g);
+        box(.02, 3.18, tBodyD, tX + .49, 1.59, tBodyZ, accentMaterial, g);
+        box(1.0, .04, tBodyD, tX, 3.16, tBodyZ, accentMaterial, g);
+        box(1.0, .06, tBodyD, tX, .03, tBodyZ, accentMaterial, g);
+        box(1.0, .06, .075, tX, 2.2, tFaceZ + .02, frontMaterial, g);
+        box(1.0, .06, .075, tX, 1.0, tFaceZ + .02, frontMaterial, g);
+        box(1.0, .06, .075, tX, .06, tFaceZ + .02, frontMaterial, g);
+        hingedDoor({ w: tFrontW, h: .92, d: .018, x: tX, y: 2.7, z: -1.52, mat: frontMaterial, parent: g, handleH: .56 });
+        box(.94, .025, tBodyD, tX, 2.7, tBodyZ, stoneMaterial, g);
+        box(.94, .035, tBodyD, tX, 2.2, tBodyZ, stoneMaterial, g);
+
+        box(tFrontW, .44, .035, tX, 1.94, tFaceZ - .02, lineMaterial, g);
+        box(.66, .24, .006, tX - .04, 1.94, tFaceZ - .002, mirrorMaterial, g);
+        box(.16, .2, .006, tX + .31, 1.94, tFaceZ, metalMaterial, g);
+        cyl(.012, .62, tX, 1.7, tFaceZ + .01, metalMaterial, g, "x");
+
+        box(tFrontW, .67, .035, tX, 1.385, tFaceZ - .02, lineMaterial, g);
+        box(.66, .38, .006, tX - .04, 1.385, tFaceZ - .002, mirrorMaterial, g);
+        cyl(.014, .66, tX, 1.61, tFaceZ + .01, metalMaterial, g, "x");
+
+        box(.94, .035, tBodyD, tX, 1.0, tBodyZ, stoneMaterial, g);
+        box(.94, .025, tBodyD, tX, .55, tBodyZ, stoneMaterial, g);
+        hingedDoor({ w: tFrontW, h: .78, d: .018, x: tX, y: .55, z: -1.52, mat: frontMaterial, parent: g, handleH: .48 });
         box(.84, .015, .015, tX, .025, -1.55, glowMaterial, g);
 
         // ISLAND
@@ -3109,13 +3253,13 @@
         box(2.96, .92, 1.4, iX, .46, iZ, frontMaterial, g);
         for (let d = 0; d < 3; d++) {
           const dx = iX - .96 + d * .96;
-          bvl(.84, .26, .03, dx, .76, iZ + .71, frontMaterial, g);
-          cyl(.014, .42, dx, .76, iZ + .73, metalMaterial, g, "x");
+          slideDrawer({ w: .84, h: .26, d: .44, x: dx, y: .76, z: iZ + .51, mat: frontMaterial, parent: g, travel: .42 });
         }
         for (let d = 0; d < 2; d++) {
           const dx = iX - .68 + d * 1.36;
-          bvl(1.24, .54, .03, dx, .35, iZ + .71, frontMaterial, g);
-          box(.014, .32, .03, dx + .56, .35, iZ + .73, metalMaterial, g);
+          cabinetInterior({ w: 1.2, h: .52, d: .46, x: dx, y: .35, z: iZ + .46, parent: g, shelves: 1 });
+          hingedDoor({ w: .61, h: .54, d: .018, x: dx - .305, y: .35, z: iZ + .73, mat: frontMaterial, parent: g, hinge: "left",  handleH: .28, open: -Math.PI / 2 });
+          hingedDoor({ w: .61, h: .54, d: .018, x: dx + .305, y: .35, z: iZ + .73, mat: frontMaterial, parent: g, hinge: "right", handleH: .28, open:  Math.PI / 2 });
         }
         box(3.24, .07, 1.66, iX, .955, iZ - .07, stoneMaterial, g);
         box(3.24, .015, .015, iX, .94, iZ + .76, lineMaterial, g);
@@ -3182,95 +3326,132 @@
         box(.014, .42, .03, lwx + .03, .38, lwz + .49, metalMaterial, g);
         box(.5, .07, 1.04, lwx, .8, lwz, stoneMaterial, g);
         box(.48, .12, 1.0, lwx, .06, lwz, shadowMaterial, g);
+
+        // === COOKING ACCESSORIES ===
+        // Pan on front-right burner
+        const panMat2 = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.12, metalness: 0.92, envMapIntensity: 2.0 });
+        const pnX = stX + .18, pnZ = bZ + bD / 2 - .10;
+        cyl(.118, .040, pnX, bH + .095, pnZ, panMat2, g, "y");
+        cyl(.128, .014, pnX, bH + .118, pnZ, panMat2, g, "y");
+        box(.28, .013, .036, pnX + .20, bH + .097, pnZ, panMat2, g);
+
+        // Spice jars — counter to the right of stove, pushed against backsplash
+        const jarGlass = new THREE.MeshStandardMaterial({ color: 0xd8e8d4, roughness: 0.08, metalness: 0.05, transparent: true, opacity: 0.75, envMapIntensity: 1.4 });
+        [0, 1, 2].forEach((j) => {
+          const jx = 0.60 + j * 0.09, jz = bZ + bD / 2 - .38;
+          cyl(.026, .092, jx, bH + .118, jz, jarGlass,    g, "y");
+          cyl(.030, .012, jx, bH + .168, jz, metalMaterial, g, "y");
+        });
+
+        // Utensil crock — same counter zone, further right
+        const crockZ = bZ + bD / 2 - .38;
+        cyl(.042, .16, 0.88, bH + .16, crockZ, accentMaterial, g, "y");
+        box(.009, .26, .009, 0.88,        bH + .30, crockZ,       metalMaterial, g);
+        box(.009, .22, .009, 0.88 + .022, bH + .28, crockZ - .01, accentMaterial, g);
+        box(.009, .20, .009, 0.88 - .022, bH + .27, crockZ + .01, metalMaterial, g);
       };
 
       /* ====== WARDROBE ====== */
       const buildWardrobeScene = (g) => {
         wallShell(g, 11, 7.8, 4.0, -1.78, -5.3);
 
-        const dW = 1.18, dH = 3.18, dZ = -1.54;
+        // 3 × 1.0 m units side-by-side — shared dividers, continuous top/bottom/toe-kick
+        const wW = 1.0, wH = 2.4, wD = 0.60, wZ = -1.54, nUnits = 3;
+        const p   = 0.018;                        // panel thickness 18 mm
+        const tkH = 0.10;                         // toe kick height 100 mm
+        const cH  = wH - tkH;                     // carcass height above toe kick
+        const cY  = tkH + cH / 2;                 // carcass centre Y
+        const totalW  = wW * nUnits;              // 3.0 m
+        const x0      = -(totalW / 2);            // left edge = -1.5
+        const doorFaceZ = wZ + wD / 2 + p / 2;   // door centre Z
 
-        // 7-door wardrobe wall (skip i=4 = open, i=3 = mirror)
-        for (let i = 0; i < 7; i++) {
-          if (i === 4) continue;
-          const x = -3.54 + i * dW;
-          const isMirror = (i === 3);
-          const mat = isMirror ? mirrorMaterial : (i === 1 ? accentMaterial : frontMaterial);
-          bvl(dW - .07, dH, .42, x, dH / 2, dZ, mat, g);
-          if (isMirror) {
-            box(dW - .07, .04, .44, x, .18, dZ, metalMaterial, g);
-            box(dW - .07, .04, .44, x, dH - .18, dZ, metalMaterial, g);
-            box(.04, dH, .44, x - (dW - .07) / 2, dH / 2, dZ, metalMaterial, g);
-            box(.04, dH, .44, x + (dW - .07) / 2, dH / 2, dZ, metalMaterial, g);
-          } else {
-            const hOff = (i < 3 || i >= 5) ? .42 : -.42;
-            box(.022, 2.0, .04, x + hOff, dH / 2, dZ + .23, metalMaterial, g);
+        // Side panels — sit on toe kick, full carcass height
+        box(p, cH, wD - p,  x0,        cY, wZ, accentMaterial, g);
+        box(p, cH, wD - p, -x0,        cY, wZ, accentMaterial, g);
+        for (let i = 1; i < nUnits; i++)
+          box(p, cH, wD - p, x0 + i * wW, cY, wZ, accentMaterial, g);
+        // Top + bottom panels
+        box(totalW + p * 2, p, wD, 0, wH + p / 2,    wZ, accentMaterial, g); // top
+        box(totalW + p * 2, p, wD, 0, tkH + p / 2,   wZ, accentMaterial, g); // bottom (on toe kick)
+        // Back panel per unit
+        [-1, 0, 1].forEach((wX) => {
+          box(0.96, cH, p, wX, cY, wZ - wD / 2 + 0.14, shadowMaterial, g);
+        });
+
+        // Toe kick — recessed 55 mm behind door face
+        const tkDepth = 0.05;
+        const tkZ = wZ + wD / 2 - tkDepth / 2;   // flush with carcass front
+        box(totalW, tkH, tkDepth, 0, tkH / 2, tkZ, shadowMaterial, g);
+
+        // Left + right units: full-height doors (carcass height)
+        [-1, 1].forEach((wX) => {
+          hingedDoor({ w: 0.50, h: cH, d: p,
+            x: wX - 0.25, y: cY, z: doorFaceZ,
+            mat: frontMaterial, parent: g, hinge: "left",  handleH: 0.14,
+            open: -Math.PI / 2 });
+          hingedDoor({ w: 0.50, h: cH, d: p,
+            x: wX + 0.25, y: cY, z: doorFaceZ,
+            mat: frontMaterial, parent: g, hinge: "right", handleH: 0.14,
+            open:  Math.PI / 2 });
+        });
+
+        // Middle unit: shorter doors above the 90 cm drawer zone
+        const drawerH = 0.90;
+        const midDoorH = cH - drawerH;                    // 1.40 m tall
+        const midDoorY = tkH + drawerH + midDoorH / 2;    // 1.70 m centre
+        hingedDoor({ w: 0.50, h: midDoorH, d: p,
+          x: -0.25, y: midDoorY, z: doorFaceZ,
+          mat: frontMaterial, parent: g, hinge: "left",  handleH: 0.14,
+          handleY: cY - midDoorY, open: -Math.PI / 2 });
+        hingedDoor({ w: 0.50, h: midDoorH, d: p,
+          x: +0.25, y: midDoorY, z: doorFaceZ,
+          mat: frontMaterial, parent: g, hinge: "right", handleH: 0.14,
+          handleY: cY - midDoorY, open:  Math.PI / 2 });
+
+        // Horizontal rail between drawer zone and door zone
+        box(0.96, p, wD - p, 0, tkH + drawerH, wZ, accentMaterial, g);
+
+        // 3 external drawers — 90 cm zone above toe kick
+        const drZ = doorFaceZ + p / 2 - 0.25;
+        [tkH + 0.15, tkH + 0.45, tkH + 0.75].forEach((dy) => {
+          slideDrawer({ w: 1.00, h: 0.293, d: 0.50, x: 0, y: dy, z: drZ,
+            mat: frontMaterial, parent: g, travel: 0.36 });
+        });
+
+        // Hanging rods + hangers + garments inside all 3 units
+        const hangZ   = wZ - 0.13;
+        const rodY    = 2.18;
+        const rodLen  = 0.88;
+        [-1, 0, 1].forEach((wX) => {
+          cyl(0.012, rodLen, wX, rodY, hangZ, metalMaterial, g, "x");
+          box(p, 0.04, p, wX - rodLen / 2, rodY, hangZ, metalMaterial, g);
+          box(p, 0.04, p, wX + rodLen / 2, rodY, hangZ, metalMaterial, g);
+          for (let c = 0; c < 4; c++) {
+            const cx   = wX - 0.30 + c * 0.20;
+            const gMat = [frontMaterial, accentMaterial, leatherMaterial, fabricMaterial][c];
+            cyl(0.005, 0.14, cx, rodY - 0.07, hangZ - 0.02, metalMaterial, g, "y");
+            cyl(0.004, 0.20, cx, rodY - 0.13, hangZ,        metalMaterial, g, "z");
+            box(0.16, 1.0, 0.09, cx, rodY - 0.63, hangZ - 0.02, gMat, g);
           }
-        }
+        });
 
-        // Open section (i=4)
-        const oX = -3.54 + 4 * dW;
-        box(.06, dH, .78, oX - dW / 2 + .03, dH / 2, dZ - .36, accentMaterial, g);
-        box(.06, dH, .78, oX + dW / 2 - .03, dH / 2, dZ - .36, accentMaterial, g);
-        box(dW - .04, dH, .06, oX, dH / 2, dZ - .73, accentMaterial, g);
-        box(dW + .08, .06, .78, oX, dH - .03, dZ - .36, stoneMaterial, g);
-        // Hanging rod + hangers + garments
-        cyl(.022, dW - .12, oX, 2.62, dZ - .38, metalMaterial, g, "x");
-        for (let c = 0; c < 5; c++) {
-          const cx = oX - .4 + c * .2;
-          cyl(.005, .14, cx, 2.55, dZ - .42, metalMaterial, g, "y");
-          cyl(.004, .18, cx, 2.5, dZ - .4, metalMaterial, g, "z");
-          const gMat = c % 3 === 0 ? leatherMaterial : (c % 3 === 1 ? frontMaterial : accentMaterial);
-          box(.16, 1.1, .12, cx, 1.96, dZ - .42, gMat, g);
-        }
-        // Mid shelf with folded clothes
-        box(dW - .08, .06, .72, oX, 1.36, dZ - .36, stoneMaterial, g);
-        for (let st = 0; st < 2; st++) {
-          const sx = oX - .25 + st * .5;
-          for (let i = 0; i < 3; i++) {
-            box(.34, .07, .42, sx, 1.42 + i * .08, dZ - .36, i % 2 === 0 ? fabricMaterial : accentMaterial, g);
-          }
-        }
-        // Lower shoe shelf with shoes
-        box(dW - .08, .06, .72, oX, .56, dZ - .36, stoneMaterial, g);
-        for (let p = 0; p < 3; p++) {
-          const sx = oX - .35 + p * .35;
-          box(.12, .08, .26, sx - .04, .64, dZ - .42, leatherMaterial, g);
-          box(.12, .08, .26, sx + .04, .64, dZ - .42, leatherMaterial, g);
-        }
-        // Bottom drawer
-        bvl(dW - .08, .26, .04, oX, .22, dZ - .04, frontMaterial, g);
-        cyl(.014, .42, oX, .22, dZ - .02, metalMaterial, g, "x");
-        // Open section glow strips
-        box(.94, .018, .02, oX, dH - .08, dZ - .14, glowMaterial, g);
-        box(.94, .018, .02, oX, 1.34, dZ - .14, glowMaterial, g);
-
-        // Plinth + crown
-        box(9.2, .16, .52, -.3, .08, dZ + .08, shadowMaterial, g);
-        box(9.2, .22, .56, -.3, dH + .11, dZ + .07, accentMaterial, g);
-        box(9.2, .04, .58, -.3, dH + .22, dZ + .06, metalMaterial, g);
-        box(8.6, .02, .02, -.3, dH - .04, dZ + .28, glowMaterial, g);
-
-        // BENCH/OTTOMAN in front
+        // Bench + accessories
         const bxX = 0, bxZ = 1.32;
-        box(1.78, .42, .72, bxX, .21, bxZ, accentMaterial, g);
-        box(1.86, .14, .8, bxX, .49, bxZ, fabricMaterial, g);
-        for (let lx = -1; lx <= 1; lx += 2) {
-          for (let lz = -1; lz <= 1; lz += 2) {
-            box(.06, .42, .06, bxX + lx * .8, .21, bxZ + lz * .3, metalMaterial, g);
-          }
-        }
-        // Throw pillow
-        box(.42, .18, .28, bxX - .56, .6, bxZ, fabricMaterial, g);
-        // Slippers under bench
-        box(.12, .06, .26, bxX - .3, .03, bxZ + .35, leatherMaterial, g);
-        box(.12, .06, .26, bxX - .12, .03, bxZ + .35, leatherMaterial, g);
+        box(1.60, 0.42, 0.70, bxX, 0.21, bxZ, accentMaterial, g);
+        box(1.68, 0.12, 0.78, bxX, 0.48, bxZ, fabricMaterial, g);
+        for (let lx = -1; lx <= 1; lx += 2)
+          for (let lz = -1; lz <= 1; lz += 2)
+            box(0.05, 0.42, 0.05, bxX + lx * 0.74, 0.21, bxZ + lz * 0.30, metalMaterial, g);
+        box(0.36, 0.14, 0.24, bxX - 0.50, 0.56, bxZ, fabricMaterial, g);
+        box(0.12, 0.05, 0.26, bxX - 0.28, 0.025, bxZ + 0.34, leatherMaterial, g);
+        box(0.12, 0.05, 0.26, bxX - 0.10, 0.025, bxZ + 0.34, leatherMaterial, g);
 
-        // Tall ceramic vase next to bench (floor)
-        cyl(.14, .55, bxX + 1.4, .28, bxZ - .1, ceramicMaterial, g, "y");
+        // Ceramic vase
+        cyl(0.12, 0.50, bxX + 1.80, 0.25, bxZ - 0.08, ceramicMaterial, g, "y");
         for (let b = 0; b < 5; b++) {
-          const a = (b - 2) * .12;
-          cyl(.008, .85, bxX + 1.4 + Math.sin(a) * .18, .92, bxZ - .1 + Math.cos(a) * .08, accentMaterial, g, "y");
+          const a = (b - 2) * 0.12;
+          cyl(0.007, 0.70, bxX + 1.80 + Math.sin(a) * 0.14, 0.85,
+              bxZ - 0.08 + Math.cos(a) * 0.06, accentMaterial, g, "y");
         }
       };
 
@@ -3429,7 +3610,11 @@
         taupe:    { front: 0x8f8373, accent: 0x6b472e, metal: 0x171615, line: 0x5c5348 },
         graphite: { front: 0x333433, accent: 0x1e0f07, metal: 0xc49a3d, line: 0x1a1b1a },
         ivory:    { front: 0xe5dccb, accent: 0xa07848, metal: 0x171615, line: 0xa89b8a },
-        olive:    { front: 0x66705a, accent: 0x3d2010, metal: 0x151412, line: 0x40473a }
+        olive:    { front: 0x66705a, accent: 0x3d2010, metal: 0x151412, line: 0x40473a },
+        sage:     { front: 0x6d7b68, accent: 0x3a2c1c, metal: 0xb8a870, line: 0x4a5645 },
+        navy:     { front: 0x1e2d3e, accent: 0x0e1820, metal: 0xc8a84a, line: 0x162130 },
+        clay:     { front: 0x9c5c48, accent: 0x2e1a0e, metal: 0x181614, line: 0x6e3f2c },
+        chalk:    { front: 0xf0ece6, accent: 0x8c6a46, metal: 0x1a1816, line: 0xb5aea6 }
       };
 
       let currentFinish = "taupe";
@@ -3467,6 +3652,7 @@
           }
         });
         model.clear();
+        interactiveDoors.length = 0;
         model.rotation.y = sceneRotations[name] ?? -.28;
         ({ kitchen: buildKitchenScene, wardrobe: buildWardrobeScene, closet: buildClosetScene })[name]?.(model);
         applyFinish(currentFinish);
@@ -3480,12 +3666,57 @@
       });
 
       const pointer = { x: 0, y: 0 };
-      canvas3d.addEventListener("pointermove", (e) => {
+      const tapStart = { x: 0, y: 0 };
+      const doorAtPointer = (event) => {
+        const targets = interactiveDoors.flatMap((door) => door.hitTargets);
+        if (!targets.length) return null;
+        const r = canvas3d.getBoundingClientRect();
+        tapPoint.x = ((event.clientX - r.left) / r.width) * 2 - 1;
+        tapPoint.y = -(((event.clientY - r.top) / r.height) * 2 - 1);
+        raycaster.setFromCamera(tapPoint, camera);
+        const hit = raycaster.intersectObjects(targets, false).find((entry) => entry.object.userData.interactiveDoor);
+        return hit?.object.userData.interactiveDoor ?? null;
+      };
+
+      const isControlTap = (event) => event.target.closest("button, a, input, select, textarea");
+
+      designLab.addEventListener("pointerdown", (e) => {
+        if (isControlTap(e)) return;
+        tapStart.x = e.clientX;
+        tapStart.y = e.clientY;
+      });
+
+      designLab.addEventListener("pointerup", (e) => {
+        if (isControlTap(e)) return;
+        if (Math.hypot(e.clientX - tapStart.x, e.clientY - tapStart.y) > 8) return;
+        const door = doorAtPointer(e);
+        if (!door) return;
+        door.isOpen = !door.isOpen;
+        door.target = door.isOpen ? door.open : door.closed;
+        if (door.type === "tap") { door.waterMesh.forEach(m => m.visible = door.isOpen); return; }
+        if (reduce3dMotion) {
+          if (door.type === "drawer") door.pivot.position.z = door.target;
+          else door.pivot.rotation.y = door.target;
+          camera.lookAt(lookCurrent);
+          renderer.render(scene, camera);
+        }
+      });
+
+      designLab.addEventListener("pointermove", (e) => {
+        if (isControlTap(e)) return;
         const r = canvas3d.getBoundingClientRect();
         pointer.x = ((e.clientX - r.left) / r.width - .5) * 2;
         pointer.y = ((e.clientY - r.top) / r.height - .5) * 2;
+        const cursor = doorAtPointer(e) ? "pointer" : "";
+        designLab.style.cursor = cursor;
+        canvas3d.style.cursor = cursor;
       });
-      canvas3d.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; });
+      designLab.addEventListener("pointerleave", () => {
+        pointer.x = 0;
+        pointer.y = 0;
+        designLab.style.cursor = "";
+        canvas3d.style.cursor = "";
+      });
 
       const resize = () => {
         const rect = designLab.getBoundingClientRect();
@@ -3501,6 +3732,29 @@
       resize();
       loadScene("kitchen");
 
+      const cameraAngles = {
+        overview: { pos: [6.2,  3.5,  7.6],  look: [0.1,  1.35, -0.3]  },
+        front:    { pos: [0.1,  2.2,  6.0],  look: [0.1,  1.25, -1.8]  },
+
+        top:      { pos: [0.5,  9.0,  2.0],  look: [0.5,  0.4,  -1.6]  },
+        detail:   { pos: [0.4,  1.55, 3.4],  look: [0.4,  1.05, -1.6]  },
+      };
+      const camTargetPos  = new THREE.Vector3(6.2, 3.5, 7.6);
+      const lookTargetPos = new THREE.Vector3(0.1, 1.35, -0.3);
+      const lookCurrent   = new THREE.Vector3(0.1, 1.35, -0.3);
+
+      const setAngle = (name) => {
+        const a = cameraAngles[name] || cameraAngles.overview;
+        camTargetPos.set(...a.pos);
+        lookTargetPos.set(...a.look);
+        document.querySelectorAll("[data-angle]").forEach((btn) => {
+          btn.classList.toggle("is-active", btn.dataset.angle === name);
+        });
+      };
+      document.querySelectorAll("[data-angle]").forEach((btn) => {
+        btn.addEventListener("click", () => setAngle(btn.dataset.angle));
+      });
+
       const clock = new THREE.Clock();
       const renderScene = () => {
         const elapsed = clock.getElapsedTime();
@@ -3508,8 +3762,26 @@
         model.rotation.y = baseY + Math.sin(elapsed * .34) * .08 + pointer.x * .12;
         model.rotation.x = pointer.y * .035;
         model.position.y = reduce3dMotion ? 0 : Math.sin(elapsed * .82) * .035;
+        camera.position.lerp(camTargetPos, .055);
+        lookCurrent.lerp(lookTargetPos, .055);
+        interactiveDoors.forEach((door) => {
+          if (door.type === "tap") return;
+          if (door.type === "drawer") {
+            door.pivot.position.z += (door.target - door.pivot.position.z) * .16;
+          } else {
+            door.pivot.rotation.y += (door.target - door.pivot.rotation.y) * .16;
+          }
+        });
+        steamObjects.forEach((s) => {
+          s.meshes.forEach((m, i) => {
+            const phase = ((elapsed * .52 + i * .25) % 1);
+            m.position.y = s.baseY + phase * s.range;
+            m.position.x += Math.sin(elapsed * 1.8 + i * 2.3) * .0008;
+            m.material.opacity = phase < .15 ? phase * 2.2 : phase > .55 ? Math.max(0, (1 - phase) * .65) : .32;
+          });
+        });
         warmLight.position.x = -1.8 + Math.sin(elapsed * .7) * .9;
-        camera.lookAt(.1, 1.35, -.3);
+        camera.lookAt(lookCurrent);
         renderer.render(scene, camera);
         window.__klever3dReady = true;
       };
