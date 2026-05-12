@@ -2167,7 +2167,7 @@
 
     <main>
       <section class="design-lab" id="design-lab" aria-label="Animated 3D cabinetry preview">
-        <canvas class="design-lab-canvas" id="designLabCanvas" aria-label="Animated 3D model of handled cabinetry, kitchen island, and storage wall"></canvas>
+        <canvas class="design-lab-canvas" id="designLabCanvas" aria-label="Animated 3D model of handled cabinetry, kitchen island, U-shaped walk-in closet with dressing room, and storage wall"></canvas>
         <div class="design-lab-shade" aria-hidden="true"></div>
         <div class="design-lab-copy">
           <p class="section-kicker reveal">3D Preview</p>
@@ -3457,124 +3457,91 @@
 
       /* ====== WALK-IN CLOSET ====== */
       const buildClosetScene = (g) => {
-        wallShell(g, 11, 8.0, 4.0, -2.32, -5.5);
+        // U-shaped walk-in closet with dressing room
+        // Panel thickness: 0.018 (1.8 cm), cabinet depth: 0.62 (62 cm)
+        wallShell(g, 12, 9.0, 4.0, -2.42, -5.5);
+        // Right wall to close the U
+        box(.08, 4.0, 9.0, 4.08, 2.0, .08, wallMaterial, g);
+        box(.015, .14, 9.0, 4.04, .07, .08, accentMaterial, g);
 
-        const tH = 3.18, tD = .62;
+        const pH = 2.4, pD = 0.62, pT = 0.018;
+        const bZ  = -2.42 + pT + pD / 2;   // back-wall cabinet centre Z ≈ -2.09
 
-        // LEFT: full-height hanging
-        const lX = -3.2, lW = 2.8;
-        box(.06, tH, tD, lX - lW / 2, tH / 2, -1.92, accentMaterial, g);
-        box(.06, tH, tD, lX + lW / 2, tH / 2, -1.92, accentMaterial, g);
-        box(lW + .06, .06, tD, lX, tH, -1.92, accentMaterial, g);
-        box(lW - .06, tH, .04, lX, tH / 2, -2.22, wallMaterial, g);
-        // Upper rod with brackets
-        cyl(.024, lW - .12, lX, 2.7, -1.88, metalMaterial, g, "x");
-        // Hangers + garments upper
-        for (let c = 0; c < 7; c++) {
-          const cx = lX - 1.02 + c * .34;
-          cyl(.005, .16, cx, 2.62, -1.92, metalMaterial, g, "y");
-          cyl(.004, .2, cx, 2.55, -1.92, metalMaterial, g, "z");
-          const gMat = c % 3 === 0 ? leatherMaterial : (c % 3 === 1 ? frontMaterial : accentMaterial);
-          box(.18, 1.24, .14, cx, 1.96, -1.92, gMat, g);
-        }
-        // Mid shelf
-        box(lW - .08, .06, tD - .04, lX, 1.7, -1.92, stoneMaterial, g);
-        // Lower rod + shorter garments
-        cyl(.022, lW - .12, lX, 1.3, -1.88, metalMaterial, g, "x");
-        for (let c = 0; c < 5; c++) {
-          const cx = lX - .72 + c * .36;
-          cyl(.005, .16, cx, 1.22, -1.92, metalMaterial, g, "y");
-          box(.16, .68, .12, cx, .92, -1.92, c % 2 === 0 ? frontMaterial : fabricMaterial, g);
-        }
-        // Shoe shelf with shoes
-        box(lW - .08, .06, tD - .04, lX, .26, -1.92, stoneMaterial, g);
-        for (let p = 0; p < 4; p++) {
-          const sx = lX - .9 + p * .6;
-          box(.16, .08, .3, sx - .06, .34, -1.92, leatherMaterial, g);
-          box(.16, .08, .3, sx + .06, .34, -1.92, leatherMaterial, g);
-        }
-        box(lW - .18, .02, .02, lX, tH - .04, -1.66, glowMaterial, g);
+        // ── BACK WALL: 10 units × 90 cm wide, 200 cm tall, 2 hinged doors each ─
+        {
+          const nU = 10, uW = 0.9, uH = 2.0, toeH = 0.08;
+          const startX = -5.5;                // flush with left wall
+          const totalLen = nU * uW;           // 9.0 m
+          const doorH  = uH - toeH;
+          const doorCY = toeH + doorH / 2;
+          const cabZ   = bZ;                  // flush against back wall
+          const frontZ = cabZ + pD / 2;       // front face Z
+          const dz     = frontZ + .009;        // door panel Z
 
-        // CENTRE BACK: open display shelving with curated items
-        const cX = .5, cW = 2.4;
-        box(.06, tH, tD, cX - cW / 2, tH / 2, -1.92, accentMaterial, g);
-        box(.06, tH, tD, cX + cW / 2, tH / 2, -1.92, accentMaterial, g);
-        box(cW + .06, .06, tD, cX, tH, -1.92, accentMaterial, g);
-        box(cW - .06, tH, .04, cX, tH / 2, -2.22, wallMaterial, g);
-        for (let s = 0; s < 6; s++) {
-          box(cW - .06, .06, tD - .04, cX, .3 + s * .5, -1.92, stoneMaterial, g);
-        }
-        // Shelf 0: shoe boxes
-        box(.34, .14, .42, cX - .6, .42, -1.92, leatherMaterial, g);
-        box(.34, .14, .42, cX, .42, -1.92, accentMaterial, g);
-        box(.34, .14, .42, cX + .6, .42, -1.92, fabricMaterial, g);
-        // Shelf 1: handbags
-        box(.36, .26, .14, cX - .6, .58, -1.85, leatherMaterial, g);
-        cyl(.04, .12, cX - .6, .73, -1.78, metalMaterial, g, "x");
-        box(.4, .28, .16, cX + .1, .58, -1.85, fabricMaterial, g);
-        cyl(.04, .14, cX + .1, .74, -1.78, leatherMaterial, g, "x");
-        // Shelf 2: folded clothes
-        for (let st = 0; st < 3; st++) {
-          const sx = cX - .7 + st * .7;
-          for (let i = 0; i < 3; i++) {
-            box(.42, .07, .42, sx, .98 + i * .08, -1.92, i === 1 ? fabricMaterial : (st === 1 ? accentMaterial : frontMaterial), g);
+          // Top panel
+          box(totalLen + pT * 2, pT, pD, startX + totalLen / 2, uH + pT / 2, cabZ, accentMaterial, g);
+          // Toe-kick
+          box(totalLen + pT * 2, toeH, pD, startX + totalLen / 2, toeH / 2, cabZ, shadowMaterial, g);
+          // Vertical dividers — 7 panels (2 ends + 5 internal)
+          for (let i = 0; i <= nU; i++) {
+            box(pT, doorH, pD, startX + i * uW, doorCY, cabZ, accentMaterial, g);
           }
-        }
-        // Shelf 3: hat boxes
-        cyl(.18, .22, cX - .55, 1.7, -1.92, accentMaterial, g, "y");
-        cyl(.16, .18, cX, 1.68, -1.92, fabricMaterial, g, "y");
-        cyl(.18, .22, cX + .55, 1.7, -1.92, leatherMaterial, g, "y");
-        // Shelf 4: ornaments
-        cyl(.06, .26, cX - .5, 2.16, -1.92, ceramicMaterial, g, "y");
-        sph(.1, cX, 2.16, -1.92, ceramicMaterial, g);
-        cyl(.08, .14, cX + .5, 2.12, -1.92, ceramicMaterial, g, "y");
-        // Shelf 5: top accents
-        box(.4, .14, .12, cX - .4, 2.62, -1.92, accentMaterial, g);
-        cyl(.06, .2, cX + .3, 2.65, -1.92, ceramicMaterial, g, "y");
-        box(cW - .14, .02, .02, cX, tH - .04, -1.66, glowMaterial, g);
+          // Stone countertop — 1.8 cm (pT)
+          box(totalLen + .06, pT, pD + .06, startX + totalLen / 2, uH + pT + pT / 2, cabZ, stoneMaterial, g);
+          // Items on top of ledge
+          cyl(.036, .15, startX + totalLen * .14, uH + pT * 2 + .075, cabZ + .04, ceramicMaterial, g, "y");
+          cyl(.028, .11, startX + totalLen * .22, uH + pT * 2 + .055, cabZ + .04, mirrorMaterial, g, "y");
+          box(.28, .032, .16, startX + totalLen * .74, uH + pT * 2 + .016, cabZ, accentMaterial, g);
 
-        // RIGHT: drawer tower
-        const rX = 3.5, rW = 2.2;
-        box(.06, tH, tD, rX - rW / 2, tH / 2, -1.92, accentMaterial, g);
-        box(.06, tH, tD, rX + rW / 2, tH / 2, -1.92, accentMaterial, g);
-        box(rW + .06, .06, tD, rX, tH, -1.92, accentMaterial, g);
-        box(rW - .06, tH, .04, rX, tH / 2, -2.22, wallMaterial, g);
-        for (let d = 0; d < 5; d++) {
-          bvl(rW - .1, .36, .04, rX, .22 + d * .44, -1.61, frontMaterial, g);
-          cyl(.014, .3, rX, .22 + d * .44, -1.585, metalMaterial, g, "x");
+          // Per-unit: shadow interior + 2 hinged doors
+          for (let i = 0; i < nU; i++) {
+            const ux = startX + i * uW + uW / 2;
+            box(uW - pT * 2, doorH, pD - .02, ux, doorCY, cabZ, shadowMaterial, g);
+            hingedDoor({ w: uW / 2, h: doorH, d: pT, x: ux - uW / 4, y: doorCY, z: dz, mat: frontMaterial, parent: g, hinge: "left",  handleH: 0.42, open: -Math.PI / 2 });
+            hingedDoor({ w: uW / 2, h: doorH, d: pT, x: ux + uW / 4, y: doorCY, z: dz, mat: frontMaterial, parent: g, hinge: "right", handleH: 0.42, open:  Math.PI / 2 });
+          }
+          // LED strip under ledge front edge
+          box(totalLen * .94, .012, .012, startX + totalLen / 2, uH - .04, frontZ - .05, glowMaterial, g);
         }
-        box(rW + .1, .06, tD + .08, rX, tH - .06, -1.88, stoneMaterial, g);
-        // Items on top: jewelry tray + perfumes
-        box(.3, .04, .2, rX - .4, tH - .01, -1.86, accentMaterial, g);
-        cyl(.04, .14, rX + .2, tH + .04, -1.86, ceramicMaterial, g, "y");
-        cyl(.035, .12, rX + .35, tH + .03, -1.86, ceramicMaterial, g, "y");
-        cyl(.04, .16, rX - .15, tH + .05, -1.86, mirrorMaterial, g, "y");
-        box(rW - .14, .02, .02, rX, tH - .04, -1.66, glowMaterial, g);
 
-        // CENTRE ISLAND
-        const isX = -.2, isZ = .9;
-        box(2.7, .86, 1.12, isX, .43, isZ, frontMaterial, g);
+        // ── DRESSING ROOM CENTRE ───────────────────────────────────────────────
+        // Vanity / dresser island
+        const isX = -.4, isZ = -.3;
+        box(2.4, .82, .98, isX, .41, isZ, frontMaterial, g);
         for (let d = 0; d < 3; d++) {
           const dx = isX - .72 + d * .72;
-          bvl(.62, .38, .03, dx, .46, isZ + .57, frontMaterial, g);
-          cyl(.014, .32, dx, .46, isZ + .59, metalMaterial, g, "x");
+          bvl(.58, .36, .03, dx, .44, isZ + .50, frontMaterial, g);
+          cyl(.013, .30, dx, .44, isZ + .52, metalMaterial, g, "x");
         }
-        box(2.9, .07, 1.3, isX, .92, isZ, stoneMaterial, g);
-        box(2.9, .015, .015, isX, .91, isZ + .65, lineMaterial, g);
-        box(2.7, .12, 1.12, isX, .06, isZ, shadowMaterial, g);
-        // Items on island top
-        box(.5, .04, .26, isX - .5, .96, isZ - .1, accentMaterial, g);
-        cyl(.06, .22, isX + .4, 1.04, isZ - .15, ceramicMaterial, g, "y");
-        cyl(.045, .16, isX + .55, 1.0, isZ - .15, ceramicMaterial, g, "y");
-        cyl(.04, .14, isX + .65, .99, isZ - .15, mirrorMaterial, g, "y");
+        box(2.56, .065, 1.14, isX, .87, isZ, stoneMaterial, g);
+        box(2.56, .012, .012, isX, .865, isZ + .57, lineMaterial, g);
+        box(2.4, .11, .98, isX, .055, isZ, shadowMaterial, g);
+        // Items on vanity top
+        box(.44, .036, .22, isX - .44, .91, isZ - .1, accentMaterial, g);
+        cyl(.055, .2, isX + .38, .98, isZ - .12, ceramicMaterial, g, "y");
+        cyl(.042, .15, isX + .52, .96, isZ - .12, ceramicMaterial, g, "y");
+        cyl(.038, .14, isX + .62, .95, isZ - .12, mirrorMaterial, g, "y");
+        cyl(.028, .09, isX - .18, .93, isZ - .06, ceramicMaterial, g, "y");
 
-        // Standing mirror on a stand (right of island)
-        cyl(.04, .12, isX + 1.5, .06, isZ - .1, accentMaterial, g, "y");
-        box(.05, 1.1, .82, isX + 1.5, .61, isZ - .1, accentMaterial, g);
-        box(.025, .98, .68, isX + 1.51, .61, isZ - .1, mirrorMaterial, g);
+        // Full-length standing mirror (left of vanity, facing room)
+        const mirX = isX - 1.62, mirZ = isZ + .1;
+        cyl(.038, .1, mirX, .05, mirZ, accentMaterial, g, "y");
+        box(.048, 1.72, .72, mirX, .91, mirZ, accentMaterial, g);
+        box(.022, 1.58, .6, mirX + .026, .91, mirZ, mirrorMaterial, g);
+        box(.72, .036, .52, mirX, .044, mirZ, accentMaterial, g); // base
 
-        // LED strips along front of island top
-        box(2.6, .015, .015, isX, .92, isZ - .58, glowMaterial, g);
+        // Vanity stool
+        const stX = isX, stZ = isZ + .84;
+        box(.54, .06, .46, stX, .44, stZ, accentMaterial, g);
+        box(.5, .08, .42, stX, .48, stZ, fabricMaterial, g);
+        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx2, sz2]) => {
+          box(.04, .44, .04, stX + sx2 * .22, .22, stZ + sz2 * .18, accentMaterial, g);
+        });
+
+        // LED cove along back wall top (connects all back sections)
+        box(8.2, .015, .015, -.2, pH - .04, bZ + .28, glowMaterial, g);
+        // Warm floor-level LED strip at island front
+        box(2.3, .012, .012, isX, .01, isZ + .49, glowMaterial, g);
       };
 
       const ambient = new THREE.HemisphereLight(0xfff7e6, 0x161210, .85);
@@ -3637,7 +3604,7 @@
         btn.addEventListener("click", () => applyFinish(btn.dataset.finish));
       });
 
-      const sceneRotations = { kitchen: -.28, wardrobe: -.18, closet: -.32 };
+      const sceneRotations = { kitchen: -.28, wardrobe: -.18, closet: .42 };
       let currentSceneName = "kitchen";
 
       const loadScene = (name) => {
