@@ -3542,6 +3542,110 @@
         box(8.2, .015, .015, -.2, pH - .04, bZ + .28, glowMaterial, g);
         // Warm floor-level LED strip at island front
         box(2.3, .012, .012, isX, .01, isZ + .49, glowMaterial, g);
+
+        // ── LEFT WALL: open hanging zones (full-length + double-rail + shelves) ──
+        {
+          const liW = -5.46;   // left wall inner face X
+          const liD = 0.58, liH = 2.4, liS = 1.0, liN = 5, liZ0 = -1.78;
+          const cX   = liW + liD / 2;
+          const fX   = liW + liD;
+          const rX   = liW + liD * 0.68;   // rail sits 68% into cabinet depth
+          const tot  = liN * liS;
+          const midZ = liZ0 + tot / 2;
+
+          // Structure: top, bottom, back, toe-kick, section dividers, stone ledge, LED
+          box(liD, pT, tot + pT*2, cX, liH + pT/2, midZ, accentMaterial, g);
+          box(liD, pT, tot + pT*2, cX, .10 + pT/2, midZ, accentMaterial, g);
+          box(pT, liH - .10, tot, liW + pT/2, .10 + (liH-.10)/2, midZ, shadowMaterial, g);
+          box(liD - .04, .10, tot, cX + .02, .05, midZ, shadowMaterial, g);
+          for (let i = 0; i <= liN; i++)
+            box(liD, liH - .10, pT, cX, .10 + (liH-.10)/2, liZ0 + i*liS, accentMaterial, g);
+          box(liD + .04, pT, tot + .06, cX - .02, liH + pT, midZ, stoneMaterial, g);
+          box(.012, .012, tot * .90, fX - .02, liH - .04, midZ, glowMaterial, g);
+
+          const rl = liS - .07;   // rail length per section
+          for (let s = 0; s < liN; s++) {
+            const sz = liZ0 + s*liS + liS/2;
+            if (s < 3) {
+              // Sections 0-2: full-length hanging (dresses / coats)
+              cyl(.012, rl, rX, 2.0, sz, metalMaterial, g, "z");
+              box(pT, .04, pT, rX, 2.0, sz - rl/2, metalMaterial, g);
+              box(pT, .04, pT, rX, 2.0, sz + rl/2, metalMaterial, g);
+              for (let h = 0; h < 5; h++) {
+                const hz = sz - .34 + h * .17;
+                const gM = [frontMaterial, accentMaterial, fabricMaterial, leatherMaterial, frontMaterial][h];
+                cyl(.005, .13, rX, 1.93, hz, metalMaterial, g, "y");
+                cyl(.004, .19, rX, 1.87, hz, metalMaterial, g, "x");
+                box(.09, 1.04, .14, rX, 1.34, hz, gM, g);
+              }
+            } else if (s === 3) {
+              // Section 3: double-rail (shirts above, trousers below)
+              cyl(.012, rl, rX, 2.0, sz, metalMaterial, g, "z");
+              box(pT, .04, pT, rX, 2.0, sz - rl/2, metalMaterial, g);
+              box(pT, .04, pT, rX, 2.0, sz + rl/2, metalMaterial, g);
+              box(liD - .12, pT, rl, cX - .06, 1.22, sz, accentMaterial, g);
+              cyl(.012, rl, rX, 1.10, sz, metalMaterial, g, "z");
+              box(pT, .04, pT, rX, 1.10, sz - rl/2, metalMaterial, g);
+              box(pT, .04, pT, rX, 1.10, sz + rl/2, metalMaterial, g);
+              for (let h = 0; h < 4; h++) {
+                const hz = sz - .28 + h * .19;
+                const gU = [frontMaterial, accentMaterial, fabricMaterial, leatherMaterial][h];
+                const gL = [fabricMaterial, frontMaterial, leatherMaterial, accentMaterial][h];
+                cyl(.005, .12, rX, 1.93, hz, metalMaterial, g, "y");
+                cyl(.004, .17, rX, 1.87, hz, metalMaterial, g, "x");
+                box(.09, .50, .13, rX, 1.63, hz, gU, g);
+                cyl(.005, .12, rX, 1.03, hz, metalMaterial, g, "y");
+                cyl(.004, .17, rX,  .97, hz, metalMaterial, g, "x");
+                box(.09, .44, .13, rX,  .72, hz, gL, g);
+              }
+            } else {
+              // Section 4: open shelves (bags / folded clothes)
+              for (let sh = 0; sh < 5; sh++)
+                box(liD - .04, pT, liS - pT*2, cX - .02, .10 + .28 + sh*.44, sz, stoneMaterial, g);
+              for (let sh = 0; sh < 4; sh++) {
+                const sY = .10 + .28 + sh*.44 + pT + .09;
+                box(.26, .13, .30, cX - .04, sY,       sz - .14, fabricMaterial,  g);
+                box(.24, .11, .28, cX - .02, sY + .01,  sz + .16, accentMaterial,  g);
+                if (sh < 2) box(.22, .19, .14, cX - .04, sY + .06, sz, leatherMaterial, g);
+              }
+            }
+          }
+        }
+
+        // ── RIGHT WALL: open shoe & display shelves ─────────────────────────
+        {
+          const riW = 4.04;   // right wall inner face X
+          const riD = 0.50, riH = 2.4, riS = 1.0, riN = 4, riZ0 = -1.78;
+          const cX   = riW - riD / 2;
+          const fX   = riW - riD;
+          const tot  = riN * riS;
+          const midZ = riZ0 + tot / 2;
+
+          // Structure
+          box(riD, pT, tot + pT*2, cX, riH + pT/2, midZ, accentMaterial, g);
+          box(riD, pT, tot + pT*2, cX, .10 + pT/2, midZ, accentMaterial, g);
+          box(pT, riH - .10, tot, riW - pT/2, .10 + (riH-.10)/2, midZ, shadowMaterial, g);
+          box(riD - .04, .10, tot, cX - .02, .05, midZ, shadowMaterial, g);
+          for (let i = 0; i <= riN; i++)
+            box(riD, riH - .10, pT, cX, .10 + (riH-.10)/2, riZ0 + i*riS, accentMaterial, g);
+          box(riD + .04, pT, tot + .06, cX + .02, riH + pT, midZ, stoneMaterial, g);
+          box(.012, .012, tot * .90, fX + .02, riH - .04, midZ, glowMaterial, g);
+
+          // All sections: staggered shoe shelves with paired shoe boxes
+          for (let s = 0; s < riN; s++) {
+            const sz = riZ0 + s*riS + riS/2;
+            for (let sh = 0; sh < 6; sh++)
+              box(riD - .04, pT, riS - pT*2, cX, .10 + .17 + sh*.37, sz, stoneMaterial, g);
+            for (let sh = 0; sh < 5; sh++) {
+              const sY = .10 + .17 + sh*.37 + pT + .05;
+              for (let k = 0; k < 2; k++) {
+                const kz = sz - .22 + k * .44;
+                box(.10, .08, .24, fX + .12, sY + .04, kz,       leatherMaterial, g);
+                box(.10, .08, .24, fX + .12, sY + .04, kz + .13, leatherMaterial, g);
+              }
+            }
+          }
+        }
       };
 
       const ambient = new THREE.HemisphereLight(0xfff7e6, 0x161210, .85);
