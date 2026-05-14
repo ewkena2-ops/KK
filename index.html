@@ -2887,7 +2887,7 @@
       const reduce3dMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
-      camera.position.set(6.2, 3.5, 7.6);
+      camera.position.set(-0.7, 3.5, 8.0);
 
       const renderer = new THREE.WebGLRenderer({
         canvas: canvas3d,
@@ -2962,6 +2962,8 @@
       const leatherMaterial = new THREE.MeshStandardMaterial({ color: 0x2e1d12, roughness: .5,  metalness: .05, envMapIntensity: .7 });
       const fruitMatA       = new THREE.MeshStandardMaterial({ color: 0xa6382f, roughness: .42, metalness: .04, envMapIntensity: .8 });
       const fruitMatB       = new THREE.MeshStandardMaterial({ color: 0xdfb84d, roughness: .42, metalness: .04, envMapIntensity: .8 });
+      const alumMaterial    = new THREE.MeshStandardMaterial({ color: 0xbfc5c8, roughness: .12, metalness: .94, envMapIntensity: 1.9 });
+      const glassMaterial   = new THREE.MeshStandardMaterial({ color: 0xd4e8f0, roughness: .04, metalness: .05, transparent: true, opacity: .32, envMapIntensity: 1.6 });
 
       const frontMaterials  = [frontMaterial];
       const accentMaterials = [accentMaterial];
@@ -3038,6 +3040,26 @@
         const handle = box(.018, handleH, .034, localX + handleX / 2, handleY, .02, metalMaterial, pivot);
         const door = { type: "door", pivot, target: 0, open: open ?? (hinge === "left" ? -1.18 : 1.18), closed: 0, isOpen: false, hitTargets: [panel, handle] };
         door.hitTargets.forEach((target) => { target.userData.interactiveDoor = door; });
+        interactiveDoors.push(door);
+        return door;
+      };
+
+      const hingedAlumDoor = ({ w, h, d, x, y, z, parent = model, hinge = "left", open = null, handleH = .5 }) => {
+        const hingeX = hinge === "left" ? x - w / 2 : x + w / 2;
+        const pivot = new THREE.Group();
+        pivot.position.set(hingeX, y, z);
+        parent.add(pivot);
+        const lx = x - hingeX;
+        const fw = 0.048;
+        const fTop    = box(w, fw, d, lx, h/2 - fw/2, 0, alumMaterial, pivot);
+        const fBot    = box(w, fw, d, lx, -h/2 + fw/2, 0, alumMaterial, pivot);
+        const fLeft   = box(fw, h - fw*2, d, lx - w/2 + fw/2, 0, 0, alumMaterial, pivot);
+        const fRight  = box(fw, h - fw*2, d, lx + w/2 - fw/2, 0, 0, alumMaterial, pivot);
+        const glass   = box(w - fw*2 - .006, h - fw*2 - .006, d * .35, lx, 0, 0, glassMaterial, pivot);
+        const handleX = hinge === "left" ? w - .08 : -w + .08;
+        const handle  = box(.018, handleH, .034, lx + handleX / 2, 0, d / 2 + .018, alumMaterial, pivot);
+        const door = { type: "door", pivot, target: 0, open: open ?? (hinge === "left" ? -1.18 : 1.18), closed: 0, isOpen: false, hitTargets: [fTop, fBot, fLeft, fRight, glass, handle] };
+        door.hitTargets.forEach(t => { t.userData.interactiveDoor = door; });
         interactiveDoors.push(door);
         return door;
       };
@@ -3467,9 +3489,11 @@
         const pH = 2.4, pD = 0.62, pT = 0.018;
         const bZ  = -2.42 + pT + pD / 2;   // back-wall cabinet centre Z ≈ -2.09
 
-        // ── BACK WALL: 10 units × 90 cm wide, 200 cm tall, 2 hinged doors each ─
+        let wallDoors, upperDoors, leftCornerLower, leftCornerUpper, rightCornerLower, rightCornerUpper;
+
+        // ── BACK WALL: 18 units × 50 cm wide, 200 cm tall, 1 hinged door each ─
         {
-          const nU = 10, uW = 0.9, uH = 2.0, toeH = 0.08;
+          const nU = 18, uW = 0.5, uH = 2.0, toeH = 0.08;
           const startX = -5.5;                // flush with left wall
           const totalLen = nU * uW;           // 9.0 m
           const doorH  = uH - toeH;
@@ -3482,170 +3506,217 @@
           box(totalLen + pT * 2, pT, pD, startX + totalLen / 2, uH + pT / 2, cabZ, accentMaterial, g);
           // Toe-kick
           box(totalLen + pT * 2, toeH, pD, startX + totalLen / 2, toeH / 2, cabZ, shadowMaterial, g);
-          // Vertical dividers — 7 panels (2 ends + 5 internal)
+          // Vertical dividers — 19 panels (2 ends + 17 internal)
           for (let i = 0; i <= nU; i++) {
             box(pT, doorH, pD, startX + i * uW, doorCY, cabZ, accentMaterial, g);
           }
-          // Stone countertop — 1.8 cm (pT)
-          box(totalLen + .06, pT, pD + .06, startX + totalLen / 2, uH + pT + pT / 2, cabZ, stoneMaterial, g);
-          // Items on top of ledge
-          cyl(.036, .15, startX + totalLen * .14, uH + pT * 2 + .075, cabZ + .04, ceramicMaterial, g, "y");
-          cyl(.028, .11, startX + totalLen * .22, uH + pT * 2 + .055, cabZ + .04, mirrorMaterial, g, "y");
-          box(.28, .032, .16, startX + totalLen * .74, uH + pT * 2 + .016, cabZ, accentMaterial, g);
 
-          // Per-unit: shadow interior + 2 hinged doors
+          // Per-unit: 1 hinged door, alternating left/right hinge per pair
+          // aluminium glass doors at original unit positions 1,3,5,7 → new 2,3,6,7,10,11,14,15
+          const alumPos = new Set([2, 3, 6, 7, 10, 11, 14, 15]);
+          wallDoors = [];
           for (let i = 0; i < nU; i++) {
             const ux = startX + i * uW + uW / 2;
-            box(uW - pT * 2, doorH, pD - .02, ux, doorCY, cabZ, shadowMaterial, g);
-            hingedDoor({ w: uW / 2, h: doorH, d: pT, x: ux - uW / 4, y: doorCY, z: dz, mat: frontMaterial, parent: g, hinge: "left",  handleH: 0.42, open: -Math.PI / 2 });
-            hingedDoor({ w: uW / 2, h: doorH, d: pT, x: ux + uW / 4, y: doorCY, z: dz, mat: frontMaterial, parent: g, hinge: "right", handleH: 0.42, open:  Math.PI / 2 });
+            // Interior: back panel + 2 full-depth shelves — no opaque fill so depth is visible
+            const s1 = toeH + doorH / 3, s2 = toeH + doorH * 2 / 3;
+            const intD = pD - pT * 2;   // shelf depth, wall-to-front
+            box(uW - pT * 2, doorH, pT,   ux, doorCY,       cabZ - pD / 2 + pT / 2, accentMaterial, g);  // back wall
+            box(uW - pT * 2, pT,    intD, ux, toeH + pT/2, cabZ,                    accentMaterial, g);  // floor
+            box(uW - pT * 2, pT,    intD, ux, s1,          cabZ,                    accentMaterial, g);  // shelf 1
+            box(uW - pT * 2, pT,    intD, ux, s2,          cabZ,                    accentMaterial, g);  // shelf 2
+            const isLast = i === nU - 1;
+            const isFirst = i === 0;
+            const hinge = (isFirst || (!isLast && i % 2 !== 0)) ? "right" : "left";
+            const openAngle = (isFirst || (!isLast && i % 2 !== 0)) ? Math.PI / 2 : -Math.PI / 2;
+            let wDoor;
+            if (!alumPos.has(i)) {
+              wDoor = hingedDoor({ w: uW, h: doorH, d: pT, x: ux, y: doorCY, z: dz, mat: frontMaterial, parent: g, hinge, handleH: 0.42, open: openAngle });
+            } else {
+              // Interior LED strip at top of each alum unit — glows through the glass door
+              box(uW - pT * 2 - .04, .014, pD - .1, ux, uH - .028, cabZ, glowMaterial, g);
+              wDoor = hingedAlumDoor({ w: uW, h: doorH, d: pT, x: ux, y: doorCY, z: dz, parent: g, hinge, handleH: 0.42, open: openAngle });
+            }
+            wallDoors.push(wDoor);
           }
           // LED strip under ledge front edge
           box(totalLen * .94, .012, .012, startX + totalLen / 2, uH - .04, frontZ - .05, glowMaterial, g);
+
+          // ── UPPER BOXES: 50 cm tall, same span ──────────────────────────────
+          {
+            const uH2 = pH - uH;
+            const baseY = uH;                  // flush — upper doors start exactly where lower doors end
+            const cY   = baseY + uH2 / 2;
+            const topY = baseY + uH2;
+
+            box(totalLen + pT*2, pT, pD, startX + totalLen/2, topY + pT/2,  cabZ, accentMaterial, g); // top panel
+            box(totalLen + pT*2, pT, pD, startX + totalLen/2, baseY - pT/2, cabZ, accentMaterial, g); // bottom panel
+            for (let i = 0; i <= nU; i++)
+              box(pT, uH2, pD, startX + i*uW, cY, cabZ, accentMaterial, g);                           // dividers
+
+            upperDoors = [];
+            for (let i = 0; i < nU; i++) {
+              const ux = startX + i*uW + uW/2;
+              box(uW - pT*2, uH2, pT, ux, cY, cabZ - pD/2 + pT/2, accentMaterial, g); // back panel
+              const isLastU = i === nU - 1;
+              const isFirstU = i === 0;
+              const uHinge = (isFirstU || (!isLastU && i % 2 !== 0)) ? "right" : "left";
+              const uOpen  = (isFirstU || (!isLastU && i % 2 !== 0)) ? Math.PI/2 : -Math.PI/2;
+              const uDoor = hingedDoor({ w: uW, h: uH2, d: pT, x: ux, y: cY, z: dz, mat: frontMaterial, parent: g, hinge: uHinge, handleH: 0.20, open: uOpen });
+              upperDoors.push(uDoor);
+            }
+          }
         }
-
-        // ── DRESSING ROOM CENTRE ───────────────────────────────────────────────
-        // Vanity / dresser island
-        const isX = -.4, isZ = -.3;
-        box(2.4, .82, .98, isX, .41, isZ, frontMaterial, g);
-        for (let d = 0; d < 3; d++) {
-          const dx = isX - .72 + d * .72;
-          bvl(.58, .36, .03, dx, .44, isZ + .50, frontMaterial, g);
-          cyl(.013, .30, dx, .44, isZ + .52, metalMaterial, g, "x");
-        }
-        box(2.56, .065, 1.14, isX, .87, isZ, stoneMaterial, g);
-        box(2.56, .012, .012, isX, .865, isZ + .57, lineMaterial, g);
-        box(2.4, .11, .98, isX, .055, isZ, shadowMaterial, g);
-        // Items on vanity top
-        box(.44, .036, .22, isX - .44, .91, isZ - .1, accentMaterial, g);
-        cyl(.055, .2, isX + .38, .98, isZ - .12, ceramicMaterial, g, "y");
-        cyl(.042, .15, isX + .52, .96, isZ - .12, ceramicMaterial, g, "y");
-        cyl(.038, .14, isX + .62, .95, isZ - .12, mirrorMaterial, g, "y");
-        cyl(.028, .09, isX - .18, .93, isZ - .06, ceramicMaterial, g, "y");
-
-        // Full-length standing mirror (left of vanity, facing room)
-        const mirX = isX - 1.62, mirZ = isZ + .1;
-        cyl(.038, .1, mirX, .05, mirZ, accentMaterial, g, "y");
-        box(.048, 1.72, .72, mirX, .91, mirZ, accentMaterial, g);
-        box(.022, 1.58, .6, mirX + .026, .91, mirZ, mirrorMaterial, g);
-        box(.72, .036, .52, mirX, .044, mirZ, accentMaterial, g); // base
-
-        // Vanity stool
-        const stX = isX, stZ = isZ + .84;
-        box(.54, .06, .46, stX, .44, stZ, accentMaterial, g);
-        box(.5, .08, .42, stX, .48, stZ, fabricMaterial, g);
-        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx2, sz2]) => {
-          box(.04, .44, .04, stX + sx2 * .22, .22, stZ + sz2 * .18, accentMaterial, g);
-        });
 
         // LED cove along back wall top (connects all back sections)
         box(8.2, .015, .015, -.2, pH - .04, bZ + .28, glowMaterial, g);
-        // Warm floor-level LED strip at island front
-        box(2.3, .012, .012, isX, .01, isZ + .49, glowMaterial, g);
 
-        // ── LEFT WALL: open hanging zones (full-length + double-rail + shelves) ──
+
+        // ── RIGHT CORNER UNIT: blind + 1-door, 200 cm tall ──────────────────
         {
-          const liW = -5.46;   // left wall inner face X
-          const liD = 0.58, liH = 2.4, liS = 1.0, liN = 5, liZ0 = -1.78;
-          const cX   = liW + liD / 2;
-          const fX   = liW + liD;
-          const rX   = liW + liD * 0.68;   // rail sits 68% into cabinet depth
-          const tot  = liN * liS;
-          const midZ = liZ0 + tot / 2;
+          const riW = 4.04, uD = 0.58, uH = 2.0, toeH = 0.08;
+          const doorH = uH - toeH, doorCY = toeH + doorH / 2;
+          const cX = riW - uD / 2;
+          const fX = riW - uD;
+          const blindW = pD;              // blind matches back wall cabinet depth (0.62 m)
+          const doorW = 0.50;
+          const blindZ0 = bZ - pD / 2;   // blind starts flush with back wall face
+          const total = blindW + doorW;
+          const midZ = blindZ0 + total / 2;
 
-          // Structure: top, bottom, back, toe-kick, section dividers, stone ledge, LED
-          box(liD, pT, tot + pT*2, cX, liH + pT/2, midZ, accentMaterial, g);
-          box(liD, pT, tot + pT*2, cX, .10 + pT/2, midZ, accentMaterial, g);
-          box(pT, liH - .10, tot, liW + pT/2, .10 + (liH-.10)/2, midZ, shadowMaterial, g);
-          box(liD - .04, .10, tot, cX + .02, .05, midZ, shadowMaterial, g);
-          for (let i = 0; i <= liN; i++)
-            box(liD, liH - .10, pT, cX, .10 + (liH-.10)/2, liZ0 + i*liS, accentMaterial, g);
-          box(liD + .04, pT, tot + .06, cX - .02, liH + pT, midZ, stoneMaterial, g);
-          box(.012, .012, tot * .90, fX - .02, liH - .04, midZ, glowMaterial, g);
+          // Carcass spanning both sections
+          box(uD, pT, total + pT*2, cX, uH + pT/2, midZ, accentMaterial, g);
+          box(uD, toeH, total, cX, toeH/2, midZ, shadowMaterial, g);
+          box(pT, doorH, total, riW - pT/2, doorCY, midZ, shadowMaterial, g);
+          box(.012, .012, total * .9, fX + .02, uH - .04, midZ, glowMaterial, g);
+          // Dividers: back edge, junction, front edge
+          box(uD, doorH, pT, cX, doorCY, blindZ0,             accentMaterial, g);
+          box(uD, doorH, pT, cX, doorCY, blindZ0 + blindW,    accentMaterial, g);
+          box(uD, doorH, pT, cX, doorCY, blindZ0 + total,     accentMaterial, g);
 
-          const rl = liS - .07;   // rail length per section
-          for (let s = 0; s < liN; s++) {
-            const sz = liZ0 + s*liS + liS/2;
-            if (s < 3) {
-              // Sections 0-2: full-length hanging (dresses / coats)
-              cyl(.012, rl, rX, 2.0, sz, metalMaterial, g, "z");
-              box(pT, .04, pT, rX, 2.0, sz - rl/2, metalMaterial, g);
-              box(pT, .04, pT, rX, 2.0, sz + rl/2, metalMaterial, g);
-              for (let h = 0; h < 5; h++) {
-                const hz = sz - .34 + h * .17;
-                const gM = [frontMaterial, accentMaterial, fabricMaterial, leatherMaterial, frontMaterial][h];
-                cyl(.005, .13, rX, 1.93, hz, metalMaterial, g, "y");
-                cyl(.004, .19, rX, 1.87, hz, metalMaterial, g, "x");
-                box(.09, 1.04, .14, rX, 1.34, hz, gM, g);
-              }
-            } else if (s === 3) {
-              // Section 3: double-rail (shirts above, trousers below)
-              cyl(.012, rl, rX, 2.0, sz, metalMaterial, g, "z");
-              box(pT, .04, pT, rX, 2.0, sz - rl/2, metalMaterial, g);
-              box(pT, .04, pT, rX, 2.0, sz + rl/2, metalMaterial, g);
-              box(liD - .12, pT, rl, cX - .06, 1.22, sz, accentMaterial, g);
-              cyl(.012, rl, rX, 1.10, sz, metalMaterial, g, "z");
-              box(pT, .04, pT, rX, 1.10, sz - rl/2, metalMaterial, g);
-              box(pT, .04, pT, rX, 1.10, sz + rl/2, metalMaterial, g);
-              for (let h = 0; h < 4; h++) {
-                const hz = sz - .28 + h * .19;
-                const gU = [frontMaterial, accentMaterial, fabricMaterial, leatherMaterial][h];
-                const gL = [fabricMaterial, frontMaterial, leatherMaterial, accentMaterial][h];
-                cyl(.005, .12, rX, 1.93, hz, metalMaterial, g, "y");
-                cyl(.004, .17, rX, 1.87, hz, metalMaterial, g, "x");
-                box(.09, .50, .13, rX, 1.63, hz, gU, g);
-                cyl(.005, .12, rX, 1.03, hz, metalMaterial, g, "y");
-                cyl(.004, .17, rX,  .97, hz, metalMaterial, g, "x");
-                box(.09, .44, .13, rX,  .72, hz, gL, g);
-              }
-            } else {
-              // Section 4: open shelves (bags / folded clothes)
-              for (let sh = 0; sh < 5; sh++)
-                box(liD - .04, pT, liS - pT*2, cX - .02, .10 + .28 + sh*.44, sz, stoneMaterial, g);
-              for (let sh = 0; sh < 4; sh++) {
-                const sY = .10 + .28 + sh*.44 + pT + .09;
-                box(.26, .13, .30, cX - .04, sY,       sz - .14, fabricMaterial,  g);
-                box(.24, .11, .28, cX - .02, sY + .01,  sz + .16, accentMaterial,  g);
-                if (sh < 2) box(.22, .19, .14, cX - .04, sY + .06, sz, leatherMaterial, g);
-              }
+          // Blind section — hits the back wall, no door
+          box(uD - .02, doorH, blindW - pT*2, cX, doorCY, blindZ0 + blindW/2, shadowMaterial, g);
+
+          // Door section — floor + shelves instead of solid shadow fill
+          { const cs1 = toeH + doorH/3, cs2 = toeH + doorH*2/3, cIntD = doorW - pT*2;
+            box(uD - pT*2, pT, cIntD, cX, toeH + pT/2,           blindZ0 + blindW + doorW/2, accentMaterial, g);  // floor
+            box(uD - pT*2, pT, cIntD, cX, cs1, blindZ0 + blindW + doorW/2, accentMaterial, g);
+            box(uD - pT*2, pT, cIntD, cX, cs2, blindZ0 + blindW + doorW/2, accentMaterial, g); }
+          {
+            const wrap = new THREE.Group();
+            wrap.position.set(fX, 0, blindZ0 + total);
+            wrap.rotation.y = -Math.PI / 2;
+            g.add(wrap);
+            const piv = new THREE.Group();
+            piv.position.set(0, doorCY, 0);
+            wrap.add(piv);
+            const panel = bvl(doorW, doorH, pT, -doorW / 2, 0, 0, frontMaterial, piv);
+            const handle = box(.034, 0.42, .018, -(doorW - 0.10), 0, pT / 2 + .018, metalMaterial, piv);
+            const door = { type: "door", pivot: piv, target: 0, open: Math.PI, closed: 0, isOpen: false, hitTargets: [panel, handle] };
+            door.hitTargets.forEach(t => { t.userData.interactiveDoor = door; });
+            interactiveDoors.push(door);
+            rightCornerLower = door;
+          }
+
+          // ── RIGHT CORNER UPPER BOX: 50 cm ───────────────────────────────
+          {
+            const uH2 = pH - uH, baseY = uH, cY = baseY + uH2/2, topY = baseY + uH2;
+            box(uD, pT, total + pT*2, cX, topY + pT/2, midZ, accentMaterial, g);  // top panel
+            box(uD, pT, total + pT*2, cX, baseY - pT/2, midZ, accentMaterial, g); // bottom panel
+            box(pT, uH2, total, riW - pT/2, cY, midZ, shadowMaterial, g);
+            box(uD, uH2, pT, cX, cY, blindZ0,          accentMaterial, g);
+            box(uD, uH2, pT, cX, cY, blindZ0 + blindW, accentMaterial, g);
+            box(uD, uH2, pT, cX, cY, blindZ0 + total,  accentMaterial, g);
+            box(uD - .02, uH2, blindW - pT*2, cX, cY, blindZ0 + blindW/2, shadowMaterial, g);
+            {
+              const wrap = new THREE.Group();
+              wrap.position.set(fX, 0, blindZ0 + total);
+              wrap.rotation.y = -Math.PI / 2;
+              g.add(wrap);
+              const piv = new THREE.Group();
+              piv.position.set(0, cY, 0);
+              wrap.add(piv);
+              const panel = bvl(doorW, uH2, pT, -doorW/2, 0, 0, frontMaterial, piv);
+              const handle = box(.034, 0.14, .018, -(doorW - 0.10), 0, pT/2 + .018, metalMaterial, piv);
+              const door = { type: "door", pivot: piv, target: 0, open: Math.PI, closed: 0, isOpen: false, hitTargets: [panel, handle] };
+              door.hitTargets.forEach(t => { t.userData.interactiveDoor = door; });
+              interactiveDoors.push(door);
+              rightCornerUpper = door;
             }
           }
         }
 
-        // ── RIGHT WALL: open shoe & display shelves ─────────────────────────
+        // ── RIGHT WALL: 8 units × 50 cm wide, 200 cm tall, 1 door each ──────
         {
-          const riW = 4.04;   // right wall inner face X
-          const riD = 0.50, riH = 2.4, riS = 1.0, riN = 4, riZ0 = -1.78;
-          const cX   = riW - riD / 2;
-          const fX   = riW - riD;
-          const tot  = riN * riS;
-          const midZ = riZ0 + tot / 2;
+          const riW2   = 4.04;
+          const nU     = 8, uW = 0.5, uH = 2.0, toeH = 0.08;
+          const cabX   = riW2 - pD / 2;
+          const frontX = riW2 - pD;
+          const startZ = bZ + pD / 2 + 0.50;   // flush after corner unit end
+          const totalLen = nU * uW;
+          const doorH  = uH - toeH;
+          const doorCY = toeH + doorH / 2;
 
-          // Structure
-          box(riD, pT, tot + pT*2, cX, riH + pT/2, midZ, accentMaterial, g);
-          box(riD, pT, tot + pT*2, cX, .10 + pT/2, midZ, accentMaterial, g);
-          box(pT, riH - .10, tot, riW - pT/2, .10 + (riH-.10)/2, midZ, shadowMaterial, g);
-          box(riD - .04, .10, tot, cX - .02, .05, midZ, shadowMaterial, g);
-          for (let i = 0; i <= riN; i++)
-            box(riD, riH - .10, pT, cX, .10 + (riH-.10)/2, riZ0 + i*riS, accentMaterial, g);
-          box(riD + .04, pT, tot + .06, cX + .02, riH + pT, midZ, stoneMaterial, g);
-          box(.012, .012, tot * .90, fX + .02, riH - .04, midZ, glowMaterial, g);
+          box(pD, pT, totalLen + pT*2, cabX, uH + pT/2,  startZ + totalLen/2, accentMaterial, g); // top
+          box(pD, toeH, totalLen + pT*2, cabX, toeH/2,   startZ + totalLen/2, shadowMaterial, g); // toe-kick
+          for (let i = 0; i <= nU; i++)
+            box(pD, doorH, pT, cabX, doorCY, startZ + i*uW, accentMaterial, g);                   // dividers
+          box(.012, .012, totalLen * .94, frontX - .05, uH - .04, startZ + totalLen/2, glowMaterial, g);
 
-          // All sections: staggered shoe shelves with paired shoe boxes
-          for (let s = 0; s < riN; s++) {
-            const sz = riZ0 + s*riS + riS/2;
-            for (let sh = 0; sh < 6; sh++)
-              box(riD - .04, pT, riS - pT*2, cX, .10 + .17 + sh*.37, sz, stoneMaterial, g);
-            for (let sh = 0; sh < 5; sh++) {
-              const sY = .10 + .17 + sh*.37 + pT + .05;
-              for (let k = 0; k < 2; k++) {
-                const kz = sz - .22 + k * .44;
-                box(.10, .08, .24, fX + .12, sY + .04, kz,       leatherMaterial, g);
-                box(.10, .08, .24, fX + .12, sY + .04, kz + .13, leatherMaterial, g);
-              }
+          const rwDoors = [];
+          for (let i = 0; i < nU; i++) {
+            const uz = startZ + i * uW + uW / 2;
+            const s1 = toeH + doorH/3, s2 = toeH + doorH*2/3, intD = pD - pT*2;
+            box(pT,   doorH, uW - pT*2, riW2 - pT/2, doorCY,       uz, accentMaterial, g); // back panel
+            box(intD, pT,    uW - pT*2, cabX, toeH + pT/2,          uz, accentMaterial, g); // floor
+            box(intD, pT,    uW - pT*2, cabX, s1,                    uz, accentMaterial, g); // shelf 1
+            box(intD, pT,    uW - pT*2, cabX, s2,                    uz, accentMaterial, g); // shelf 2
+
+            const isEven = i % 2 === 0;
+            const wrap = new THREE.Group();
+            wrap.position.set(frontX, 0, isEven ? startZ + i*uW : startZ + (i+1)*uW);
+            wrap.rotation.y = -Math.PI / 2;
+            g.add(wrap);
+            const piv = new THREE.Group();
+            piv.position.set(0, doorCY, 0);
+            wrap.add(piv);
+            const plx = isEven ? uW/2 : -uW/2;
+            const panel  = bvl(uW, doorH, pT, plx, 0, 0, frontMaterial, piv);
+            const handle = box(.034, 0.42, .018, isEven ? uW - 0.06 : -(uW - 0.06), 0, pT/2 + .018, metalMaterial, piv);
+            const door = { type: "door", pivot: piv, target: 0, open: isEven ? -Math.PI/2 : Math.PI/2, closed: 0, isOpen: false, hitTargets: [panel, handle] };
+            door.hitTargets.forEach(t => { t.userData.interactiveDoor = door; });
+            interactiveDoors.push(door);
+            rwDoors.push(door);
+          }
+
+          // ── RIGHT WALL UPPER BOXES ─────────────────────────────────────────
+          {
+            const uH2 = pH - uH, baseY = uH, cY = baseY + uH2/2, topY = baseY + uH2;
+            box(pD, pT, totalLen + pT*2, cabX, topY + pT/2,  startZ + totalLen/2, accentMaterial, g);
+            box(pD, pT, totalLen + pT*2, cabX, baseY - pT/2, startZ + totalLen/2, accentMaterial, g);
+            for (let i = 0; i <= nU; i++)
+              box(pD, uH2, pT, cabX, cY, startZ + i*uW, accentMaterial, g);
+
+            const rwUpperDoors = [];
+            for (let i = 0; i < nU; i++) {
+              const uz = startZ + i*uW + uW/2;
+              box(pT, uH2, uW - pT*2, riW2 - pT/2, cY, uz, accentMaterial, g); // back panel
+              const isEven = i % 2 === 0;
+              const wrap = new THREE.Group();
+              wrap.position.set(frontX, 0, isEven ? startZ + i*uW : startZ + (i+1)*uW);
+              wrap.rotation.y = -Math.PI / 2;
+              g.add(wrap);
+              const piv = new THREE.Group();
+              piv.position.set(0, cY, 0);
+              wrap.add(piv);
+              const panel = bvl(uW, uH2, pT, isEven ? uW/2 : -uW/2, 0, 0, frontMaterial, piv);
+              const door = { type: "door", pivot: piv, target: 0, open: isEven ? -Math.PI/2 : Math.PI/2, closed: 0, isOpen: false, hitTargets: [panel] };
+              door.hitTargets.forEach(t => { t.userData.interactiveDoor = door; });
+              interactiveDoors.push(door);
+              rwUpperDoors.push(door);
             }
           }
         }
+
       };
 
       const ambient = new THREE.HemisphereLight(0xfff7e6, 0x161210, .85);
@@ -3764,6 +3835,10 @@
         if (!door) return;
         door.isOpen = !door.isOpen;
         door.target = door.isOpen ? door.open : door.closed;
+        if (door.isOpen && door.partner && door.partner.isOpen) {
+          door.partner.isOpen = false;
+          door.partner.target = door.partner.closed;
+        }
         if (door.type === "tap") { door.waterMesh.forEach(m => m.visible = door.isOpen); return; }
         if (reduce3dMotion) {
           if (door.type === "drawer") door.pivot.position.z = door.target;
@@ -3804,15 +3879,15 @@
       loadScene("kitchen");
 
       const cameraAngles = {
-        overview: { pos: [6.2,  3.5,  7.6],  look: [0.1,  1.35, -0.3]  },
-        front:    { pos: [0.1,  2.2,  6.0],  look: [0.1,  1.25, -1.8]  },
+        overview: { pos: [-0.7, 3.5,  8.0],  look: [-0.7, 1.35, -0.3]  },
+        front:    { pos: [-0.7, 2.2,  6.0],  look: [-0.7, 1.25, -1.8]  },
 
-        top:      { pos: [0.5,  9.0,  2.0],  look: [0.5,  0.4,  -1.6]  },
-        detail:   { pos: [0.4,  1.55, 3.4],  look: [0.4,  1.05, -1.6]  },
+        top:      { pos: [-0.7, 9.0,  2.0],  look: [-0.7, 0.4,  -1.6]  },
+        detail:   { pos: [-0.7, 1.55, 3.4],  look: [-0.7, 1.05, -1.6]  },
       };
-      const camTargetPos  = new THREE.Vector3(6.2, 3.5, 7.6);
-      const lookTargetPos = new THREE.Vector3(0.1, 1.35, -0.3);
-      const lookCurrent   = new THREE.Vector3(0.1, 1.35, -0.3);
+      const camTargetPos  = new THREE.Vector3(-0.7, 3.5, 8.0);
+      const lookTargetPos = new THREE.Vector3(-0.7, 1.35, -0.3);
+      const lookCurrent   = new THREE.Vector3(-0.7, 1.35, -0.3);
 
       const setAngle = (name) => {
         const a = cameraAngles[name] || cameraAngles.overview;
