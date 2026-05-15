@@ -1639,9 +1639,12 @@
       flex-direction: column;
       justify-content: end;
       color: #fff;
-      background-color: #5a5851;
-      background-image: var(--swatch-image);
-      background-size: cover;
+      background-color: var(--swatch-base, #5a5851);
+      background-image:
+        linear-gradient(145deg, rgba(255,255,255,.14), rgba(0,0,0,.22)),
+        repeating-linear-gradient(92deg, rgba(255,255,255,.05) 0 1px, rgba(255,255,255,0) 1px 9px),
+        var(--swatch-finish);
+      background-size: cover, 18px 18px, cover;
       background-position: center;
       position: relative;
       overflow: hidden;
@@ -1666,12 +1669,12 @@
         radial-gradient(circle at 30% 20%, rgba(255,255,255,.22), transparent 28%);
     }
 
-    .swatch:nth-child(1) { --swatch-image: url("assets/images/materials/nobilia-easytouch-961-graphite-black-ultramatt.jpg"); }
-    .swatch:nth-child(2) { --swatch-image: url("assets/images/materials/nobilia-easytouch-969-sand-ultramatt.jpg"); }
-    .swatch:nth-child(3) { --swatch-image: url("assets/images/materials/nobilia-easytouch-970-taupe-grey-ultramatt.jpg"); }
-    .swatch:nth-child(4) { --swatch-image: url("assets/images/materials/nobilia-easytouch-968-white-ultramatt.jpg"); }
-    .swatch:nth-child(5) { --swatch-image: url("assets/images/materials/nobilia-senso-495-premium-honed-olive.jpg"); }
-    .swatch:nth-child(6) { --swatch-image: url("assets/images/materials/nobilia-touch-340-black-supermatt.jpg"); }
+    .swatch:nth-child(1) { --swatch-base: #171819; --swatch-finish: linear-gradient(135deg, #2b2d2e, #080909); }
+    .swatch:nth-child(2) { --swatch-base: #c9b89d; --swatch-finish: linear-gradient(135deg, #e0d0b5, #a99474); }
+    .swatch:nth-child(3) { --swatch-base: #7e776d; --swatch-finish: linear-gradient(135deg, #9b9285, #5d584f); }
+    .swatch:nth-child(4) { --swatch-base: #eeece4; --swatch-finish: linear-gradient(135deg, #fbfaf5, #d9d4c8); }
+    .swatch:nth-child(5) { --swatch-base: #727b66; --swatch-finish: linear-gradient(135deg, #8a947d, #59614e); }
+    .swatch:nth-child(6) { --swatch-base: #080909; --swatch-finish: linear-gradient(135deg, #1f2020, #030303); }
 
     .swatch strong,
     .swatch span {
