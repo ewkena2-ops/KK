@@ -1186,7 +1186,7 @@
     .collection-card.media::before {
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/tv-unit.png");
+        url("assets/images/generated-tv-unit-uv-oak.png");
       background-size: cover;
       background-position: center;
     }
@@ -1470,7 +1470,7 @@
     #wardrobes .photo-asset { background-image: url("assets/images/wardrobe.png"); }
     #kitchens .photo-asset { background-image: url("assets/images/kitchen-wide-02.png"); }
     #closets .photo-asset { background-image: url("assets/images/closet.png"); }
-    #tv-units .photo-asset { background-image: url("assets/images/tv-unit.png"); }
+    #tv-units .photo-asset { background-image: url("assets/images/generated-tv-unit-uv-oak.png"); }
 
     .photo-asset::after {
       position: absolute;
@@ -2194,18 +2194,17 @@
       <div class="hero-img" aria-hidden="true"></div>
       <div class="hero-content">
         <p class="eyebrow reveal">Modern luxury interiors | Addis Ababa, Ethiopia</p>
-        <h1 class="reveal">Kitchens, wardrobes and TV units for <em>modern homes.</em></h1>
+        <h1 class="reveal">Klever K&uuml;che. Designed to measure. <em>Built to last.</em></h1>
         <div class="hero-row reveal">
           <p class="hero-copy">Klever K&uuml;che designs and installs kitchens, wardrobes, closets, and TV units with Super Matt UV MDF finishes, premium fittings, and a measured process from first sketch to final fit.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#collections">Explore Collections</a>
-            <a class="btn btn-ghost" href="" onclick="Calendly.initPopupWidget({url:'https://calendly.com/kleverkuche'}); return false;">Book Consultation</a>
           </div>
         </div>
         <div class="hero-stats reveal" aria-label="Klever Kuche highlights">
           <div class="stat"><strong>Custom</strong><span>Made To Measure</span></div>
           <div class="stat"><strong>UV</strong><span>Super Matt MDF</span></div>
-          <div class="stat"><strong>4</strong><span>Design Categories</span></div>
+          <div class="stat"><strong>1–2wk</strong><span>Avg. Lead Time</span></div>
           <div class="stat"><strong>AA</strong><span>Addis Ababa</span></div>
         </div>
       </div>
@@ -2607,10 +2606,9 @@
               <figcaption class="image-caption"><span>Closet</span><strong>Walk-in wardrobe layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/kitchen-detail-handleless.png" alt="Handleless kitchen cabinet doors with Super Matt UV MDF finish and clean J-pull profile">
-              <figcaption class="image-caption"><span>Kitchen Detail</span><strong>Handleless J-pull profile</strong></figcaption>
+              <img src="assets/images/generated-handleless-two-drawer-detail.png" alt="Modern handleless kitchen drawers with flat matte fronts and clean shadow gaps">
+              <figcaption class="image-caption"><span>Kitchen Detail</span><strong>Handleless drawer finish</strong></figcaption>
             </figure>
-
               </div>
             </div>
           </div>
@@ -3552,24 +3550,28 @@
           box(totalLen + pT * 2, pT, pD, startX + totalLen / 2, uH + pT / 2, cabZ, accentMaterial, g);
           // Toe-kick
           box(totalLen + pT * 2, toeH, pD, startX + totalLen / 2, toeH / 2, cabZ, shadowMaterial, g);
-          // Vertical dividers — 19 panels (2 ends + 17 internal)
-          for (let i = 0; i <= nU; i++) {
+          // Dividers at pair boundaries only (every 1m) — no center partition within each pair
+          for (let i = 0; i <= nU; i += 2) {
             box(pT, doorH, pD, startX + i * uW, doorCY, cabZ, accentMaterial, g);
           }
 
-          // Per-unit: 1 hinged door, alternating left/right hinge per pair
-          // aluminium glass doors at original unit positions 1,3,5,7 → new 2,3,6,7,10,11,14,15
           const alumPos = new Set([2, 3, 6, 7, 10, 11, 14, 15]);
+          const s1 = toeH + doorH / 3, s2 = toeH + doorH * 2 / 3;
+          const intD = pD - pT * 2;
+          // Shared interior per pair (1m wide)
+          for (let i = 0; i < nU; i += 2) {
+            const pairW = uW * 2;
+            const pairCX = startX + i * uW + uW;
+            box(pairW - pT * 2, doorH, pT,   pairCX, doorCY,      cabZ - pD / 2 + pT / 2, accentMaterial, g); // back wall
+            box(pairW - pT * 2, pT,    intD, pairCX, toeH + pT/2, cabZ,                    accentMaterial, g); // floor
+            box(pairW - pT * 2, pT,    intD, pairCX, s1,          cabZ,                    accentMaterial, g); // shelf 1
+            box(pairW - pT * 2, pT,    intD, pairCX, s2,          cabZ,                    accentMaterial, g); // shelf 2
+          }
+
+          // Individual doors (50cm each, alternating hinge per pair)
           wallDoors = [];
           for (let i = 0; i < nU; i++) {
             const ux = startX + i * uW + uW / 2;
-            // Interior: back panel + 2 full-depth shelves — no opaque fill so depth is visible
-            const s1 = toeH + doorH / 3, s2 = toeH + doorH * 2 / 3;
-            const intD = pD - pT * 2;   // shelf depth, wall-to-front
-            box(uW - pT * 2, doorH, pT,   ux, doorCY,       cabZ - pD / 2 + pT / 2, accentMaterial, g);  // back wall
-            box(uW - pT * 2, pT,    intD, ux, toeH + pT/2, cabZ,                    accentMaterial, g);  // floor
-            box(uW - pT * 2, pT,    intD, ux, s1,          cabZ,                    accentMaterial, g);  // shelf 1
-            box(uW - pT * 2, pT,    intD, ux, s2,          cabZ,                    accentMaterial, g);  // shelf 2
             const isLast = i === nU - 1;
             const isFirst = i === 0;
             const hinge = (isFirst || (!isLast && i % 2 !== 0)) ? "right" : "left";
@@ -3578,14 +3580,10 @@
             if (!alumPos.has(i)) {
               wDoor = hingedDoor({ w: uW, h: doorH, d: pT, x: ux, y: doorCY, z: dz, mat: frontMaterial, parent: g, hinge, handleH: 0.42, open: openAngle });
             } else {
-              // Interior LED strip at top of each alum unit — glows through the glass door
-              box(uW - pT * 2 - .04, .014, pD - .1, ux, uH - .028, cabZ, glowMaterial, g);
               wDoor = hingedAlumDoor({ w: uW, h: doorH, d: pT, x: ux, y: doorCY, z: dz, parent: g, hinge, handleH: 0.42, open: openAngle });
             }
             wallDoors.push(wDoor);
           }
-          // LED strip under ledge front edge
-          box(totalLen * .94, .012, .012, startX + totalLen / 2, uH - .04, frontZ - .05, glowMaterial, g);
 
           // ── UPPER BOXES: 50 cm tall, same span ──────────────────────────────
           {
@@ -3596,13 +3594,18 @@
 
             box(totalLen + pT*2, pT, pD, startX + totalLen/2, topY + pT/2,  cabZ, accentMaterial, g); // top panel
             box(totalLen + pT*2, pT, pD, startX + totalLen/2, baseY - pT/2, cabZ, accentMaterial, g); // bottom panel
-            for (let i = 0; i <= nU; i++)
-              box(pT, uH2, pD, startX + i*uW, cY, cabZ, accentMaterial, g);                           // dividers
+            // Dividers at pair boundaries only
+            for (let i = 0; i <= nU; i += 2)
+              box(pT, uH2, pD, startX + i*uW, cY, cabZ, accentMaterial, g);
+            // Shared back panel per pair
+            for (let i = 0; i < nU; i += 2) {
+              const pairCX = startX + i*uW + uW;
+              box(uW*2 - pT*2, uH2, pT, pairCX, cY, cabZ - pD/2 + pT/2, accentMaterial, g);
+            }
 
             upperDoors = [];
             for (let i = 0; i < nU; i++) {
               const ux = startX + i*uW + uW/2;
-              box(uW - pT*2, uH2, pT, ux, cY, cabZ - pD/2 + pT/2, accentMaterial, g); // back panel
               const isLastU = i === nU - 1;
               const isFirstU = i === 0;
               const uHinge = (isFirstU || (!isLastU && i % 2 !== 0)) ? "right" : "left";
@@ -3613,8 +3616,6 @@
           }
         }
 
-        // LED cove along back wall top (connects all back sections)
-        box(8.2, .015, .015, -.2, pH - .04, bZ + .28, glowMaterial, g);
 
 
         // ── RIGHT CORNER UNIT: blind + 1-door, 200 cm tall ──────────────────
@@ -3633,10 +3634,8 @@
           box(uD, pT, total + pT*2, cX, uH + pT/2, midZ, accentMaterial, g);
           box(uD, toeH, total, cX, toeH/2, midZ, shadowMaterial, g);
           box(pT, doorH, total, riW - pT/2, doorCY, midZ, shadowMaterial, g);
-          box(.012, .012, total * .9, fX + .02, uH - .04, midZ, glowMaterial, g);
-          // Dividers: back edge, junction, front edge
+          // Dividers: back edge and front edge only (no middle partition)
           box(uD, doorH, pT, cX, doorCY, blindZ0,             accentMaterial, g);
-          box(uD, doorH, pT, cX, doorCY, blindZ0 + blindW,    accentMaterial, g);
           box(uD, doorH, pT, cX, doorCY, blindZ0 + total,     accentMaterial, g);
 
           // Blind section — hits the back wall, no door
@@ -3670,7 +3669,6 @@
             box(uD, pT, total + pT*2, cX, baseY - pT/2, midZ, accentMaterial, g); // bottom panel
             box(pT, uH2, total, riW - pT/2, cY, midZ, shadowMaterial, g);
             box(uD, uH2, pT, cX, cY, blindZ0,          accentMaterial, g);
-            box(uD, uH2, pT, cX, cY, blindZ0 + blindW, accentMaterial, g);
             box(uD, uH2, pT, cX, cY, blindZ0 + total,  accentMaterial, g);
             box(uD - .02, uH2, blindW - pT*2, cX, cY, blindZ0 + blindW/2, shadowMaterial, g);
             {
@@ -3704,19 +3702,23 @@
 
           box(pD, pT, totalLen + pT*2, cabX, uH + pT/2,  startZ + totalLen/2, accentMaterial, g); // top
           box(pD, toeH, totalLen + pT*2, cabX, toeH/2,   startZ + totalLen/2, shadowMaterial, g); // toe-kick
-          for (let i = 0; i <= nU; i++)
-            box(pD, doorH, pT, cabX, doorCY, startZ + i*uW, accentMaterial, g);                   // dividers
-          box(.012, .012, totalLen * .94, frontX - .05, uH - .04, startZ + totalLen/2, glowMaterial, g);
+          // Dividers only at pair boundaries (every 2 units = 1m) so each pair looks like 1 box
+          for (let i = 0; i <= nU; i += 2)
+            box(pD, doorH, pT, cabX, doorCY, startZ + i*uW, accentMaterial, g);
 
           const rwDoors = [];
+          const s1 = toeH + doorH/3, s2 = toeH + doorH*2/3, intD = pD - pT*2;
+          // Shared interior per pair (spans 2 units = 1m)
+          for (let i = 0; i < nU; i += 2) {
+            const pairW = uW * 2;
+            const pairCenter = startZ + i*uW + uW;
+            box(pT, doorH, pairW - pT*2, riW2 - pT/2, doorCY,      pairCenter, accentMaterial, g); // back panel
+            box(intD, pT,  pairW - pT*2, cabX, toeH + pT/2,         pairCenter, accentMaterial, g); // floor
+            box(intD, pT,  pairW - pT*2, cabX, s1,                   pairCenter, accentMaterial, g); // shelf 1
+            box(intD, pT,  pairW - pT*2, cabX, s2,                   pairCenter, accentMaterial, g); // shelf 2
+          }
+          // Individual doors (50cm each, paired open directions)
           for (let i = 0; i < nU; i++) {
-            const uz = startZ + i * uW + uW / 2;
-            const s1 = toeH + doorH/3, s2 = toeH + doorH*2/3, intD = pD - pT*2;
-            box(pT,   doorH, uW - pT*2, riW2 - pT/2, doorCY,       uz, accentMaterial, g); // back panel
-            box(intD, pT,    uW - pT*2, cabX, toeH + pT/2,          uz, accentMaterial, g); // floor
-            box(intD, pT,    uW - pT*2, cabX, s1,                    uz, accentMaterial, g); // shelf 1
-            box(intD, pT,    uW - pT*2, cabX, s2,                    uz, accentMaterial, g); // shelf 2
-
             const isEven = i % 2 === 0;
             const wrap = new THREE.Group();
             wrap.position.set(frontX, 0, isEven ? startZ + i*uW : startZ + (i+1)*uW);
@@ -3739,13 +3741,17 @@
             const uH2 = pH - uH, baseY = uH, cY = baseY + uH2/2, topY = baseY + uH2;
             box(pD, pT, totalLen + pT*2, cabX, topY + pT/2,  startZ + totalLen/2, accentMaterial, g);
             box(pD, pT, totalLen + pT*2, cabX, baseY - pT/2, startZ + totalLen/2, accentMaterial, g);
-            for (let i = 0; i <= nU; i++)
+            // Dividers at pair boundaries only
+            for (let i = 0; i <= nU; i += 2)
               box(pD, uH2, pT, cabX, cY, startZ + i*uW, accentMaterial, g);
+            // Shared back panel per pair
+            for (let i = 0; i < nU; i += 2) {
+              const pairW = uW * 2, pairCenter = startZ + i*uW + uW;
+              box(pT, uH2, pairW - pT*2, riW2 - pT/2, cY, pairCenter, accentMaterial, g);
+            }
 
             const rwUpperDoors = [];
             for (let i = 0; i < nU; i++) {
-              const uz = startZ + i*uW + uW/2;
-              box(pT, uH2, uW - pT*2, riW2 - pT/2, cY, uz, accentMaterial, g); // back panel
               const isEven = i % 2 === 0;
               const wrap = new THREE.Group();
               wrap.position.set(frontX, 0, isEven ? startZ + i*uW : startZ + (i+1)*uW);
