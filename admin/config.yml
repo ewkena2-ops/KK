@@ -5,8 +5,6 @@ backend:
 media_folder: assets/images
 public_folder: assets/images
 
-site_url: https://ewkena2-ops.github.io/KK
-
 collections:
 
   - name: gallery
