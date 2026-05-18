@@ -1,4 +1,7 @@
 .edge-profile-tallframe/
+.wrangler/
+dist/
+node_modules/
 image.png
 image copy.png
 screenshot-tall-frame.png

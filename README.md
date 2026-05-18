@@ -17,7 +17,14 @@ After the first successful deploy, add or buy the domain in Netlify under **Doma
 - Project type: **Pages**
 - Production branch: `main`
 - Framework preset: **None**
-- Build command: leave empty
+- Build command: `npm run build:cloudflare`
 - Build output directory: `.`
 
 After deploy, add `kleverkuche.com` as a custom domain in Cloudflare Pages and move DNS from Netlify to Cloudflare.
+
+## Cloudflare Workers Deploy
+
+- Build command: `npm run build:cloudflare`
+- Deploy command: `npx wrangler deploy`
+- Production branch: `main`
+- Root directory: `/`

@@ -2,6 +2,5 @@ name = "kkkkk"
 compatibility_date = "2026-05-18"
 
 [assets]
-directory = "."
+directory = "./dist"
 not_found_handling = "404-page"
-
