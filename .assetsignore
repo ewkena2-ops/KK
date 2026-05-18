@@ -1,0 +1,18 @@
+.git/
+.github/
+.edge-profile-tallframe/
+.wrangler/
+node_modules/
+
+.assetsignore
+.gitignore
+_headers
+netlify.toml
+README.md
+wrangler.toml
+
+image.png
+image copy.png
+screenshot-tall-frame.png
+assets/images/generated-handleless-drawer-detail.png
+
