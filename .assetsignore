@@ -1,8 +1,14 @@
-.git/
-.github/
-.edge-profile-tallframe/
-.wrangler/
-node_modules/
+**/.git
+**/.git/**
+**/.github
+**/.github/**
+**/.edge-profile-tallframe
+**/.edge-profile-tallframe/**
+**/.wrangler
+**/.wrangler/**
+**/node_modules
+**/node_modules/**
+**/.DS_Store
 
 .assetsignore
 .gitignore
@@ -15,4 +21,3 @@ image.png
 image copy.png
 screenshot-tall-frame.png
 assets/images/generated-handleless-drawer-detail.png
-
