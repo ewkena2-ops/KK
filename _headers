@@ -1,0 +1,9 @@
+/*
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+
+/admin/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+
