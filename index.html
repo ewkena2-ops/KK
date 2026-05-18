@@ -6,6 +6,7 @@
   <meta name="description" content="Klever Kuche creates modern luxury kitchens, wardrobes, closets, and TV units in Addis Ababa, Ethiopia using Super Matt UV MDF finishes and premium installation.">
   <link rel="canonical" href="https://kleverkuche.com/">
   <title>Klever K&uuml;che | Modern Luxury Interiors in Addis Ababa</title>
+  <link rel="preload" as="image" href="assets/images/kitchen-hero.jpg" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
@@ -238,7 +239,7 @@
     .hero-img {
       position: absolute;
       inset: 0;
-      background-image: url("assets/images/kitchen-hero.png");
+      background-image: url("assets/images/kitchen-hero.jpg");
       background-size: cover;
       background-position: center;
       transform: scale(1.02);
@@ -1162,7 +1163,7 @@
       content: "";
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/generated-wardrobe-modern.png");
+        url("assets/images/generated-wardrobe-modern.jpg");
       background-size: cover;
       background-position: center;
       transition: transform .6s var(--ease), filter .35s ease;
@@ -1171,7 +1172,7 @@
     .collection-card.kitchen::before {
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/kitchen-hero.png");
+        url("assets/images/kitchen-hero.jpg");
       background-size: cover;
       background-position: center;
     }
@@ -1179,7 +1180,7 @@
     .collection-card.closet::before {
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/generated-closet-display-modern.png");
+        url("assets/images/generated-closet-display-modern.jpg");
       background-size: cover;
       background-position: center;
     }
@@ -1187,7 +1188,7 @@
     .collection-card.media::before {
       background:
         linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.06)),
-        url("assets/images/generated-tv-unit-uv-oak.png");
+        url("assets/images/generated-tv-unit-uv-oak.jpg");
       background-size: cover;
       background-position: center;
     }
@@ -1468,10 +1469,10 @@
       filter: saturate(1) contrast(1.04);
     }
 
-    #wardrobes .photo-asset { background-image: url("assets/images/wardrobe-handled-drawers.png"); }
-    #kitchens .photo-asset { background-image: url("assets/images/kitchen-wide-02.png"); }
-    #closets .photo-asset { background-image: url("assets/images/closet.png"); }
-    #tv-units .photo-asset { background-image: url("assets/images/generated-tv-unit-uv-oak.png"); }
+    #wardrobes .photo-asset { background-image: url("assets/images/wardrobe-handled-drawers.jpg"); }
+    #kitchens .photo-asset { background-image: url("assets/images/kitchen-wide-02.jpg"); }
+    #closets .photo-asset { background-image: url("assets/images/closet.jpg"); }
+    #tv-units .photo-asset { background-image: url("assets/images/generated-tv-unit-uv-oak.jpg"); }
 
     .photo-asset::after {
       position: absolute;
@@ -1669,12 +1670,12 @@
         radial-gradient(circle at 30% 20%, rgba(255,255,255,.22), transparent 28%);
     }
 
-    .swatch:nth-child(1) { --swatch-base: #171819; --swatch-image: url("assets/images/materials/clean-swatch-graphite-black.png"); }
-    .swatch:nth-child(2) { --swatch-base: #c9b89d; --swatch-image: url("assets/images/materials/clean-swatch-sand-ultramatt.png"); }
-    .swatch:nth-child(3) { --swatch-base: #7e776d; --swatch-image: url("assets/images/materials/clean-swatch-taupe-grey.png"); }
-    .swatch:nth-child(4) { --swatch-base: #eeece4; --swatch-image: url("assets/images/materials/clean-swatch-alpine-white.png"); }
-    .swatch:nth-child(5) { --swatch-base: #727b66; --swatch-image: url("assets/images/materials/clean-swatch-honed-olive.png"); }
-    .swatch:nth-child(6) { --swatch-base: #080909; --swatch-image: url("assets/images/materials/clean-swatch-black-supermatt.png"); }
+    .swatch:nth-child(1) { --swatch-base: #171819; --swatch-image: url("assets/images/materials/clean-swatch-graphite-black.jpg"); }
+    .swatch:nth-child(2) { --swatch-base: #c9b89d; --swatch-image: url("assets/images/materials/clean-swatch-sand-ultramatt.jpg"); }
+    .swatch:nth-child(3) { --swatch-base: #7e776d; --swatch-image: url("assets/images/materials/clean-swatch-taupe-grey.jpg"); }
+    .swatch:nth-child(4) { --swatch-base: #eeece4; --swatch-image: url("assets/images/materials/clean-swatch-alpine-white.jpg"); }
+    .swatch:nth-child(5) { --swatch-base: #727b66; --swatch-image: url("assets/images/materials/clean-swatch-honed-olive.jpg"); }
+    .swatch:nth-child(6) { --swatch-base: #080909; --swatch-image: url("assets/images/materials/clean-swatch-black-supermatt.jpg"); }
 
     .swatch strong,
     .swatch span {
@@ -2331,7 +2332,7 @@
 
           <div class="systems-grid">
             <article class="system-card reveal">
-              <img src="assets/images/material-samples-light-oak.png" alt="Super Matt UV MDF and light oak material samples">
+              <img decoding="async" loading="lazy" src="assets/images/material-samples-light-oak.jpg" alt="Super Matt UV MDF and light oak material samples">
               <div class="system-copy">
                 <span>Front Finishes</span>
                 <h3>Super Matt UV MDF</h3>
@@ -2341,7 +2342,7 @@
             </article>
 
             <article class="system-card reveal">
-              <img src="assets/images/generated-handled-drawer-detail.png" alt="Modern kitchen drawer and cabinet detail with slim visible handles">
+              <img decoding="async" loading="lazy" src="assets/images/generated-handled-drawer-detail.jpg" alt="Modern kitchen drawer and cabinet detail with slim visible handles">
               <div class="system-copy">
                 <span>Profiles</span>
                 <h3>Slim handled profiles</h3>
@@ -2351,7 +2352,7 @@
             </article>
 
             <article class="system-card reveal">
-              <img src="assets/images/ethiopia-pantry-storage.png" alt="Modern pantry storage system">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-pantry-storage.jpg" alt="Modern pantry storage system">
               <div class="system-copy">
                 <span>Interior Storage</span>
                 <h3>Everything has a place</h3>
@@ -2361,7 +2362,7 @@
             </article>
 
             <article class="system-card reveal">
-              <img src="assets/images/kitchen-wide-02.png" alt="Modern kitchen worktop and island">
+              <img decoding="async" loading="lazy" src="assets/images/kitchen-wide-02.jpg" alt="Modern kitchen worktop and island">
               <div class="system-copy">
                 <span>Worktops</span>
                 <h3>Quartz and durable surfaces</h3>
@@ -2371,7 +2372,7 @@
             </article>
 
             <article class="system-card reveal">
-              <img src="assets/images/ethiopia-showroom-samples.png" alt="Showroom consultation with finish samples">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-showroom-samples.jpg" alt="Showroom consultation with finish samples">
               <div class="system-copy">
                 <span>Planning</span>
                 <h3>Sample-led consultation</h3>
@@ -2381,7 +2382,7 @@
             </article>
 
             <article class="system-card reveal">
-              <img src="assets/images/generated-tv-unit-uv-oak.png" alt="Modern TV unit with Super Matt UV MDF fronts and natural oak wall panels">
+              <img decoding="async" loading="lazy" src="assets/images/generated-tv-unit-uv-oak.jpg" alt="Modern TV unit with Super Matt UV MDF fronts and natural oak wall panels">
               <div class="system-copy">
                 <span>Living Units</span>
                 <h3>TV walls and storage</h3>
@@ -2405,7 +2406,7 @@
 
           <div class="quote-grid">
             <article class="quote-card feature reveal">
-              <img src="assets/images/generated-closet-display-modern.png" alt="Modern walk-in closet with walnut shelves, display lighting, and Super Matt UV MDF cabinetry">
+              <img decoding="async" loading="lazy" src="assets/images/generated-closet-display-modern.jpg" alt="Modern walk-in closet with walnut shelves, display lighting, and Super Matt UV MDF cabinetry">
               <div class="quote-copy">
                 <span>Walk-in Closet</span>
                 <blockquote>A calm morning starts with a closet that knows where everything belongs.</blockquote>
@@ -2414,7 +2415,7 @@
             </article>
 
             <article class="quote-card tall reveal">
-              <img src="assets/images/generated-wardrobe-modern.png" alt="Modern bedroom wardrobe with matte cabinet fronts and warm integrated lighting">
+              <img decoding="async" loading="lazy" src="assets/images/generated-wardrobe-modern.jpg" alt="Modern bedroom wardrobe with matte cabinet fronts and warm integrated lighting">
               <div class="quote-copy">
                 <span>Wardrobe</span>
                 <blockquote>Storage should feel quiet, even when the room is full.</blockquote>
@@ -2422,7 +2423,7 @@
             </article>
 
             <article class="quote-card reveal">
-              <img src="assets/images/kitchen-wide-02.png" alt="Modern Super Matt UV MDF kitchen with island and warm cabinet finishes">
+              <img decoding="async" loading="lazy" src="assets/images/kitchen-wide-02.jpg" alt="Modern Super Matt UV MDF kitchen with island and warm cabinet finishes">
               <div class="quote-copy">
                 <span>Kitchen</span>
                 <blockquote>The best kitchen works hard and still looks effortless.</blockquote>
@@ -2430,7 +2431,7 @@
             </article>
 
             <article class="quote-card reveal">
-              <img src="assets/images/generated-materials-modern.png" alt="Modern flat-panel Super Matt UV MDF samples with walnut, stone, and metal hardware">
+              <img decoding="async" loading="lazy" src="assets/images/generated-materials-modern.jpg" alt="Modern flat-panel Super Matt UV MDF samples with walnut, stone, and metal hardware">
               <div class="quote-copy">
                 <span>Materials</span>
                 <blockquote>Great finishes are felt first, then noticed.</blockquote>
@@ -2460,148 +2461,148 @@
             <div class="gallery-wall">
               <div class="image-grid" id="galleryGrid">
             <figure class="image-tile large reveal">
-              <img src="assets/images/kitchen-wide-02.png" alt="Modern luxury kitchen with Super Matt UV MDF cabinets and Ethiopian customers">
+              <img decoding="async" loading="lazy" src="assets/images/kitchen-wide-02.jpg" alt="Modern luxury kitchen with Super Matt UV MDF cabinets and Ethiopian customers">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Warm matte luxury kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-handled-drawer-detail.png" alt="Close-up of Super Matt UV MDF kitchen drawers with slim visible handles">
+              <img decoding="async" loading="lazy" src="assets/images/generated-handled-drawer-detail.jpg" alt="Close-up of Super Matt UV MDF kitchen drawers with slim visible handles">
               <figcaption class="image-caption"><span>Detail</span><strong>Slim handled drawer finish</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-wardrobe-modern.png" alt="Modern full-height bedroom wardrobe with Super Matt UV MDF doors and warm LED lighting">
+              <img decoding="async" loading="lazy" src="assets/images/generated-wardrobe-modern.jpg" alt="Modern full-height bedroom wardrobe with Super Matt UV MDF doors and warm LED lighting">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>New matte wardrobe concept</strong></figcaption>
             </figure>
             <figure class="image-tile large reveal">
-              <img src="assets/images/generated-closet-display-modern.png" alt="Modern walk-in closet with walnut interiors, glass display shelves, and warm LED lighting">
+              <img decoding="async" loading="lazy" src="assets/images/generated-closet-display-modern.jpg" alt="Modern walk-in closet with walnut interiors, glass display shelves, and warm LED lighting">
               <figcaption class="image-caption"><span>Closet</span><strong>New walk-in display concept</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-materials-modern.png" alt="Modern flat-panel Super Matt UV MDF material samples with stone, walnut, and metal hardware">
+              <img decoding="async" loading="lazy" src="assets/images/generated-materials-modern.jpg" alt="Modern flat-panel Super Matt UV MDF material samples with stone, walnut, and metal hardware">
               <figcaption class="image-caption"><span>Materials</span><strong>Modern flat-panel sample set</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/wardrobe-bedroom.png" alt="Modern bedroom wardrobe with Super Matt UV MDF sliding doors">
+              <img decoding="async" loading="lazy" src="assets/images/wardrobe-bedroom.jpg" alt="Modern bedroom wardrobe with Super Matt UV MDF sliding doors">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>Bedroom storage wall</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/closet-display-detail.png" alt="Luxury closet shoe and handbag display with LED lighting">
+              <img decoding="async" loading="lazy" src="assets/images/closet-display-detail.jpg" alt="Luxury closet shoe and handbag display with LED lighting">
               <figcaption class="image-caption"><span>Closet</span><strong>Display shelves and lighting</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/bedroom-wardrobe-vanity.png" alt="Modern wardrobe cabinet fronts with slim vertical handles and matte panels">
+              <img decoding="async" loading="lazy" src="assets/images/bedroom-wardrobe-vanity.jpg" alt="Modern wardrobe cabinet fronts with slim vertical handles and matte panels">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>Handled cabinet finish</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-tv-unit-uv-oak.png" alt="Modern TV unit with Super Matt UV MDF fronts and natural oak wall panels">
+              <img decoding="async" loading="lazy" src="assets/images/generated-tv-unit-uv-oak.jpg" alt="Modern TV unit with Super Matt UV MDF fronts and natural oak wall panels">
               <figcaption class="image-caption"><span>TV Unit</span><strong>UV MDF and oak media wall</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/consultation-showroom.png" alt="Klever Kuche showroom consultation with material samples">
+              <img decoding="async" loading="lazy" src="assets/images/consultation-showroom.jpg" alt="Klever Kuche showroom consultation with material samples">
               <figcaption class="image-caption"><span>Consultation</span><strong>Material selection meeting</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/installation-service.png" alt="Professional wardrobe installation service in a luxury home">
+              <img decoding="async" loading="lazy" src="assets/images/installation-service.jpg" alt="Professional wardrobe installation service in a luxury home">
               <figcaption class="image-caption"><span>Service</span><strong>Clean installation process</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/material-samples-light-oak.png" alt="Super Matt UV MDF, light oak, quartz, and cabinet hardware material samples">
+              <img decoding="async" loading="lazy" src="assets/images/material-samples-light-oak.jpg" alt="Super Matt UV MDF, light oak, quartz, and cabinet hardware material samples">
               <figcaption class="image-caption"><span>Materials</span><strong>Light oak and UV MDF samples</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/home-office-storage.png" alt="Modern home office storage wall with Super Matt UV MDF cabinets">
+              <img decoding="async" loading="lazy" src="assets/images/home-office-storage.jpg" alt="Modern home office storage wall with Super Matt UV MDF cabinets">
               <figcaption class="image-caption"><span>Storage</span><strong>Home office wall system</strong></figcaption>
             </figure>
             <figure class="image-tile large reveal">
-              <img src="assets/images/ethiopia-coffee-kitchen.png" alt="Modern Addis Ababa kitchen with Ethiopian coffee corner and Super Matt UV MDF cabinetry">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-coffee-kitchen.jpg" alt="Modern Addis Ababa kitchen with Ethiopian coffee corner and Super Matt UV MDF cabinetry">
               <figcaption class="image-caption"><span>Ethiopia</span><strong>Coffee corner kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/ethiopia-family-dining-kitchen.png" alt="Open-plan kitchen and dining room for an Ethiopian family home">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-family-dining-kitchen.jpg" alt="Open-plan kitchen and dining room for an Ethiopian family home">
               <figcaption class="image-caption"><span>Family Home</span><strong>Kitchen and dining layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/ethiopia-pantry-storage.png" alt="Modern pantry storage wall with Ethiopian home storage details">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-pantry-storage.jpg" alt="Modern pantry storage wall with Ethiopian home storage details">
               <figcaption class="image-caption"><span>Pantry</span><strong>Pull-out storage wall</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/ethiopia-wardrobe-dressing.png" alt="Modern wardrobe and dressing area with Ethiopian textile accent">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-wardrobe-dressing.jpg" alt="Modern wardrobe and dressing area with Ethiopian textile accent">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>Dressing area with local warmth</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/ethiopia-showroom-samples.png" alt="Addis Ababa showroom material samples for Super Matt UV MDF interiors">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-showroom-samples.jpg" alt="Addis Ababa showroom material samples for Super Matt UV MDF interiors">
               <figcaption class="image-caption"><span>Showroom</span><strong>Addis sample meeting</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/ethiopia-entry-storage.png" alt="Modern Addis Ababa apartment entry shoe cabinet and storage unit">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-entry-storage.jpg" alt="Modern Addis Ababa apartment entry shoe cabinet and storage unit">
               <figcaption class="image-caption"><span>Entry</span><strong>Shoe and coat storage</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/ethiopia-kids-storage.png" alt="Kids bedroom wardrobe and study storage for an Ethiopian family home">
+              <img decoding="async" loading="lazy" src="assets/images/ethiopia-kids-storage.jpg" alt="Kids bedroom wardrobe and study storage for an Ethiopian family home">
               <figcaption class="image-caption"><span>Kids Room</span><strong>Wardrobe and study storage</strong></figcaption>
             </figure>
 
             <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-realistic-soft-modern-kitchen.png" alt="Soft modern kitchen concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-soft-modern-kitchen.jpg" alt="Soft modern kitchen concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Soft modern kitchen concept</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-coffee-niche-kitchen.png" alt="Kitchen with coffee niche layout">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-coffee-niche-kitchen.jpg" alt="Kitchen with coffee niche layout">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Coffee niche layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-natural-wood-kitchen.png" alt="Kitchen with natural wood finish">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-natural-wood-kitchen.jpg" alt="Kitchen with natural wood finish">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Natural wood finish</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-open-plan-kitchen.png" alt="Open-plan kitchen and living concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-open-plan-kitchen.jpg" alt="Open-plan kitchen and living concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Open-plan living idea</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-realistic-wide-dining-kitchen.png" alt="Wide kitchen with dining zone">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-wide-dining-kitchen.jpg" alt="Wide kitchen with dining zone">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Kitchen with dining zone</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-neutral-tall-units.png" alt="Kitchen with neutral tall units">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-neutral-tall-units.jpg" alt="Kitchen with neutral tall units">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Neutral tall units</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-white-breakfast-kitchen.png" alt="White breakfast kitchen concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-white-breakfast-kitchen.jpg" alt="White breakfast kitchen concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>White breakfast kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-grey-corner-handleless-kitchen.png" alt="Handleless grey corner kitchen concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-grey-corner-handleless-kitchen.jpg" alt="Handleless grey corner kitchen concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Grey corner layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-pattern-backsplash-kitchen.png" alt="Kitchen with patterned backsplash">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-pattern-backsplash-kitchen.jpg" alt="Kitchen with patterned backsplash">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Pattern backsplash</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/generated-realistic-open-living-kitchen.png" alt="Open living kitchen concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-open-living-kitchen.jpg" alt="Open living kitchen concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Open living kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-stone-wall-kitchen.png" alt="Kitchen with stone feature wall">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-stone-wall-kitchen.jpg" alt="Kitchen with stone feature wall">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Stone wall finish</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-island-storage-kitchen.png" alt="Kitchen island storage concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-island-storage-kitchen.jpg" alt="Kitchen island storage concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>Handled island storage</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-realistic-white-corner-kitchen.png" alt="White corner kitchen concept">
+              <img decoding="async" loading="lazy" src="assets/images/generated-realistic-white-corner-kitchen.jpg" alt="White corner kitchen concept">
               <figcaption class="image-caption"><span>Kitchen</span><strong>White corner kitchen</strong></figcaption>
             </figure>
             <figure class="image-tile wide reveal">
-              <img src="assets/images/wardrobe-handled-drawers.png" alt="Full-height modern wardrobe with Super Matt UV MDF doors, integrated LED lighting, and slim handled drawers">
+              <img decoding="async" loading="lazy" src="assets/images/wardrobe-handled-drawers.jpg" alt="Full-height modern wardrobe with Super Matt UV MDF doors, integrated LED lighting, and slim handled drawers">
               <figcaption class="image-caption"><span>Wardrobe</span><strong>Full-height wardrobe wall</strong></figcaption>
             </figure>
             <figure class="image-tile large reveal">
-              <img src="assets/images/closet.png" alt="Modern walk-in closet with open shelving, hanging rail, and warm ambient lighting">
+              <img decoding="async" loading="lazy" src="assets/images/closet.jpg" alt="Modern walk-in closet with open shelving, hanging rail, and warm ambient lighting">
               <figcaption class="image-caption"><span>Closet</span><strong>Walk-in wardrobe layout</strong></figcaption>
             </figure>
             <figure class="image-tile reveal">
-              <img src="assets/images/generated-handleless-two-drawer-detail.png" alt="Modern handleless kitchen drawers with flat matte fronts and clean shadow gaps">
+              <img decoding="async" loading="lazy" src="assets/images/generated-handleless-two-drawer-detail.jpg" alt="Modern handleless kitchen drawers with flat matte fronts and clean shadow gaps">
               <figcaption class="image-caption"><span>Kitchen Detail</span><strong>Handleless drawer finish</strong></figcaption>
             </figure>
               </div>
@@ -2750,7 +2751,7 @@
           </div>
           <div class="materials-showcase">
             <figure class="material-photo reveal">
-              <img src="assets/images/material-samples-light-oak.png" alt="Super Matt UV MDF, light oak, quartz, and cabinet hardware material samples">
+              <img decoding="async" loading="lazy" src="assets/images/material-samples-light-oak.jpg" alt="Super Matt UV MDF, light oak, quartz, and cabinet hardware material samples">
               <figcaption class="image-caption"><span>Modern Materials</span><strong>Light oak and UV MDF sample palette</strong></figcaption>
             </figure>
             <div class="swatches reveal" aria-label="Material finish examples">
